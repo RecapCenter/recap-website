@@ -7,23 +7,27 @@ type LogoProps = {
   className?: string;
 };
 
-/** Recap mark (assets/icons/recap-logo.svg) + "recap." script wordmark, shared by Navbar and Footer. */
+/**
+ * Recap mark (assets/icons/recap-logo.svg), shared by Navbar and Footer.
+ *
+ * The source asset is a black mark on an opaque white square, so each
+ * variant uses a blend mode to drop that square against its background:
+ * `multiply` erases white on the light navbar, and `invert` + `screen`
+ * flips the mark to white and erases the (now black) square on the dark
+ * footer.
+ */
 export function Logo({ variant = "ink", className }: LogoProps) {
-  const accentColor =
-    variant === "ink" ? "text-accent-orange" : "text-footer-accent";
-
-  const mark = <Image src={recapMark} alt="Recap" width={36} height={36} />;
-
   return (
     <span className={cn("flex items-center gap-2", className)}>
-      {variant === "cream" ? (
-        <span className="bg-cream flex size-9 items-center justify-center rounded-full p-1">
-          {mark}
-        </span>
-      ) : (
-        mark
-      )}
-      <span className={cn("font-script text-xl", accentColor)}>recap.</span>
+      <Image
+        src={recapMark}
+        alt="Recap"
+        width={36}
+        height={36}
+        className={
+          variant === "cream" ? "invert mix-blend-screen" : "mix-blend-multiply"
+        }
+      />
     </span>
   );
 }
