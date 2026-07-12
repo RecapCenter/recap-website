@@ -16,6 +16,7 @@ interface GlobePolaoridsProps {
   markers?: PolaroidMarker[]
   className?: string
   speed?: number
+  linkHref?: string
 }
 
 const defaultMarkers: PolaroidMarker[] = [
@@ -31,6 +32,7 @@ export function GlobePolaroids({
   markers = defaultMarkers,
   className = "",
   speed = 0.003,
+  linkHref,
 }: GlobePolaoridsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const pointerInteracting = useRef<{ x: number; y: number } | null>(null)
@@ -137,38 +139,43 @@ export function GlobePolaroids({
           transition: "opacity 1.2s ease", borderRadius: "50%", touchAction: "none",
         }}
       />
-      {markers.map((m) => (
-        <div
-          key={m.id}
-          style={{
-            position: "absolute",
-            positionAnchor: `--cobe-${m.id}`,
-            bottom: "anchor(top)",
-            left: "anchor(center)",
-            translate: "-50% 0",
-            marginBottom: 8,
-            background: "#fff",
-            padding: "6px 6px 24px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1)",
-            transform: `rotate(${m.rotate}deg)`,
-            pointerEvents: "none" as const,
-            opacity: `var(--cobe-visible-${m.id}, 0)`,
-            filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
-            transition: "opacity 0.3s, filter 0.3s",
-          }}
-        >
-          <img
-            src={m.image}
-            alt={m.caption}
-            style={{ display: "block", width: 60, height: 60, objectFit: "cover" }}
-          />
-          <span style={{
-            position: "absolute", bottom: 5, left: 0, right: 0,
-            textAlign: "center", fontFamily: "system-ui, sans-serif",
-            fontSize: "0.5rem", color: "#333", letterSpacing: "0.02em",
-          }}>{m.caption}</span>
-        </div>
-      ))}
+      {markers.map((m) => {
+        const Tag = linkHref ? "a" : "div"
+        return (
+          <Tag
+            key={m.id}
+            {...(linkHref ? { href: linkHref, target: "_blank", rel: "noopener noreferrer" } : {})}
+            style={{
+              position: "absolute",
+              positionAnchor: `--cobe-${m.id}`,
+              bottom: "anchor(top)",
+              left: "anchor(center)",
+              translate: "-50% 0",
+              marginBottom: 8,
+              background: "#fff",
+              padding: "6px 6px 24px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1)",
+              transform: `rotate(${m.rotate}deg)`,
+              pointerEvents: linkHref ? "auto" : "none",
+              cursor: linkHref ? "pointer" : undefined,
+              opacity: `var(--cobe-visible-${m.id}, 0)`,
+              filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
+              transition: "opacity 0.3s, filter 0.3s",
+            }}
+          >
+            <img
+              src={m.image}
+              alt={m.caption}
+              style={{ display: "block", width: 60, height: 60, objectFit: "cover" }}
+            />
+            <span style={{
+              position: "absolute", bottom: 5, left: 0, right: 0,
+              textAlign: "center", fontFamily: "system-ui, sans-serif",
+              fontSize: "0.5rem", color: "#333", letterSpacing: "0.02em",
+            }}>{m.caption}</span>
+          </Tag>
+        )
+      })}
     </div>
   )
 }
