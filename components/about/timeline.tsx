@@ -5,17 +5,20 @@ const MILESTONES = [
   {
     year: "2015",
     title: "A tiny room, a big idea",
-    description: "Recap opened as a single-therapist practice above a bookshop.",
+    description:
+      "Recap opened as a single-therapist practice above a bookshop.",
   },
   {
     year: "2018",
     title: "School partnerships begin",
-    description: "Launched consultation programs for two neighbourhood schools.",
+    description:
+      "Launched consultation programs for two neighbourhood schools.",
   },
   {
     year: "2021",
     title: "Recap Lab",
-    description: "Started training programs for parents, teachers, and early-career clinicians.",
+    description:
+      "Started training programs for parents, teachers, and early-career clinicians.",
   },
   {
     year: "2024",
@@ -24,14 +27,21 @@ const MILESTONES = [
   },
 ];
 
-const OFFSETS = ["translate-y-0", "translate-y-3", "-translate-y-2", "translate-y-2"];
+const OFFSETS = [
+  "translate-y-0",
+  "translate-y-3",
+  "-translate-y-2",
+  "translate-y-2",
+];
 
 export function Timeline() {
   return (
     <section className="bg-pastel-lavender px-6 py-20 md:py-24">
       <div className="mx-auto max-w-[1200px]">
         <FadeIn className="text-center">
-          <span className="font-script text-xl text-ink/70">our little journey</span>
+          <span className="font-script text-ink/70 text-xl">
+            our little journey
+          </span>
           <SectionHeading as="h2" className="mt-3">
             Ten years, one steady hand.
           </SectionHeading>
@@ -42,7 +52,7 @@ export function Timeline() {
           <svg
             viewBox="0 0 800 40"
             preserveAspectRatio="none"
-            className="pointer-events-none absolute left-0 top-5 h-8 w-full text-accent-red"
+            className="text-accent-red pointer-events-none absolute top-5 left-0 h-8 w-full"
             aria-hidden
           >
             <path
@@ -55,12 +65,20 @@ export function Timeline() {
             />
           </svg>
           {MILESTONES.map((m, i) => (
-            <FadeIn key={m.year} delay={i * 0.1} className={`flex flex-col items-center text-center ${OFFSETS[i]}`}>
-              <span className="flex size-14 items-center justify-center rounded-full border-2 border-accent-red bg-white font-display text-sm font-bold text-ink">
+            <FadeIn
+              key={m.year}
+              delay={i * 0.1}
+              className={`flex flex-col items-center text-center ${OFFSETS[i]}`}
+            >
+              <span className="border-accent-red font-display text-ink flex size-14 items-center justify-center rounded-full border-2 bg-white text-sm font-bold">
                 {m.year}
               </span>
-              <h3 className="font-display mt-4 text-lg font-bold text-ink">{m.title}</h3>
-              <p className="mt-1 max-w-[220px] text-sm text-body-gray">{m.description}</p>
+              <h3 className="font-display text-ink mt-4 text-lg font-bold">
+                {m.title}
+              </h3>
+              <p className="text-body-gray mt-1 max-w-[220px] text-sm">
+                {m.description}
+              </p>
             </FadeIn>
           ))}
         </div>
@@ -68,12 +86,20 @@ export function Timeline() {
         {/* Mobile: vertical stack, no connector */}
         <div className="mt-14 flex flex-col gap-10 md:hidden">
           {MILESTONES.map((m, i) => (
-            <FadeIn key={m.year} delay={i * 0.1} className="flex flex-col items-center text-center">
-              <span className="flex size-14 items-center justify-center rounded-full border-2 border-accent-red bg-white font-display text-sm font-bold text-ink">
+            <FadeIn
+              key={m.year}
+              delay={i * 0.1}
+              className="flex flex-col items-center text-center"
+            >
+              <span className="border-accent-red font-display text-ink flex size-14 items-center justify-center rounded-full border-2 bg-white text-sm font-bold">
                 {m.year}
               </span>
-              <h3 className="font-display mt-4 text-lg font-bold text-ink">{m.title}</h3>
-              <p className="mt-1 max-w-xs text-sm text-body-gray">{m.description}</p>
+              <h3 className="font-display text-ink mt-4 text-lg font-bold">
+                {m.title}
+              </h3>
+              <p className="text-body-gray mt-1 max-w-xs text-sm">
+                {m.description}
+              </p>
             </FadeIn>
           ))}
         </div>

@@ -48,7 +48,9 @@ export function ValuesSection() {
     <section className="bg-white px-6 py-20 md:py-24">
       <div className="mx-auto max-w-[1200px]">
         <FadeIn className="text-center">
-          <span className="font-script text-xl text-ink/70">what we believe</span>
+          <span className="font-script text-ink/70 text-xl">
+            what we believe
+          </span>
           <SectionHeading as="h2" className="mt-3">
             Four small ideas we protect fiercely.
           </SectionHeading>

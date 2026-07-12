@@ -9,16 +9,15 @@ type LogoProps = {
 
 /** Recap mark (assets/icons/recap-logo.svg) + "recap." script wordmark, shared by Navbar and Footer. */
 export function Logo({ variant = "ink", className }: LogoProps) {
-  const accentColor = variant === "ink" ? "text-accent-orange" : "text-footer-accent";
+  const accentColor =
+    variant === "ink" ? "text-accent-orange" : "text-footer-accent";
 
-  const mark = (
-    <Image src={recapMark} alt="Recap" width={36} height={36} />
-  );
+  const mark = <Image src={recapMark} alt="Recap" width={36} height={36} />;
 
   return (
     <span className={cn("flex items-center gap-2", className)}>
       {variant === "cream" ? (
-        <span className="flex size-9 items-center justify-center rounded-full bg-cream p-1">
+        <span className="bg-cream flex size-9 items-center justify-center rounded-full p-1">
           {mark}
         </span>
       ) : (

@@ -17,14 +17,12 @@ export function SectionHeading({
   return (
     <Tag
       className={cn(
-        "font-bold text-ink leading-[1.1]",
-        font === "display"
-          ? "font-display"
-          : "font-serif",
+        "text-ink leading-[1.1] font-bold",
+        font === "display" ? "font-display" : "font-serif",
         as === "h1" && "text-5xl md:text-7xl",
         as === "h2" && "text-3xl md:text-5xl",
         as === "h3" && "text-2xl md:text-3xl",
-        className
+        className,
       )}
     >
       {children}
@@ -43,16 +41,11 @@ export function HighlightMark({
   className?: string;
 }) {
   return (
-    <span
-      className={cn(
-        "relative inline-block px-1.5 -rotate-1",
-        className
-      )}
-    >
+    <span className={cn("relative inline-block -rotate-1 px-1.5", className)}>
       <span
         className={cn(
           "absolute inset-x-0 inset-y-[15%] -z-10 rounded-sm",
-          color === "lime" ? "bg-highlight-lime" : "bg-accent-orange/30"
+          color === "lime" ? "bg-highlight-lime" : "bg-accent-orange/30",
         )}
       />
       {children}

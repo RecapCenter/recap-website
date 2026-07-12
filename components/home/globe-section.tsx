@@ -12,7 +12,7 @@ export function GlobeSection() {
           </SectionHeading>
         </FadeIn>
 
-        <FadeIn delay={0.1} className="w-full max-w-md md:ml-auto md:mr-0">
+        <FadeIn delay={0.1} className="w-full max-w-md md:mr-0 md:ml-auto">
           <GlobePolaroids linkHref="/downloads/recap-overview.pdf" />
         </FadeIn>
       </div>

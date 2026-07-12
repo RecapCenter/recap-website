@@ -7,14 +7,16 @@ import { EyebrowLabel } from "@/components/ui/eyebrow-label";
 export function ContactMailCard() {
   return (
     <FadeIn className="mx-auto max-w-3xl px-6">
-      <Card className="relative overflow-hidden bg-contact-card border-contact-border p-8 md:p-10">
+      <Card className="bg-contact-card border-contact-border relative overflow-hidden p-8 md:p-10">
         <div
-          className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full opacity-50 blur-2xl"
-          style={{ background: "radial-gradient(circle, #f0c368, transparent 70%)" }}
+          className="pointer-events-none absolute -top-10 -right-10 size-40 rounded-full opacity-50 blur-2xl"
+          style={{
+            background: "radial-gradient(circle, #f0c368, transparent 70%)",
+          }}
           aria-hidden
         />
         <IconBadge bg="#f5dfa9" size="lg">
-          <Mail className="size-6 text-contact-ink" />
+          <Mail className="text-contact-ink size-6" />
         </IconBadge>
         <div className="relative mt-4">
           <EyebrowLabel color="orange">write to us</EyebrowLabel>

@@ -20,15 +20,21 @@ const SOCIAL_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-footer-bg text-cream">
+    <footer className="bg-footer-bg text-cream relative overflow-hidden">
       <div
-        className="pointer-events-none absolute -left-32 -top-32 size-96 rounded-full opacity-20 blur-3xl"
-        style={{ background: "radial-gradient(circle, var(--footer-accent), transparent 70%)" }}
+        className="pointer-events-none absolute -top-32 -left-32 size-96 rounded-full opacity-20 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle, var(--footer-accent), transparent 70%)",
+        }}
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -bottom-32 -right-32 size-96 rounded-full opacity-20 blur-3xl"
-        style={{ background: "radial-gradient(circle, var(--footer-accent), transparent 70%)" }}
+        className="pointer-events-none absolute -right-32 -bottom-32 size-96 rounded-full opacity-20 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle, var(--footer-accent), transparent 70%)",
+        }}
         aria-hidden
       />
 
@@ -40,18 +46,26 @@ export default function Footer() {
             </Link>
             <p className="font-serif text-2xl leading-snug md:text-3xl">
               be gentle with the{" "}
-              <em className="not-italic font-script text-footer-accent">version</em> of you
-              that&rsquo;s{" "}
-              <em className="not-italic font-script text-footer-accent">still learning.</em>
+              <em className="font-script text-footer-accent not-italic">
+                version
+              </em>{" "}
+              of you that&rsquo;s{" "}
+              <em className="font-script text-footer-accent not-italic">
+                still learning.
+              </em>
             </p>
-            <p className="text-xs uppercase tracking-widest text-footer-muted">
+            {/* <p className="text-footer-muted text-xs tracking-widest uppercase">
               THE RECAP STUDIO · EST. 2019 · BENGALURU
-            </p>
+            </p> */}
           </div>
 
           <div className="flex flex-col gap-3 md:max-w-xs">
-            <span className="font-script text-xl text-footer-accent">the slow letter</span>
-            <p className="text-sm text-cream/80">One reflection, once a month.</p>
+            <span className="font-script text-footer-accent text-xl">
+              the slow letter
+            </span>
+            <p className="text-cream/80 text-sm">
+              One reflection, once a month.
+            </p>
             <NewsletterForm />
           </div>
         </div>
@@ -62,10 +76,15 @@ export default function Footer() {
           <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
             {NAV_LINKS.map((link, i) => (
               <span key={link.href} className="flex items-center gap-2">
-                <Link href={link.href} className="text-cream/90 hover:text-footer-accent">
+                <Link
+                  href={link.href}
+                  className="text-cream/90 hover:text-footer-accent"
+                >
                   {link.label}
                 </Link>
-                {i < NAV_LINKS.length - 1 && <span className="text-footer-muted">·</span>}
+                {i < NAV_LINKS.length - 1 && (
+                  <span className="text-footer-muted">·</span>
+                )}
               </span>
             ))}
           </nav>
@@ -76,7 +95,7 @@ export default function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="flex size-9 items-center justify-center rounded-full border border-white/20 text-cream/90 transition-colors hover:border-footer-accent hover:text-footer-accent"
+                className="text-cream/90 hover:border-footer-accent hover:text-footer-accent flex size-9 items-center justify-center rounded-full border border-white/20 transition-colors"
               >
                 <Icon className="size-4" />
               </Link>
@@ -87,13 +106,17 @@ export default function Footer() {
         <div className="my-10 h-px bg-white/10" />
 
         <div className="flex flex-col gap-2 text-sm md:flex-row md:items-center md:justify-between">
-          <p className="font-serif italic text-cream/70">
+          <p className="text-cream/70 font-serif italic">
             Recap — Counselling &amp; Psychological Services
           </p>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-cream/60">
-            <span>made with ❤️ in watercolor</span>
-            <Link href="#" className="hover:text-cream">Privacy</Link>
-            <Link href="#" className="hover:text-cream">Terms</Link>
+          <div className="text-cream/60 flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span>made with ❤️</span>
+            <Link href="#" className="hover:text-cream">
+              Privacy
+            </Link>
+            <Link href="#" className="hover:text-cream">
+              Terms
+            </Link>
             <span>© 2026</span>
           </div>
         </div>

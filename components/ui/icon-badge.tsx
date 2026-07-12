@@ -16,9 +16,9 @@ export function IconBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center justify-center rounded-full shrink-0",
+        "inline-flex shrink-0 items-center justify-center rounded-full",
         size === "md" ? "size-12" : "size-16",
-        className
+        className,
       )}
       style={{ backgroundColor: bg }}
     >

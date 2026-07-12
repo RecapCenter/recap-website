@@ -13,13 +13,13 @@ const SOCIAL_LINKS = [
 export function SocialCard() {
   return (
     <FadeIn className="mx-auto max-w-3xl px-6 md:max-w-5xl">
-      <Card className="flex flex-col gap-6 bg-contact-card-warm border-contact-border p-8 md:flex-row md:items-center md:justify-between md:p-10">
+      <Card className="bg-contact-card-warm border-contact-border flex flex-col gap-6 p-8 md:flex-row md:items-center md:justify-between md:p-10">
         <div>
           <EyebrowLabel color="orange">or, come sit with us</EyebrowLabel>
-          <h2 className="mt-2 font-serif text-2xl text-contact-ink md:text-3xl">
+          <h2 className="text-contact-ink mt-2 font-serif text-2xl md:text-3xl">
             elsewhere on the internet
           </h2>
-          <p className="mt-2 max-w-md text-sm text-contact-body">
+          <p className="text-contact-body mt-2 max-w-md text-sm">
             Gentle reflections, journaling prompts, and behind-the-scenes from
             the studio.
           </p>
@@ -29,7 +29,7 @@ export function SocialCard() {
             <a
               key={label}
               href={href}
-              className="flex items-center gap-2 rounded-full border border-contact-border bg-white px-5 py-2.5 text-sm text-contact-ink transition-colors hover:border-contact-accent"
+              className="border-contact-border text-contact-ink hover:border-contact-accent flex items-center gap-2 rounded-full border bg-white px-5 py-2.5 text-sm transition-colors"
             >
               <Icon className="size-4" />
               {label}

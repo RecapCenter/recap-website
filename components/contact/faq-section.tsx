@@ -18,8 +18,7 @@ const FAQS = [
   },
   {
     question: "Is my message confidential?",
-    answer:
-      "Yes. Whatever you share with us stays between us, always.",
+    answer: "Yes. Whatever you share with us stays between us, always.",
   },
   {
     question: "What if I'm not sure what I need yet?",
@@ -32,20 +31,22 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-dashed border-contact-border py-6">
+    <div className="border-contact-border border-b border-dashed py-6">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-4 text-left"
         aria-expanded={open}
       >
-        <span className="font-serif text-lg text-contact-ink md:text-xl">{question}</span>
+        <span className="text-contact-ink font-serif text-lg md:text-xl">
+          {question}
+        </span>
         <ChevronDown
-          className={`size-5 shrink-0 text-contact-body transition-transform ${open ? "rotate-180" : ""}`}
+          className={`text-contact-body size-5 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
       {open && (
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-contact-body">
+        <p className="text-contact-body mt-3 max-w-2xl text-sm leading-relaxed">
           {answer}
         </p>
       )}
@@ -59,7 +60,7 @@ export function FAQSection() {
       <div className="mx-auto max-w-3xl">
         <FadeIn className="text-center">
           <EyebrowLabel color="orange">before you write</EyebrowLabel>
-          <h2 className="mt-3 font-serif text-3xl text-contact-ink md:text-4xl">
+          <h2 className="text-contact-ink mt-3 font-serif text-3xl md:text-4xl">
             small things you might be wondering
           </h2>
         </FadeIn>

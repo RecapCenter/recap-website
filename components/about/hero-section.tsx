@@ -16,19 +16,18 @@ export function AboutHeroSection() {
       }}
     >
       <FadeIn className="mx-auto max-w-3xl">
-        <span className="font-script text-xl text-ink/70">hello, we are</span>
+        <span className="font-script text-ink/70 text-xl">hello, we are</span>
         <SectionHeading as="h1" className="mt-3">
           <CircleAnnotation>Recap</CircleAnnotation> — a space for{" "}
           <HighlightMark>honest</HighlightMark> conversations.
         </SectionHeading>
-        <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-body-gray">
-          A counselling &amp; learning practice built around one small,
-          stubborn idea: that children, families, and educators deserve
-          support that feels less like a waiting room and more like a warm
-          kitchen table.
+        <p className="text-body-gray mx-auto mt-6 max-w-xl text-base leading-relaxed">
+          A counselling &amp; learning practice built around one small, stubborn
+          idea: that children, families, and educators deserve support that
+          feels less like a waiting room and more like a warm kitchen table.
         </p>
         <div className="mt-10 flex items-center justify-center gap-2">
-          <span className="font-script text-base text-ink/70">
+          <span className="font-script text-ink/70 text-base">
             keep scrolling
           </span>
           <DashedArrow className="h-6 w-12" />

@@ -28,14 +28,20 @@ export function QuickLinkCard({
         className="relative flex h-full flex-col justify-between overflow-hidden rounded-3xl p-6"
         style={{ backgroundColor: bg }}
       >
-        <span className="absolute right-4 top-4 flex size-7 items-center justify-center rounded-full bg-white/30">
+        <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-white/30">
           <Plus className="size-4 text-white" />
         </span>
         <span className="flex flex-1 items-center justify-center">
-          <Image src={icon} alt="" width={64} height={64} className="h-16 w-auto object-contain" />
+          <Image
+            src={icon}
+            alt=""
+            width={64}
+            height={64}
+            className="h-16 w-auto object-contain"
+          />
         </span>
         <span
-          className="font-display text-xl font-bold leading-tight"
+          className="font-display text-xl leading-tight font-bold"
           style={{ color: labelColor }}
         >
           {label}

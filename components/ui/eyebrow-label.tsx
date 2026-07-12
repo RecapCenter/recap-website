@@ -18,7 +18,7 @@ export function EyebrowLabel({
       className={cn(
         "font-script text-xl leading-none",
         color === "orange" ? "text-accent-orange" : "text-ink/70",
-        className
+        className,
       )}
     >
       {children}

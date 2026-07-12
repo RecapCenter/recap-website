@@ -18,7 +18,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-cream/95 backdrop-blur">
+    <header className="bg-cream/95 sticky top-0 z-50 border-b border-black/5 backdrop-blur">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4 md:px-10">
         <Link href="/">
           <Logo />
@@ -29,7 +29,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-serif text-base text-ink transition-colors hover:text-accent-orange"
+              className="text-ink hover:text-accent-orange font-serif text-base transition-colors"
             >
               {link.label}
             </Link>
@@ -43,7 +43,11 @@ export default function Navbar() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
-          {open ? <X className="size-6 text-ink" /> : <Menu className="size-6 text-ink" />}
+          {open ? (
+            <X className="text-ink size-6" />
+          ) : (
+            <Menu className="text-ink size-6" />
+          )}
         </button>
       </div>
 
@@ -54,7 +58,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="py-2 font-serif text-base text-ink"
+              className="text-ink py-2 font-serif text-base"
             >
               {link.label}
             </Link>

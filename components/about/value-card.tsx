@@ -8,7 +8,13 @@ type ValueCardProps = {
   titleColor: string;
 };
 
-export function ValueCard({ icon, title, description, bg, titleColor }: ValueCardProps) {
+export function ValueCard({
+  icon,
+  title,
+  description,
+  bg,
+  titleColor,
+}: ValueCardProps) {
   return (
     <HoverLift className="h-full">
       <div
@@ -19,7 +25,7 @@ export function ValueCard({ icon, title, description, bg, titleColor }: ValueCar
         <h3 className="text-xl font-bold" style={{ color: titleColor }}>
           {title}
         </h3>
-        <p className="text-sm leading-relaxed text-body-gray">{description}</p>
+        <p className="text-body-gray text-sm leading-relaxed">{description}</p>
       </div>
     </HoverLift>
   );

@@ -14,10 +14,10 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-3xl bg-white overflow-hidden",
-        bordered && "border border-contact-border",
+        "overflow-hidden rounded-3xl bg-white",
+        bordered && "border-contact-border border",
         shadow && "shadow-[0_8px_30px_rgba(23,20,15,0.06)]",
-        className
+        className,
       )}
       {...props}
     />

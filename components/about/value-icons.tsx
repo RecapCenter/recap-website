@@ -7,10 +7,7 @@ export function SproutIcon({ className }: { className?: string }) {
         strokeWidth="3.5"
         strokeLinecap="round"
       />
-      <path
-        d="M20 20C20 12 14 9 8 9C8 17 13 20 20 20Z"
-        fill="currentColor"
-      />
+      <path d="M20 20C20 12 14 9 8 9C8 17 13 20 20 20Z" fill="currentColor" />
       <path
         d="M20 20C20 14 25 11 31 11C31 18 26 20 20 20Z"
         fill="currentColor"

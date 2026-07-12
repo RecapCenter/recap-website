@@ -19,7 +19,9 @@ export function TestimonialsSection() {
   return (
     <section
       className="px-6 py-20 md:py-24"
-      style={{ background: "linear-gradient(180deg, #d3eaf0 0%, #e8f3f6 100%)" }}
+      style={{
+        background: "linear-gradient(180deg, #d3eaf0 0%, #e8f3f6 100%)",
+      }}
     >
       <div className="mx-auto max-w-[1200px]">
         <FadeIn>

@@ -44,7 +44,7 @@ export function Button({
     "inline-flex items-center justify-center rounded-full font-medium whitespace-nowrap transition-colors",
     variantClasses[variant],
     sizeClasses[size],
-    className
+    className,
   );
 
   const content = (

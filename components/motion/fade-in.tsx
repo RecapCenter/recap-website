@@ -11,7 +11,13 @@ type FadeInProps = {
 };
 
 /** Fade + slide-up on scroll into view. Used on every major section per the site's animation system. */
-export function FadeIn({ children, className, style, delay = 0, y = 16 }: FadeInProps) {
+export function FadeIn({
+  children,
+  className,
+  style,
+  delay = 0,
+  y = 16,
+}: FadeInProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y }}

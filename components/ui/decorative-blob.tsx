@@ -14,7 +14,10 @@ export function DecorativeBlob({
 }: DecorativeBlobProps) {
   return (
     <div
-      className={cn("pointer-events-none absolute z-0 rounded-full blur-3xl opacity-60", className)}
+      className={cn(
+        "pointer-events-none absolute z-0 rounded-full opacity-60 blur-3xl",
+        className,
+      )}
       style={{
         width: size,
         height: size,

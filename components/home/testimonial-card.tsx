@@ -10,19 +10,19 @@ type TestimonialCardProps = {
 export function TestimonialCard({ quote, name, avatar }: TestimonialCardProps) {
   return (
     <div>
-      <div className="flex gap-1 text-ink">
+      <div className="text-ink flex gap-1">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} className="size-4 fill-ink" />
+          <Star key={i} className="fill-ink size-4" />
         ))}
       </div>
-      <p className="mt-4 text-base leading-relaxed text-ink/90">{quote}</p>
+      <p className="text-ink/90 mt-4 text-base leading-relaxed">{quote}</p>
       <div className="mt-5 flex items-center gap-3">
         <Image
           src={avatar}
           alt={name}
           className="size-12 rounded-full object-cover"
         />
-        <span className="font-semibold text-ink">{name}</span>
+        <span className="text-ink font-semibold">{name}</span>
       </div>
     </div>
   );

@@ -5,25 +5,29 @@ import { ContactForm } from "./contact-form";
 
 export function NoteAndFormSection() {
   return (
-    <section className="relative overflow-hidden bg-contact-bg px-6 py-16 md:py-20">
-      <DecorativeBlob color="#c9b8da" size={320} className="left-[6%] top-[10%]" />
+    <section className="bg-contact-bg relative overflow-hidden px-6 py-16 md:py-20">
+      <DecorativeBlob
+        color="#c9b8da"
+        size={320}
+        className="top-[10%] left-[6%]"
+      />
 
       <div className="relative mx-auto grid max-w-3xl grid-cols-1 gap-12 md:max-w-5xl md:grid-cols-2 md:gap-10">
         <FadeIn className="flex flex-col gap-4">
           <EyebrowLabel color="orange">a note from us</EyebrowLabel>
-          <h2 className="font-serif text-3xl leading-tight text-contact-ink md:text-4xl">
+          <h2 className="text-contact-ink font-serif text-3xl leading-tight md:text-4xl">
             Tell us what&rsquo;s on
             <br />
             <em>your mind.</em>
           </h2>
-          <p className="text-base leading-relaxed text-contact-body">
-            There is no wrong way to begin. A sentence is enough. A paragraph
-            is welcome. Write like you would to a friend who happens to
-            listen for a living.
+          <p className="text-contact-body text-base leading-relaxed">
+            There is no wrong way to begin. A sentence is enough. A paragraph is
+            welcome. Write like you would to a friend who happens to listen for
+            a living.
           </p>
           <div className="mt-4 flex items-center gap-3">
-            <span className="h-px w-10 border-t border-dashed border-contact-border" />
-            <span className="text-sm italic text-contact-body">
+            <span className="border-contact-border h-px w-10 border-t border-dashed" />
+            <span className="text-contact-body text-sm italic">
               every note gets read
             </span>
           </div>
