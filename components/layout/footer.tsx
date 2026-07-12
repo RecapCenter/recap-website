@@ -38,13 +38,13 @@ export default function Footer() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-[1200px] px-6 py-16 md:px-10 md:py-20">
-        <div className="flex flex-col gap-10 md:flex-row md:justify-between">
-          <div className="flex flex-col gap-4 md:max-w-md">
+      <div className="relative mx-auto max-w-[1200px] px-6 py-8 md:px-10 md:py-10">
+        <div className="flex flex-col gap-6 md:flex-row md:justify-between">
+          <div className="flex flex-col gap-2 md:max-w-md">
             <Link href="/">
               <Logo variant="cream" />
             </Link>
-            <p className="font-serif text-2xl leading-snug md:text-3xl">
+            <p className="font-serif text-xl leading-snug md:text-2xl">
               be gentle with the{" "}
               <em className="font-script text-footer-accent not-italic">
                 version
@@ -59,7 +59,7 @@ export default function Footer() {
             </p> */}
           </div>
 
-          <div className="flex flex-col gap-3 md:max-w-xs">
+          <div className="flex flex-col gap-2 md:max-w-xs">
             <span className="font-script text-footer-accent text-xl">
               the slow letter
             </span>
@@ -70,9 +70,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="my-10 h-px bg-white/10" />
+        <div className="my-6 h-px bg-white/10" />
 
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
             {NAV_LINKS.map((link, i) => (
               <span key={link.href} className="flex items-center gap-2">
@@ -103,7 +103,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="my-10 h-px bg-white/10" />
+        <div className="my-6 h-px bg-white/10" />
 
         <div className="flex flex-col gap-2 text-sm md:flex-row md:items-center md:justify-between">
           <p className="text-cream/70 font-serif italic">
