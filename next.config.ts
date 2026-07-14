@@ -2,6 +2,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  images: {
+    remotePatterns: process.env.WORDPRESS_MEDIA_HOSTNAME
+      ? [
+          {
+            protocol: "https",
+            hostname: process.env.WORDPRESS_MEDIA_HOSTNAME,
+            pathname: "/wp-content/uploads/**",
+          },
+        ]
+      : [],
+  },
   async headers() {
     return [
       {

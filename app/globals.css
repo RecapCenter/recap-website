@@ -155,3 +155,38 @@
     @apply font-sans;
   }
 }
+
+.wp-content {
+  @apply text-ink text-base leading-relaxed;
+}
+.wp-content h2 {
+  @apply font-display text-ink mt-10 mb-4 text-2xl font-bold;
+}
+.wp-content h3 {
+  @apply font-display text-ink mt-8 mb-3 text-xl font-bold;
+}
+.wp-content p {
+  @apply text-body-gray mb-5;
+}
+.wp-content ul,
+.wp-content ol {
+  @apply text-body-gray mb-5 ml-6 list-outside;
+}
+.wp-content ul {
+  @apply list-disc;
+}
+.wp-content ol {
+  @apply list-decimal;
+}
+.wp-content li {
+  @apply mb-2;
+}
+.wp-content blockquote {
+  @apply border-accent-orange text-ink/80 my-6 border-l-4 pl-4 italic;
+}
+.wp-content img {
+  @apply my-6 rounded-2xl;
+}
+.wp-content a {
+  @apply text-accent-orange underline underline-offset-2;
+}
