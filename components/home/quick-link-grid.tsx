@@ -25,8 +25,8 @@ const CARDS = [
     icon: servicesIcon,
   },
   {
-    href: "/case-stories",
-    label: "Case Stories",
+    href: "/thinking-out-loud",
+    label: "Thinking Out Loud",
     bg: "var(--pastel-mustard)",
     labelColor: "#ffffff",
     icon: caseStoriesIcon,
@@ -39,8 +39,8 @@ const CARDS = [
     icon: recapLabIcon,
   },
   {
-    href: "/thinking-out-loud",
-    label: "Thinking Out Loud",
+    href: "/gallery",
+    label: "Gallery",
     bg: "var(--accent-orange)",
     labelColor: "#ffffff",
     icon: thinkingOutLoudIcon,
