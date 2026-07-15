@@ -1,58 +1,47 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Plus, ArrowRight } from "lucide-react";
+import { Plus } from "lucide-react";
 import { HoverLift } from "@/components/motion/hover-lift";
 import { cn } from "@/lib/utils";
 
 type ThinkingOutLoudCardProps = {
   href: string;
-  label: string;
-  bg: string;
-  labelColor: string;
-  variant?: "default" | "cta";
+  title: string;
+  imageUrl: string | null;
   className?: string;
 };
 
+/** Featured-post preview tile: image + title only — see homepage §"Homepage Cards". */
 export function ThinkingOutLoudCard({
   href,
-  label,
-  bg,
-  labelColor,
-  variant = "default",
+  title,
+  imageUrl,
   className,
 }: ThinkingOutLoudCardProps) {
   return (
     <HoverLift className={cn("h-full", className)}>
       <Link
         href={href}
-        className="relative flex h-full flex-col justify-between overflow-hidden rounded-3xl p-6"
-        style={{ backgroundColor: bg }}
+        className="bg-pastel-cream-tan relative block h-full overflow-hidden rounded-3xl"
       >
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt=""
+            fill
+            sizes="(min-width: 768px) 25vw, 50vw"
+            className="object-cover"
+          />
+        )}
         <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-white/30">
           <Plus className="size-4 text-white" />
         </span>
-
-        <span />
-
-        <span
-          className={cn(
-            "font-display leading-tight font-bold",
-            variant === "cta"
-              ? "text-2xl tracking-tight uppercase"
-              : "text-xl",
-          )}
-          style={{ color: labelColor }}
-        >
-          {label}
-        </span>
-
-        {variant === "cta" && (
+        <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
           <span
-            className="mt-6 flex size-12 items-center justify-center rounded-full border-2"
-            style={{ borderColor: labelColor }}
-          >
-            <ArrowRight className="size-5" style={{ color: labelColor }} />
-          </span>
-        )}
+            className="font-display block text-lg leading-tight font-bold text-white"
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
+        </span>
       </Link>
     </HoverLift>
   );

@@ -48,6 +48,10 @@ export type WPPostRaw = {
   excerpt: WPRendered;
   content: WPRendered;
   categories: number[];
+  acf?: {
+    featured_on_homepage?: boolean;
+    homepage_display_order?: number | null;
+  };
   _embedded?: WPEmbedded;
 };
 
@@ -71,22 +75,24 @@ export type WPFreebieRaw = {
   id: number;
   slug: string;
   title: WPRendered;
-  excerpt: WPRendered;
+  freebie_category: number[];
   acf: {
-    thumbnail: WPACFImage;
+    thumbnail?: WPACFImage;
     description?: string;
     pdf_file: WPACFFile;
   };
+  _embedded?: WPEmbedded;
 };
 
 export type WPRecommendationRaw = {
   id: number;
   slug: string;
   title: WPRendered;
-  excerpt: WPRendered;
   recommendation_category: number[];
   acf: {
     external_link: string;
+    image?: WPACFImage;
+    description?: string;
   };
   _embedded?: WPEmbedded;
 };
@@ -95,10 +101,10 @@ export type WPLabResourceRaw = {
   id: number;
   slug: string;
   title: WPRendered;
-  excerpt: WPRendered;
   acf: {
     resource_type?: string;
     thumbnail?: WPACFImage;
     resource_file?: WPACFFile;
+    description?: string;
   };
 };

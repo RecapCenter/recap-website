@@ -18,7 +18,6 @@ export type Recommendation = {
 };
 
 function mapRecommendation(raw: WPRecommendationRaw): Recommendation {
-  const media = raw._embedded?.["wp:featuredmedia"]?.[0];
   const terms = raw._embedded?.["wp:term"]?.flat() ?? [];
   const category = terms.find((term) =>
     raw.recommendation_category.includes(term.id),
@@ -27,8 +26,8 @@ function mapRecommendation(raw: WPRecommendationRaw): Recommendation {
   return {
     id: raw.id,
     title: raw.title.rendered,
-    description: raw.excerpt.rendered,
-    imageUrl: media?.source_url ?? "",
+    description: raw.acf.description ?? "",
+    imageUrl: raw.acf.image?.url ?? "",
     externalLink: raw.acf.external_link,
     category: category?.name ?? "",
   };

@@ -17,7 +17,7 @@ function mapLabResource(raw: WPLabResourceRaw): LabResource {
     id: raw.id,
     slug: raw.slug,
     title: raw.title.rendered,
-    description: raw.excerpt.rendered,
+    description: raw.acf.description ?? "",
     resourceType: raw.acf.resource_type ?? "",
     thumbnailUrl: raw.acf.thumbnail?.url ?? "",
     resourceUrl: raw.acf.resource_file?.url ?? null,
