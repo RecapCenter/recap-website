@@ -35,7 +35,7 @@ export async function getFreebies(): Promise<Freebie[]> {
       params: { per_page: 100, _embed: true },
       tags: [collectionTag("freebie")],
     });
-    return data.map(mapFreebie);
+    return data.filter((item) => item.acf.pdf_file).map(mapFreebie);
   } catch (error) {
     console.error("Failed to fetch WordPress freebies", error);
     return [];
