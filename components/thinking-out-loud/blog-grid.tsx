@@ -35,16 +35,14 @@ export function BlogGrid({
 
   return (
     <section className="px-6 pb-16" aria-live="polite">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <FadeIn className="contents">
-          {showFeatured && featured && (
-            <BlogCard {...featured} featured />
-          )}
-          {gridPosts.map((post) => (
-            <BlogCard key={post.id} {...post} />
-          ))}
-        </FadeIn>
-      </div>
+      <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-3">
+        {showFeatured && featured && (
+          <BlogCard {...featured} featured />
+        )}
+        {gridPosts.map((post) => (
+          <BlogCard key={post.id} {...post} />
+        ))}
+      </FadeIn>
       {page < totalPages && (
         <div className="mt-10 flex justify-center">
           <Link

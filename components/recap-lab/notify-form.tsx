@@ -28,7 +28,7 @@ export function NotifyForm() {
           onSubmit={handleSubmit}
           className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center"
         >
-          <div className="border-border flex h-11 items-center gap-2 rounded-full border bg-white px-4">
+          <div className="border-border focus-within:ring-accent-orange/20 focus-within:border-accent-orange flex h-11 items-center gap-2 rounded-full border bg-white px-4 focus-within:ring-2">
             <Mail className="text-body-gray size-4 shrink-0" />
             <input
               type="email"

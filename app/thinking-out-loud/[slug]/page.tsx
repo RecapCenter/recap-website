@@ -79,14 +79,16 @@ export default async function BlogPostPage({
         </header>
 
         {post.featuredImage && (
-          <div className="relative mx-auto aspect-[16/9] w-full max-w-4xl overflow-hidden rounded-3xl px-6">
-            <Image
-              src={post.featuredImage.url}
-              alt={post.featuredImage.alt}
-              fill
-              sizes="(min-width: 1024px) 900px, 100vw"
-              className="rounded-3xl object-cover"
-            />
+          <div className="px-6">
+            <div className="relative mx-auto aspect-[16/9] w-full max-w-4xl overflow-hidden rounded-3xl">
+              <Image
+                src={post.featuredImage.url}
+                alt={post.featuredImage.alt}
+                fill
+                sizes="(min-width: 1024px) 900px, 100vw"
+                className="rounded-3xl object-cover"
+              />
+            </div>
           </div>
         )}
 

@@ -39,7 +39,7 @@ export function GalleryCard({
           </span>
         )}
         {caption && (
-          <span className="absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-black/60 to-transparent p-3 text-left text-sm text-white opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+          <span className="absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-black/60 to-transparent p-3 text-left text-sm text-white opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
             {caption}
           </span>
         )}

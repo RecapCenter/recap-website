@@ -54,7 +54,7 @@ export function RecommendationsGrid({
           subtext="Try a different search term, or clear the search to see everything."
         />
       ) : (
-        <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-3">
           {filtered.map((recommendation) => (
             <RecommendationCard key={recommendation.id} {...recommendation} />
           ))}

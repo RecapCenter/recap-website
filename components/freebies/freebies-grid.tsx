@@ -54,7 +54,7 @@ export function FreebiesGrid({ freebies }: { freebies: Freebie[] }) {
           subtext="Try a different search term."
         />
       ) : (
-        <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-3">
           {filteredFreebies.map((freebie) => (
             <FreebieCard
               key={freebie.id}

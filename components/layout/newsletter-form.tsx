@@ -17,7 +17,7 @@ export function NewsletterForm() {
       onSubmit={handleSubmit}
       className="flex flex-col gap-3 sm:flex-row sm:items-center"
     >
-      <div className="flex h-11 items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4">
+      <div className="focus-within:ring-footer-accent/50 flex h-11 items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 focus-within:ring-2">
         <Mail className="text-footer-muted size-4 shrink-0" />
         <input
           type="email"

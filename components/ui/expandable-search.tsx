@@ -25,7 +25,7 @@ export function ExpandableSearch({
   accentColor = "var(--accent-orange)",
   className,
 }: ExpandableSearchProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => value.trim().length > 0);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -46,6 +46,12 @@ export function ExpandableSearch({
     }
     setOpen(true);
     requestAnimationFrame(() => inputRef.current?.focus());
+  }
+
+  function close() {
+    onValueChange("");
+    setOpen(false);
+    inputRef.current?.blur();
   }
 
   const showSuggestions = open && value.trim().length > 0 && suggestions.length > 0;
@@ -74,7 +80,7 @@ export function ExpandableSearch({
           value={value}
           onChange={(e) => onValueChange(e.target.value)}
           onFocus={() => setOpen(true)}
-          onKeyDown={(e) => e.key === "Escape" && toggle()}
+          onKeyDown={(e) => e.key === "Escape" && close()}
           placeholder={placeholder}
           aria-label={placeholder}
           tabIndex={open ? 0 : -1}
@@ -91,7 +97,7 @@ export function ExpandableSearch({
               inputRef.current?.focus();
             }}
             aria-label="Clear search"
-            className="mr-3 flex size-5 shrink-0 items-center justify-center rounded-full text-body-gray/70 hover:text-ink"
+            className="mr-2 flex size-7 shrink-0 items-center justify-center rounded-full text-body-gray/70 hover:text-ink"
           >
             <X className="size-4" />
           </button>
