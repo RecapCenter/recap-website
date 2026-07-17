@@ -127,7 +127,7 @@ function recap_register_gallery_item_fields(): void {
 					'type'              => 'image',
 					'return_format'     => 'array',
 					'preview_size'      => 'recap_gallery_grid',
-					'required'          => 1,
+					'instructions'      => 'Optional — for a YouTube link above, the thumbnail is pulled automatically if left blank.',
 					'conditional_logic' => array(
 						array(
 							array(

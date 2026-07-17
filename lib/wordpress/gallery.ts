@@ -1,3 +1,4 @@
+import { getYouTubeThumbnailUrl } from "@/lib/utils";
 import { wpFetch } from "./client";
 import { collectionTag } from "./revalidation";
 import type { WPGalleryItemRaw } from "./types";
@@ -14,15 +15,17 @@ export type GalleryItem = {
 
 function mapGalleryItem(raw: WPGalleryItemRaw): GalleryItem {
   const isVideo = raw.acf.media_type === "video";
+  const videoUrl = (isVideo && (raw.acf.video_url ?? raw.acf.video_file?.url)) || null;
+
   return {
     id: raw.id,
     type: raw.acf.media_type,
     title: raw.title.rendered,
     caption: raw.acf.caption ?? "",
     imageUrl: isVideo
-      ? (raw.acf.video_thumbnail?.url ?? "")
+      ? (raw.acf.video_thumbnail?.url ?? (videoUrl && getYouTubeThumbnailUrl(videoUrl)) ?? "")
       : (raw.acf.photo?.url ?? ""),
-    videoUrl: (isVideo && (raw.acf.video_url ?? raw.acf.video_file?.url)) || null,
+    videoUrl,
     order: raw.acf.display_order ?? 0,
   };
 }
