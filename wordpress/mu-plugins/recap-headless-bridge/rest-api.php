@@ -32,6 +32,57 @@ function recap_register_rest_fields(): void {
 add_action( 'rest_api_init', 'recap_register_rest_fields' );
 
 /**
+ * ACF's built-in `show_in_rest` exposure returns the raw stored value for
+ * image/file fields (the attachment ID) rather than applying the field's
+ * `return_format` setting — that setting only takes effect for `get_field()`
+ * calls in PHP, not ACF's own REST serialization. Every image/file field
+ * this plugin defines uses `return_format => array` (see acf-fields.php) so
+ * the frontend can read `.url` directly, so each one needs its REST value
+ * overwritten with the properly formatted array.
+ *
+ * @return void
+ */
+function recap_fix_acf_media_fields(): void {
+	if ( ! function_exists( 'get_field' ) ) {
+		return;
+	}
+
+	recap_register_acf_media_fix( 'gallery_item', array( 'photo', 'video_file', 'video_thumbnail' ) );
+	recap_register_acf_media_fix( 'freebie', array( 'pdf_file', 'thumbnail' ) );
+	recap_register_acf_media_fix( 'recommendation', array( 'image' ) );
+	recap_register_acf_media_fix( 'lab_resource', array( 'thumbnail', 'resource_file' ) );
+}
+add_action( 'rest_api_init', 'recap_fix_acf_media_fields' );
+
+/**
+ * Re-formats a post type's image/file ACF fields in its REST response,
+ * replacing the raw attachment ID ACF exposes by default with the
+ * `return_format => array` value `get_field()` would return.
+ *
+ * @param string   $post_type Post type slug.
+ * @param string[] $fields    ACF field names (image/file type) to reformat.
+ * @return void
+ */
+function recap_register_acf_media_fix( string $post_type, array $fields ): void {
+	add_filter(
+		"rest_prepare_{$post_type}",
+		function ( WP_REST_Response $response, WP_Post $post ) use ( $fields ) {
+			if ( ! isset( $response->data['acf'] ) || ! is_array( $response->data['acf'] ) ) {
+				return $response;
+			}
+
+			foreach ( $fields as $field ) {
+				$response->data['acf'][ $field ] = get_field( $field, $post->ID ) ?: null;
+			}
+
+			return $response;
+		},
+		10,
+		2
+	);
+}
+
+/**
  * Adds a `category_names` field (array of term-name strings) to a post
  * type's REST response, for the given taxonomy.
  *
