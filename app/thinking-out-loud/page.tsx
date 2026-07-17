@@ -23,10 +23,12 @@ export default async function ThinkingOutLoudPage({
   const { q, category, page: pageParam } = await searchParams;
   const page = Math.max(1, Number(pageParam) || 1);
 
-  const [categories, { data: posts, totalPages }] = await Promise.all([
-    getCategories(),
-    getPosts({ search: q, categorySlug: category, page, perPage: PER_PAGE }),
-  ]);
+  const [categories, { data: posts, totalPages }, { data: allPosts }] =
+    await Promise.all([
+      getCategories(),
+      getPosts({ search: q, categorySlug: category, page, perPage: PER_PAGE }),
+      getPosts({ perPage: 100 }),
+    ]);
 
   const params = new URLSearchParams();
   if (q) params.set("q", q);
@@ -51,6 +53,7 @@ export default async function ThinkingOutLoudPage({
         categories={categories}
         activeCategory={category ?? ""}
         activeSearch={q}
+        allPosts={allPosts}
       />
       <BlogGrid
         posts={posts}
