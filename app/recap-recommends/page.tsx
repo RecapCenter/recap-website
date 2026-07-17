@@ -12,13 +12,6 @@ export const metadata: Metadata = {
     "Books, music, and research papers the Recap team keeps coming back to — a running list of what's shaped our thinking.",
 };
 
-const CATEGORIES = [
-  { label: "All", value: "" },
-  { label: "Books", value: "Books" },
-  { label: "Music", value: "Music" },
-  { label: "Research Papers", value: "Research Papers" },
-];
-
 export default async function RecapRecommendsPage({
   searchParams,
 }: {
@@ -29,6 +22,14 @@ export default async function RecapRecommendsPage({
   const filtered = category
     ? recommendations.filter((item) => item.category === category)
     : recommendations;
+
+  const availableCategories = Array.from(
+    new Set(recommendations.map((item) => item.category).filter(Boolean)),
+  ).sort();
+  const categories = [
+    { label: "All", value: "" },
+    ...availableCategories.map((name) => ({ label: name, value: name })),
+  ];
 
   return (
     <main>
@@ -43,7 +44,7 @@ export default async function RecapRecommendsPage({
       <div className="px-6 pb-10">
         <CategoryTabs
           basePath="/recap-recommends"
-          categories={CATEGORIES}
+          categories={categories}
           activeValue={category ?? ""}
           accentColor="var(--accent-orange)"
         />
