@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { EyebrowLabel } from "@/components/ui/eyebrow-label";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CTABanner } from "@/components/ui/cta-banner";
 import { PostBody } from "@/components/thinking-out-loud/post-body";
@@ -45,11 +44,9 @@ export default async function BlogPostPage({
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const relatedPosts = post.categories[0]
-    ? (await getPosts({ categorySlug: post.categories[0].slug, perPage: 4 })).data
-        .filter((p) => p.slug !== post.slug)
-        .slice(0, 3)
-    : [];
+  const relatedPosts = (await getPosts({ perPage: 4 })).data
+    .filter((p) => p.slug !== post.slug)
+    .slice(0, 3);
 
   return (
     <main>
@@ -65,12 +62,7 @@ export default async function BlogPostPage({
         </div>
 
         <header className="mx-auto max-w-3xl px-6 pb-8 text-center">
-          {post.categories[0] && (
-            <EyebrowLabel withDottedLines>
-              {post.categories[0].name}
-            </EyebrowLabel>
-          )}
-          <SectionHeading as="h1" className="mt-4">
+          <SectionHeading as="h1">
             <span dangerouslySetInnerHTML={{ __html: post.title }} />
           </SectionHeading>
           <p className="text-body-gray/70 mt-4 text-sm">

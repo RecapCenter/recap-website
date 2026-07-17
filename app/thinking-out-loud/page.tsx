@@ -4,7 +4,7 @@ import { HighlightMark } from "@/components/ui/section-heading";
 import { CTABanner } from "@/components/ui/cta-banner";
 import { BlogFilterBar } from "@/components/thinking-out-loud/blog-filter-bar";
 import { BlogGrid } from "@/components/thinking-out-loud/blog-grid";
-import { getCategories, getPosts } from "@/lib/wordpress/posts";
+import { getPosts } from "@/lib/wordpress/posts";
 import thinkingOutLoudIcon from "@/assets/icons/thinking-out-loud-logo.svg";
 
 export const metadata: Metadata = {
@@ -18,21 +18,18 @@ const PER_PAGE = 9;
 export default async function ThinkingOutLoudPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; category?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }) {
-  const { q, category, page: pageParam } = await searchParams;
+  const { q, page: pageParam } = await searchParams;
   const page = Math.max(1, Number(pageParam) || 1);
 
-  const [categories, { data: posts, totalPages }, { data: allPosts }] =
-    await Promise.all([
-      getCategories(),
-      getPosts({ search: q, categorySlug: category, page, perPage: PER_PAGE }),
-      getPosts({ perPage: 100 }),
-    ]);
+  const [{ data: posts, totalPages }, { data: allPosts }] = await Promise.all([
+    getPosts({ search: q, page, perPage: PER_PAGE }),
+    getPosts({ perPage: 100 }),
+  ]);
 
   const params = new URLSearchParams();
   if (q) params.set("q", q);
-  if (category) params.set("category", category);
   params.set("page", String(page + 1));
 
   return (
@@ -49,15 +46,10 @@ export default async function ThinkingOutLoudPage({
         subtext="Reflections from everyday work with children, families, and schools — written the way we'd say it out loud."
         size="full"
       />
-      <BlogFilterBar
-        categories={categories}
-        activeCategory={category ?? ""}
-        activeSearch={q}
-        allPosts={allPosts}
-      />
+      <BlogFilterBar allPosts={allPosts} />
       <BlogGrid
         posts={posts}
-        showFeatured={page === 1 && !q && !category}
+        showFeatured={page === 1 && !q}
         page={page}
         totalPages={totalPages}
         nextPageHref={`/thinking-out-loud?${params.toString()}`}

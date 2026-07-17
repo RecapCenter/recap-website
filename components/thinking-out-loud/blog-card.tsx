@@ -14,7 +14,6 @@ export function BlogCard({
   title,
   excerpt,
   featuredImage,
-  categories,
   publishedAt,
   contentHtml,
   featured = false,
@@ -44,11 +43,6 @@ export function BlogCard({
             )}
           </div>
           <div className="flex flex-1 flex-col gap-3 p-6">
-            {categories[0] && (
-              <span className="bg-pastel-mustard w-fit rounded-full px-3 py-1 text-xs font-medium text-white">
-                {categories[0].name}
-              </span>
-            )}
             <h3
               className={cn(
                 "font-display text-ink leading-tight font-bold",

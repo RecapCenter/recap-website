@@ -23,7 +23,7 @@ export function BlogGrid({
     return (
       <EmptyState
         heading="No posts found."
-        subtext="Try a different search term or category."
+        subtext="Try a different search term."
         actionLabel="View all posts"
         actionHref="/thinking-out-loud"
       />

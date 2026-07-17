@@ -43,7 +43,7 @@ export function CategoryTabs({
             href={`${basePath}${query ? `?${query}` : ""}`}
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "h-10 shrink-0 rounded-full border px-5 text-sm font-medium transition-colors",
+              "flex h-10 shrink-0 items-center justify-center rounded-full border px-5 text-sm font-medium transition-colors",
               isActive
                 ? "border-transparent text-white"
                 : "border-border text-ink/70 bg-white hover:bg-black/[0.03]",

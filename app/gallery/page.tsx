@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/ui/page-intro";
 import { CategoryTabs } from "@/components/ui/category-tabs";
+import { CTABanner } from "@/components/ui/cta-banner";
 import { GalleryGrid } from "@/components/gallery/gallery-grid";
 import { getGalleryItems } from "@/lib/wordpress/gallery";
 import thinkingOutLoudIcon from "@/assets/icons/thinking-out-loud-logo.svg";
@@ -46,6 +47,13 @@ export default async function GalleryPage({
         />
       </div>
       <GalleryGrid items={filtered} />
+      <CTABanner
+        eyebrow="want to see more?"
+        heading="Follow along for more moments."
+        subtext="New photos and videos from sessions and workshops, added as they happen."
+        buttonLabel="Get in touch"
+        buttonHref="/contact"
+      />
     </main>
   );
 }
