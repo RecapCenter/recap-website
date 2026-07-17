@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RECAP_BRIDGE_DIR', __DIR__ . '/recap-headless-bridge' );
+define( 'RECAP_BRIDGE_DIR', __DIR__ . '/includes' );
 
 require_once RECAP_BRIDGE_DIR . '/helpers.php';
 require_once RECAP_BRIDGE_DIR . '/post-types.php';
