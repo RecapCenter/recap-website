@@ -25,3 +25,20 @@ export function estimateReadingTime(html: string): string {
   const minutes = Math.max(1, Math.round(words / 200));
   return `${minutes} min read`;
 }
+
+/**
+ * Converts a YouTube/Vimeo watch link into its embeddable iframe URL.
+ * Returns null for anything else (e.g. a direct .mp4/.webm file URL),
+ * which callers should instead play via a native <video> element.
+ */
+export function getVideoEmbedUrl(url: string): string | null {
+  const youtubeMatch = url.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([\w-]{11})/,
+  );
+  if (youtubeMatch) return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+
+  return null;
+}

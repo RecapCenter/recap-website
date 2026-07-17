@@ -4,6 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Dialog, DialogClose, DialogPopup, DialogPortal } from "@/components/ui/dialog";
+import { getVideoEmbedUrl } from "@/lib/utils";
 import type { GalleryItem } from "@/lib/wordpress/gallery";
 
 type LightboxProps = {
@@ -69,11 +70,20 @@ export function Lightbox({ items, openIndex, onOpenChange }: LightboxProps) {
                   className="relative flex max-h-[70vh] w-full items-center justify-center"
                 >
                   {item.type === "video" && item.videoUrl ? (
-                    <video
-                      src={item.videoUrl}
-                      controls
-                      className="max-h-[70vh] max-w-full rounded-2xl"
-                    />
+                    getVideoEmbedUrl(item.videoUrl) ? (
+                      <iframe
+                        src={getVideoEmbedUrl(item.videoUrl)!}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="aspect-video max-h-[70vh] w-full rounded-2xl"
+                      />
+                    ) : (
+                      <video
+                        src={item.videoUrl}
+                        controls
+                        className="max-h-[70vh] max-w-full rounded-2xl"
+                      />
+                    )
                   ) : (
                     <Image
                       src={item.imageUrl}
