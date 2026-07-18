@@ -30,7 +30,6 @@ function recap_register_acf_fields(): void {
 	recap_register_freebie_fields();
 	recap_register_recommendation_fields();
 	recap_register_lab_resource_fields();
-	recap_register_post_homepage_fields();
 }
 add_action( 'acf/init', 'recap_register_acf_fields' );
 
@@ -328,59 +327,3 @@ function recap_register_lab_resource_fields(): void {
 	);
 }
 
-/**
- * Native Posts (Thinking Out Loud): two small fields controlling whether
- * — and where — a post appears in the homepage's featured preview. The
- * post itself is otherwise unchanged; this only adds a homepage-specific
- * on/off switch and ordering hint. See homepage-featured.php for how
- * `featured_on_homepage` becomes a queryable REST filter, and
- * lib/wordpress/posts.ts's getFeaturedHomepagePosts() for how the
- * frontend consumes both fields.
- *
- * @return void
- */
-function recap_register_post_homepage_fields(): void {
-	acf_add_local_field_group(
-		array(
-			'key'          => 'group_recap_post_homepage',
-			'title'        => 'Homepage Settings',
-			'show_in_rest' => 1,
-			'location'     => array(
-				array(
-					array(
-						'param'    => 'post_type',
-						'operator' => '==',
-						'value'    => 'post',
-					),
-				),
-			),
-			'fields'       => array(
-				array(
-					'key'          => 'field_recap_featured_on_homepage',
-					'name'         => 'featured_on_homepage',
-					'label'        => 'Show on Homepage',
-					'type'         => 'true_false',
-					'ui'           => 1,
-					'default_value' => 0,
-					'instructions' => 'When enabled, this post appears in the homepage "Thinking Out Loud" section.',
-				),
-				array(
-					'key'               => 'field_recap_homepage_display_order',
-					'name'              => 'homepage_display_order',
-					'label'             => 'Homepage Display Order',
-					'type'              => 'number',
-					'instructions'      => 'Controls the order featured posts appear on the homepage — lower numbers appear first. Leave blank to sort after explicitly ordered posts, by publish date.',
-					'conditional_logic' => array(
-						array(
-							array(
-								'field'    => 'field_recap_featured_on_homepage',
-								'operator' => '==',
-								'value'    => '1',
-							),
-						),
-					),
-				),
-			),
-		)
-	);
-}

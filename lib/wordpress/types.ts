@@ -48,10 +48,6 @@ export type WPPostRaw = {
   excerpt: WPRendered;
   content: WPRendered;
   categories: number[];
-  acf?: {
-    featured_on_homepage?: boolean;
-    homepage_display_order?: number | null;
-  };
   _embedded?: WPEmbedded;
 };
 

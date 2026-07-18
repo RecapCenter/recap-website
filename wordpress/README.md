@@ -6,15 +6,14 @@ This folder holds the WordPress-side code the Next.js frontend depends on. WordP
 
 ## Plugin architecture
 
-The plugin is a thin loader, `mu-plugins/recap-headless-bridge.php`, that requires nine small, single-purpose files from `mu-plugins/recap-headless-bridge/`:
+The plugin is a thin loader, `mu-plugins/recap-headless-bridge.php`, that requires eight small, single-purpose files from `mu-plugins/recap-headless-bridge/`:
 
 | File | Responsibility |
 |---|---|
 | `helpers.php` | Shared low-level utilities: the revalidation webhook sender, shared CPT registration defaults, and the taxonomy-term-seeding helper. Loaded first — every other file calls into this one. |
 | `post-types.php` | Registers the four custom post types and their image sizes. |
 | `taxonomies.php` | Registers the three category taxonomies and seeds their starter terms. |
-| `acf-fields.php` | Registers every ACF field group — one function per post type, so each is easy to find and edit independently. Also adds the two "Homepage Settings" fields to native Posts. |
-| `homepage-featured.php` | Makes `featured_on_homepage` a queryable REST filter on the native Posts endpoint (see "Homepage featured posts" below). |
+| `acf-fields.php` | Registers every ACF field group — one function per post type, so each is easy to find and edit independently. |
 | `options-page.php` | Registers the (currently empty) "Site Settings" ACF Options Page — infrastructure for later. |
 | `admin-ux.php` | wp-admin cleanup that `supports` alone can't do (currently just hiding the Slug meta box). |
 | `rest-api.php` | Adds the `category_names` convenience field to REST responses. |
@@ -82,19 +81,11 @@ Every field is registered in PHP (`acf-fields.php`), not clicked together in the
 | `resource_file` | file | Optional |
 | `description` | textarea | Optional |
 
-**Homepage Settings** (native `post` — Thinking Out Loud)
-| Field | Type | Notes |
-|---|---|---|
-| `featured_on_homepage` | true/false | Default off. When on, this post is eligible for the homepage's "Thinking Out Loud" preview |
-| `homepage_display_order` | number | Optional, only shown when Show on Homepage is on. Lower shows first; blank sorts last (by publish date) |
+## Homepage posts
 
-## Homepage featured posts
+The homepage's "Thinking Out Loud" preview simply shows the most recently published Posts, newest first — no editor opt-in step, no manual curation field. `getLatestHomepagePosts()` (`lib/wordpress/posts.ts`) calls the native `GET /wp-json/wp/v2/posts?per_page=<n>` endpoint and relies on WordPress's default `orderby=date&order=desc`.
 
-The homepage never shows "the latest posts" — only posts an editor has explicitly opted in via **Show on Homepage**, ordered by **Homepage Display Order** (ties, and any post left blank, fall back to publish date, newest first). This is deliberate: it decouples "what's newest" (the blog listing page) from "what we want to feature right now" (the homepage), so an old evergreen post can stay featured indefinitely without editing the blog listing at all.
-
-`homepage-featured.php` makes this queryable over REST: `GET /wp-json/wp/v2/posts?featured_on_homepage=true` returns only flagged posts (translated into a `meta_query` under the hood — see the file for how). The frontend's `getFeaturedHomepagePosts()` (`lib/wordpress/posts.ts`) calls this, then sorts the (typically small) result set by `homepage_display_order` in JS rather than asking WordPress to `ORDER BY` a nullable meta column — simpler and avoids NULL-handling edge cases in SQL for a field that's often left blank.
-
-The homepage itself (`components/home/thinking-out-loud-section.tsx`) shows at most 6 featured posts, image + title only (no excerpt/category/date/author — see the component for the full card treatment), each linking straight to its `/thinking-out-loud/[slug]` detail page. It's independent of the full blog listing page, which continues to show every published post regardless of this flag.
+The homepage itself (`components/home/thinking-out-loud-section.tsx`) shows at most 6 latest posts, image + title only (no excerpt/category/date/author — see the component for the full card treatment), each linking straight to its `/thinking-out-loud/[slug]` detail page. It's the same underlying content as the full blog listing page, just capped to the newest 6.
 
 ## REST endpoints
 
@@ -104,8 +95,7 @@ The homepage itself (`components/home/thinking-out-loud-section.tsx`) shows at m
 | `GET /wp-json/wp/v2/freebies` | `?_embed` for `freebie_category` term names via `wp:term` |
 | `GET /wp-json/wp/v2/recommendations` | `?_embed` for `recommendation_category` term names via `wp:term` |
 | `GET /wp-json/wp/v2/lab-resources` | Not yet called by the frontend |
-| `GET /wp-json/wp/v2/posts?featured_on_homepage=true` | Custom collection filter — see "Homepage featured posts" above |
-| `GET /wp-json/wp/v2/posts`, `/categories` | Native — unchanged otherwise |
+| `GET /wp-json/wp/v2/posts`, `/categories` | Native — unchanged; also powers the homepage's latest-posts preview (see "Homepage posts" above) |
 | `GET /wp-json/wp/v2/gallery_category`, `/freebie_category`, `/recommendation_category` | Taxonomy term lists |
 | `POST /api/revalidate` *(on the Next.js side)* | Webhook target — see "On-demand revalidation" below |
 
@@ -149,7 +139,6 @@ wp-content/mu-plugins/recap-headless-bridge/helpers.php
 wp-content/mu-plugins/recap-headless-bridge/post-types.php
 wp-content/mu-plugins/recap-headless-bridge/taxonomies.php
 wp-content/mu-plugins/recap-headless-bridge/acf-fields.php
-wp-content/mu-plugins/recap-headless-bridge/homepage-featured.php
 wp-content/mu-plugins/recap-headless-bridge/options-page.php
 wp-content/mu-plugins/recap-headless-bridge/admin-ux.php
 wp-content/mu-plugins/recap-headless-bridge/rest-api.php

@@ -59,3 +59,19 @@ A second, later change added two ACF fields to native **Posts** (Thinking Out Lo
 **Purely additive**: Posts previously had no ACF fields at all (`WPPostRaw` had no `acf` key); this adds one (`acf.featured_on_homepage`, `acf.homepage_display_order`), it doesn't remove or rename anything. Every existing published post simply defaults to `featured_on_homepage: false` until an editor opts it in.
 
 **Frontend**: `lib/wordpress/types.ts` (`WPPostRaw.acf`), `lib/wordpress/posts.ts` (`BlogPost.featuredOnHomepage`/`homepageDisplayOrder`, new `getFeaturedHomepagePosts()`), `components/home/thinking-out-loud-card.tsx` (rewritten — was a solid-color text tile with no image field at all; now shows the post's featured image with the title overlaid), and `components/home/thinking-out-loud-section.tsx` (now an async Server Component fetching real posts instead of six hardcoded tile labels) were all updated. No other page/route was touched, and the blog listing page (`/thinking-out-loud`) and detail pages are entirely unaffected — they still show every published post via the existing `getPosts()`/`getPostBySlug()`, independent of this flag.
+
+---
+
+## Addendum 2 — homepage featured posts removed, reverted to latest posts
+
+The "Show on Homepage" / "Homepage Display Order" opt-in described in Addendum 1 has been **removed**. The homepage now simply shows the most recently published Posts, newest first — no editor curation step required.
+
+**Reason**: the opt-in required every post to be manually flagged in wp-admin before it would appear on the homepage; with no posts flagged, the homepage's "Thinking Out Loud" section rendered empty (Title + Knowledge Hub tiles only, nothing in between). Reverting to "latest posts" means new content shows up automatically.
+
+**Removed**: the `group_recap_post_homepage` ACF field group (`featured_on_homepage`, `homepage_display_order`) from `acf-fields.php`; the `homepage-featured.php` module entirely (its `?featured_on_homepage=true` REST filter is no longer registered); `WPPostRaw.acf` from `lib/wordpress/types.ts`; and `BlogPost.featuredOnHomepage`/`homepageDisplayOrder` from `lib/wordpress/posts.ts`.
+
+**Renamed**: `getFeaturedHomepagePosts()` → `getLatestHomepagePosts()` (`lib/wordpress/posts.ts`) — now calls plain `GET /posts?per_page=<n>` and relies on WordPress's default `orderby=date&order=desc`, with no post-fetch sorting needed.
+
+**If you have an existing WordPress instance with this plugin installed**: redeploy the updated `mu-plugins/recap-headless-bridge.php` and `mu-plugins/recap-headless-bridge/` folder (delete `homepage-featured.php` from your install too, since it's no longer required by the loader). The "Homepage Settings" fields will disappear from the Post edit screen; any values already stored in `featured_on_homepage`/`homepage_display_order` post meta are simply ignored, not deleted.
+
+**Also fixed in this pass**: the plugin loader's `RECAP_BRIDGE_DIR` constant had been pointed at a nonexistent `mu-plugins/includes/` folder (a prior commit changed the path without creating or renaming the target — see that commit's message), which would fatal-error on every request once deployed. It's corrected back to `mu-plugins/recap-headless-bridge/`, matching where the module files actually live.

@@ -2,6 +2,15 @@ import { wordpressConfig } from "./config";
 
 const FETCH_TIMEOUT_MS = 8000;
 
+/**
+ * Time-based cache fallback (seconds), on top of the on-demand tag
+ * invalidation the WordPress webhook triggers. Without this, a missed or
+ * misconfigured webhook (e.g. RECAP_REVALIDATE_URL/SECRET not set in
+ * wp-config.php) leaves a stale response cached indefinitely with no way
+ * to self-heal. This bounds the worst case to one revalidation window.
+ */
+const REVALIDATE_SECONDS = 60;
+
 export type Paginated<T> = {
   data: T;
   total: number;
@@ -47,8 +56,7 @@ export async function wpFetch<T>(
     const response = await fetch(url, {
       ...init,
       signal: controller.signal,
-      cache: "force-cache",
-      next: { tags },
+      next: { tags, revalidate: REVALIDATE_SECONDS },
     });
 
     if (!response.ok) {

@@ -10,8 +10,6 @@ export type BlogPost = {
   contentHtml: string;
   publishedAt: string;
   featuredImage: { url: string; alt: string } | null;
-  featuredOnHomepage: boolean;
-  homepageDisplayOrder: number | null;
 };
 
 function mapPost(raw: WPPostRaw): BlogPost {
@@ -27,8 +25,6 @@ function mapPost(raw: WPPostRaw): BlogPost {
     featuredImage: media
       ? { url: media.source_url, alt: media.alt_text }
       : null,
-    featuredOnHomepage: raw.acf?.featured_on_homepage ?? false,
-    homepageDisplayOrder: raw.acf?.homepage_display_order ?? null,
   };
 }
 
@@ -66,38 +62,22 @@ export async function getPosts({
 }
 
 /**
- * Posts to feature in the homepage "Thinking Out Loud" section — i.e.
- * `featured_on_homepage = true` in WordPress, never just the latest
- * posts. Sorted by `homepage_display_order` ascending (posts without an
- * explicit order sort last), then by publish date descending as a
- * tiebreaker. Sorting happens here rather than in the WordPress query
- * since `homepage_display_order` is optional/nullable per post.
+ * Posts to show in the homepage "Thinking Out Loud" section — simply the
+ * most recently published posts, newest first (WordPress's default
+ * `/posts` ordering), with no manual curation step required in WP admin.
  */
-export async function getFeaturedHomepagePosts(
+export async function getLatestHomepagePosts(
   limit = 6,
 ): Promise<BlogPost[]> {
   try {
     const { data } = await wpFetch<WPPostRaw[]>("/posts", {
-      params: { featured_on_homepage: true, per_page: 20, _embed: true },
+      params: { per_page: limit, _embed: true },
       tags: [collectionTag("post")],
     });
 
-    const byDateDesc = (a: BlogPost, b: BlogPost) =>
-      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
-
-    return data
-      .map(mapPost)
-      .sort((a, b) => {
-        const { homepageDisplayOrder: aOrder } = a;
-        const { homepageDisplayOrder: bOrder } = b;
-        if (aOrder === null && bOrder === null) return byDateDesc(a, b);
-        if (aOrder === null) return 1;
-        if (bOrder === null) return -1;
-        return aOrder !== bOrder ? aOrder - bOrder : byDateDesc(a, b);
-      })
-      .slice(0, limit);
+    return data.map(mapPost);
   } catch (error) {
-    console.error("Failed to fetch WordPress featured homepage posts", error);
+    console.error("Failed to fetch WordPress latest homepage posts", error);
     return [];
   }
 }

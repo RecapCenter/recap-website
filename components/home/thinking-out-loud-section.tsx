@@ -4,23 +4,23 @@ import { IconBadge } from "@/components/ui/icon-badge";
 import { ThinkingOutLoudCard } from "./thinking-out-loud-card";
 import { KnowledgeHubCard } from "./knowledge-hub-card";
 import caseStoriesIcon from "@/assets/icons/case-stories-logo.svg";
-import { getFeaturedHomepagePosts } from "@/lib/wordpress/posts";
+import { getLatestHomepagePosts } from "@/lib/wordpress/posts";
 
 const LIGHT_GRAY = "#e7e5e2";
 
 const COLUMN_HEIGHT = "h-[34rem]";
 
-/** Mobile shows exactly this many featured posts, stacked, between the intro and Knowledge Hub. */
+/** Mobile shows exactly this many latest posts, stacked, between the intro and Knowledge Hub. */
 const MOBILE_POST_COUNT = 4;
 
 /**
  * Desktop bento slots — Title (static) and Knowledge Hub (static) are the
- * only fixed tiles; every other tile is a real WordPress featured post.
- * Column 1 pairs the intro tile with one tall post (Blog 1); columns 2 and
- * 3 each hold two even posts; column 4 pairs one tall post (Blog 6) with
- * the always-present Knowledge Hub. A column only renders if at least one
- * post is assigned to it, so fewer than 6 featured posts gracefully drops
- * trailing columns/tiles.
+ * only fixed tiles; every other tile is the latest WordPress posts, newest
+ * first. Column 1 pairs the intro tile with one tall post (Blog 1); columns
+ * 2 and 3 each hold two even posts; column 4 pairs one tall post (Blog 6)
+ * with the always-present Knowledge Hub. A column only renders if at least
+ * one post is assigned to it, so fewer than 6 published posts gracefully
+ * drops trailing columns/tiles.
  */
 const DESKTOP_SLOT_LAYOUT = [
   { column: 1, size: "flex-[2]" },
@@ -60,7 +60,7 @@ function IntroTextTile({ className }: { className?: string }) {
 }
 
 export async function ThinkingOutLoudSection() {
-  const posts = await getFeaturedHomepagePosts(DESKTOP_SLOT_LAYOUT.length);
+  const posts = await getLatestHomepagePosts(DESKTOP_SLOT_LAYOUT.length);
   const mobilePosts = posts.slice(0, MOBILE_POST_COUNT);
 
   const columns = new Map<

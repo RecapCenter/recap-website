@@ -21,13 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RECAP_BRIDGE_DIR', __DIR__ . '/includes' );
+define( 'RECAP_BRIDGE_DIR', __DIR__ . '/recap-headless-bridge' );
 
 require_once RECAP_BRIDGE_DIR . '/helpers.php';
 require_once RECAP_BRIDGE_DIR . '/post-types.php';
 require_once RECAP_BRIDGE_DIR . '/taxonomies.php';
 require_once RECAP_BRIDGE_DIR . '/acf-fields.php';
-require_once RECAP_BRIDGE_DIR . '/homepage-featured.php';
 require_once RECAP_BRIDGE_DIR . '/options-page.php';
 require_once RECAP_BRIDGE_DIR . '/admin-ux.php';
 require_once RECAP_BRIDGE_DIR . '/rest-api.php';
