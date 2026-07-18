@@ -22,10 +22,10 @@ export function ContactMailCard() {
           <EyebrowLabel color="orange">write to us</EyebrowLabel>
           <p className="mt-1">
             <a
-              href="mailto:hello@recap.co"
+              href="mailto:hello@recapcenter.com"
               className="text-lg text-[#3b5b7a] hover:underline"
             >
-              hello@recap.co
+              hello@recapcenter.com
             </a>
           </p>
         </div>

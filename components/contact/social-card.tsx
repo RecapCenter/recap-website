@@ -2,12 +2,12 @@ import { MessageCircle, Camera } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { Card } from "@/components/ui/card";
 import { EyebrowLabel } from "@/components/ui/eyebrow-label";
-import { LinkedinIcon } from "@/components/ui/social-icons";
+import { InstagramIcon, LinkedinIcon  } from "@/components/ui/social-icons";
 
 const SOCIAL_LINKS = [
-  { label: "Instagram", href: "#", icon: Camera },
-  { label: "LinkedIn", href: "#", icon: LinkedinIcon },
-  { label: "WhatsApp community", href: "#", icon: MessageCircle },
+  { label: "Instagram", href: "https://www.instagram.com/recap_center", icon: InstagramIcon },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/recapcenter/", icon: LinkedinIcon },
+  { label: "WhatsApp Community", href: "https://whatsapp.com/channel/0029VbD8p3gAjPXDr1Njyq3d", icon: MessageCircle },
 ];
 
 export function SocialCard() {

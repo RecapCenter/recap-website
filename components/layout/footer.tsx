@@ -13,9 +13,9 @@ const NAV_LINKS = [
 ];
 
 const SOCIAL_LINKS = [
-  { label: "Instagram", href: "#", icon: InstagramIcon },
-  { label: "LinkedIn", href: "#", icon: LinkedinIcon },
-  { label: "Chat with us", href: "/contact", icon: MessageCircle },
+  { label: "Instagram", href: "https://www.instagram.com/recap_center", icon: InstagramIcon },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/recapcenter/", icon: LinkedinIcon },
+  { label: "WhatsApp Community", href: "https://whatsapp.com/channel/0029VbD8p3gAjPXDr1Njyq3d", icon: MessageCircle },
 ];
 
 export default function Footer() {
