@@ -1,26 +1,27 @@
+import { ArrowRight } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { Button } from "@/components/ui/button";
 import { ArchImageCard } from "./arch-image-card";
 import counselingImage from "@/assets/images/home/service-counseling.png";
 import specialEducationImage from "@/assets/images/home/service-special-education.png";
 import trainingsImage from "@/assets/images/home/service-trainings.png";
 
-// TODO: replace placeholder subtext (carried over verbatim from source screenshots) with real service copy
 const SERVICES = [
   {
     image: counselingImage,
     title: "Counseling",
-    subtext: "2 bedrooms | 2 King beds | Up to 4 guests",
+    subtext: "1:1 and family sessions for stress, transitions, and everyday worries.",
   },
   {
     image: specialEducationImage,
     title: "Special Education",
-    subtext: "1 Queen and 1 Single Bed | Up to 3 guests",
+    subtext: "Personalized learning support for kids who learn differently.",
   },
   {
     image: trainingsImage,
     title: "Trainings",
-    subtext: "1 Queen or 2 Single Beds | Up to 2 guests",
+    subtext: "Workshops for schools and parents on behavior and development.",
   },
 ];
 
@@ -38,6 +39,14 @@ export function ServicesSection() {
             </FadeIn>
           ))}
         </div>
+        <FadeIn delay={0.3} className="mt-14 flex justify-center">
+          <Button
+            href="/services"
+            icon={<ArrowRight className="size-4" />}
+          >
+            Explore our Services
+          </Button>
+        </FadeIn>
       </div>
     </section>
   );
