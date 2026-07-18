@@ -2,6 +2,13 @@
 /page_ref/
 /*.pdf
 
+# raw/source design files (unflattened originals; keep only optimized exports under assets/)
+*.psd
+*.ai
+*.xd
+*.fig
+*.sketch
+
 # dependencies
 /node_modules
 /.pnp
@@ -16,13 +23,15 @@
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
 
-# debug
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
 # env files
 .env*.local
@@ -36,3 +45,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editor/IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# local scratch/tmp output (not part of the app)
+/tmp/
+/scratchpad/
+*.tmp
