@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -69,20 +68,6 @@ export default async function BlogPostPage({
             {formatDate(post.publishedAt)} · {estimateReadingTime(post.contentHtml)}
           </p>
         </header>
-
-        {post.featuredImage && (
-          <div className="px-6">
-            <div className="relative mx-auto aspect-[16/9] w-full max-w-4xl overflow-hidden rounded-3xl">
-              <Image
-                src={post.featuredImage.url}
-                alt={post.featuredImage.alt}
-                fill
-                sizes="(min-width: 1024px) 900px, 100vw"
-                className="rounded-3xl object-cover"
-              />
-            </div>
-          </div>
-        )}
 
         <PostBody html={post.contentHtml} />
       </article>
