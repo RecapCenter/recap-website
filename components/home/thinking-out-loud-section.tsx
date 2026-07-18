@@ -1,13 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Plus } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
-import { HoverLift } from "@/components/motion/hover-lift";
 import { IconBadge } from "@/components/ui/icon-badge";
 import { ThinkingOutLoudCard } from "./thinking-out-loud-card";
 import { KnowledgeHubCard } from "./knowledge-hub-card";
 import caseStoriesIcon from "@/assets/icons/case-stories-logo.svg";
-import storyImage from "@/assets/images/home/service-special-education.png";
 import { getFeaturedHomepagePosts } from "@/lib/wordpress/posts";
 
 const LIGHT_GRAY = "#e7e5e2";
@@ -15,16 +11,19 @@ const LIGHT_GRAY = "#e7e5e2";
 const COLUMN_HEIGHT = "h-[34rem]";
 
 /** Mobile shows exactly this many featured posts, stacked, between the intro and Knowledge Hub. */
-const MOBILE_POST_COUNT = 3;
+const MOBILE_POST_COUNT = 4;
 
 /**
- * Desktop bento slots reserved for real featured posts — Knowledge Hub
- * always occupies column 4's second slot on top of this, so it's never
- * one of the posts a WordPress editor controls. A column only renders if
- * at least one post (or, for column 4, Knowledge Hub) is assigned to it,
- * so fewer than 5 featured posts gracefully drops trailing columns.
+ * Desktop bento slots — Title (static) and Knowledge Hub (static) are the
+ * only fixed tiles; every other tile is a real WordPress featured post.
+ * Column 1 pairs the intro tile with one tall post (Blog 1); columns 2 and
+ * 3 each hold two even posts; column 4 pairs one tall post (Blog 6) with
+ * the always-present Knowledge Hub. A column only renders if at least one
+ * post is assigned to it, so fewer than 6 featured posts gracefully drops
+ * trailing columns/tiles.
  */
 const DESKTOP_SLOT_LAYOUT = [
+  { column: 1, size: "flex-[2]" },
   { column: 2, size: "flex-1" },
   { column: 2, size: "flex-1" },
   { column: 3, size: "flex-1" },
@@ -60,28 +59,6 @@ function IntroTextTile({ className }: { className?: string }) {
   );
 }
 
-function IntroPhotoTile({ className }: { className?: string }) {
-  return (
-    <HoverLift className={className}>
-      <Link
-        href="/thinking-out-loud"
-        className="relative block h-full overflow-hidden rounded-3xl"
-      >
-        <Image
-          src={storyImage}
-          alt="A child arranging colorful paper shapes during a special education session"
-          fill
-          sizes="(min-width: 768px) 25vw, 50vw"
-          className="object-cover"
-        />
-        <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-white/30">
-          <Plus className="size-4 text-white" />
-        </span>
-      </Link>
-    </HoverLift>
-  );
-}
-
 export async function ThinkingOutLoudSection() {
   const posts = await getFeaturedHomepagePosts(DESKTOP_SLOT_LAYOUT.length);
   const mobilePosts = posts.slice(0, MOBILE_POST_COUNT);
@@ -107,10 +84,9 @@ export async function ThinkingOutLoudSection() {
   return (
     <section className="bg-white px-6 py-20 md:py-24">
       <FadeIn>
-        {/* Mobile — single stacked column: intro, up to 3 featured posts, Knowledge Hub */}
+        {/* Mobile — single stacked column: intro, up to 4 featured posts, Knowledge Hub */}
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 md:hidden">
           <IntroTextTile />
-          <IntroPhotoTile className="h-56" />
           {mobilePosts.map((post) => (
             <ThinkingOutLoudCard
               key={post.id}
@@ -123,11 +99,19 @@ export async function ThinkingOutLoudSection() {
           <KnowledgeHubCard className="h-40" />
         </div>
 
-        {/* Desktop — bento grid, unchanged proportions */}
+        {/* Desktop — bento grid: Title/Blog1 | Blog2/Blog3 | Blog4/Blog5 | Blog6/Knowledge Hub */}
         <div className="mx-auto hidden max-w-[1200px] grid-cols-4 gap-6 md:grid">
           <div className={`flex flex-col gap-6 ${COLUMN_HEIGHT}`}>
             <IntroTextTile className="flex-1" />
-            <IntroPhotoTile className="flex-[2]" />
+            {(columns.get(1) ?? []).map((tile) => (
+              <ThinkingOutLoudCard
+                key={tile.id}
+                href={tile.href}
+                title={tile.title}
+                imageUrl={tile.imageUrl}
+                className={tile.size}
+              />
+            ))}
           </div>
 
           {[2, 3, 4].map((columnIndex) => {
