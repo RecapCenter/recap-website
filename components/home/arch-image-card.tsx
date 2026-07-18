@@ -16,7 +16,7 @@ export function ArchImageCard({ image, title, subtext }: ArchImageCardProps) {
           alt={title}
           fill
           sizes="(min-width: 640px) 290px, 80vw"
-          className="object-cover"
+          className="scale-125 object-cover"
         />
       </div>
       <h3 className="font-display text-ink mt-5 text-2xl font-bold">{title}</h3>

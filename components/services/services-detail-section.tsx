@@ -1,16 +1,12 @@
 import { ServiceRow } from "./service-row";
-import counsellingIcon from "@/assets/icons/counselling-logo.svg";
-import specialEduIcon from "@/assets/icons/special-edu-logo.svg";
-import trainingIcon from "@/assets/icons/training-logo.svg";
 import counselingImage from "@/assets/images/home/service-counseling.png";
 import specialEducationImage from "@/assets/images/home/service-special-education.png";
 import trainingsImage from "@/assets/images/home/service-trainings.png";
 
 const SERVICES = [
   {
-    icon: counsellingIcon,
-    iconBg: "var(--pastel-blue)",
     image: counselingImage,
+    iconBg: "var(--pastel-blue)",
     title: "Counseling",
     description:
       "One-on-one and family sessions for children, teens, and parents working through stress, big transitions, grief, anxiety, or everyday friction at home.",
@@ -21,9 +17,8 @@ const SERVICES = [
     ],
   },
   {
-    icon: specialEduIcon,
-    iconBg: "var(--pastel-peach)",
     image: specialEducationImage,
+    iconBg: "var(--pastel-peach)",
     title: "Special Education",
     description:
       "Personalized learning support for children with learning differences — built around how your child actually learns, not a one-size-fits-all plan.",
@@ -34,9 +29,8 @@ const SERVICES = [
     ],
   },
   {
-    icon: trainingIcon,
-    iconBg: "var(--pastel-lavender-light)",
     image: trainingsImage,
+    iconBg: "var(--pastel-lavender-light)",
     title: "Trainings",
     description:
       "Workshops for schools, educators, and parent groups on child development, classroom behavior, and everyday mental health literacy.",

@@ -1,14 +1,12 @@
 import Image, { type StaticImageData } from "next/image";
 import { Check } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
-import { IconBadge } from "@/components/ui/icon-badge";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
 
 type ServiceRowProps = {
-  icon: StaticImageData;
-  iconBg: string;
   image: StaticImageData;
+  iconBg: string;
   title: string;
   description: string;
   points: readonly string[];
@@ -16,9 +14,8 @@ type ServiceRowProps = {
 };
 
 export function ServiceRow({
-  icon,
-  iconBg,
   image,
+  iconBg,
   title,
   description,
   points,
@@ -32,7 +29,7 @@ export function ServiceRow({
     >
       <div
         className={cn(
-          "relative aspect-[4/3] w-full overflow-hidden rounded-3xl",
+          "relative aspect-square w-full overflow-hidden rounded-t-[50%] rounded-b-none",
           reverse && "md:order-2",
         )}
       >
@@ -41,22 +38,11 @@ export function ServiceRow({
           alt=""
           fill
           sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover"
+          className="scale-125 object-cover"
         />
       </div>
       <div className={cn(reverse && "md:order-1")}>
-        <IconBadge bg={iconBg} size="lg">
-          <Image
-            src={icon}
-            alt=""
-            width={28}
-            height={28}
-            className="h-7 w-auto object-contain"
-          />
-        </IconBadge>
-        <SectionHeading as="h3" className="mt-5">
-          {title}
-        </SectionHeading>
+        <SectionHeading as="h3">{title}</SectionHeading>
         <p className="text-body-gray mt-4 text-base leading-relaxed">
           {description}
         </p>
