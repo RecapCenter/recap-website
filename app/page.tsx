@@ -2,6 +2,7 @@ import { HeroSection } from "@/components/home/hero-section";
 import { QuickLinkGrid } from "@/components/home/quick-link-grid";
 import { ServicesSection } from "@/components/home/services-section";
 import { ThinkingOutLoudSection } from "@/components/home/thinking-out-loud-section";
+import { GallerySection } from "@/components/home/gallery-section";
 import { GlobeSection } from "@/components/home/globe-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 
@@ -12,6 +13,7 @@ export default function Home() {
       <QuickLinkGrid />
       <ServicesSection />
       <ThinkingOutLoudSection />
+      <GallerySection />
       <GlobeSection />
       <TestimonialsSection />
     </main>
