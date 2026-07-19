@@ -93,6 +93,11 @@ drift back to old patterns.
 - Write clear, concise commit messages that explain why the change was made.
 - Do NOT add a "Co-Authored-By: Claude" (or similar AI co-author) trailer to
   commits in this repo.
+- Group related/similar changes into a single commit; give unrelated work its
+  own separate commit rather than bundling everything from a session into
+  one. When pushing accumulated changes, split them by topic (e.g. "new
+  pages" vs "image cleanup" vs "form validation") instead of one giant
+  catch-all commit.
 
 ---
 
