@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { EyebrowLabel } from "@/components/ui/eyebrow-label";
@@ -47,11 +48,21 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
           className={`text-body-gray size-5 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
-      {open && (
-        <p className="text-body-gray mt-3 max-w-2xl text-sm leading-relaxed">
-          {answer}
-        </p>
-      )}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <p className="text-body-gray mt-3 max-w-2xl text-sm leading-relaxed">
+              {answer}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
