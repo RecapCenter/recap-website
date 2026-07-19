@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import createGlobe from "cobe";
 
 interface PolaroidMarker {
@@ -227,9 +228,11 @@ export function GlobePolaroids({
               transition: "opacity 0.3s, filter 0.3s",
             }}
           >
-            <img
+            <Image
               src={m.image}
               alt={m.caption}
+              width={60}
+              height={60}
               style={{
                 display: "block",
                 width: 60,

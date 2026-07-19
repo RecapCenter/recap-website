@@ -3,9 +3,9 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { ArchImageCard } from "./arch-image-card";
-import counselingImage from "@/assets/images/home/service-counseling.png";
-import specialEducationImage from "@/assets/images/home/service-special-education.png";
-import trainingsImage from "@/assets/images/home/service-trainings.png";
+import counselingImage from "@/assets/images/home/service-counseling.webp";
+import specialEducationImage from "@/assets/images/home/service-special-education.webp";
+import trainingsImage from "@/assets/images/home/service-trainings.webp";
 
 const SERVICES = [
   {
@@ -30,7 +30,7 @@ export function ServicesSection() {
     <section className="bg-pastel-lavender px-6 py-20 md:py-24">
       <div className="mx-auto max-w-[1200px]">
         <FadeIn className="text-center">
-          <SectionHeading as="h2">Services</SectionHeading>
+          <SectionHeading as="h2"><b>Our Services</b></SectionHeading>
         </FadeIn>
         <div className="mt-14 grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-6">
           {SERVICES.map((service, i) => (

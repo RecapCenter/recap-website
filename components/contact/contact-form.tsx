@@ -1,54 +1,72 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Send, TriangleAlert } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { FieldError } from "@/components/ui/field-error";
+import { CharacterCounter } from "@/components/ui/character-counter";
+import {
+  CONTACT_FIELD_ORDER,
+  CONTACT_REASONS,
+  MESSAGE_MAX_LENGTH,
+  contactFormSchema,
+  type ContactFormValues,
+} from "@/lib/validation/contact";
+import { scrollAndFocus } from "@/lib/validation/scroll-to-error";
 
 const inputClasses =
-  "h-11 w-full rounded-xl border border-contact-border bg-contact-input px-4 text-sm text-contact-ink placeholder:text-contact-body focus:border-contact-accent focus:outline-none focus:ring-2 focus:ring-contact-accent/20";
+  "h-11 w-full rounded-xl border bg-contact-input px-4 text-sm text-contact-ink placeholder:text-contact-body focus:outline-none focus:ring-2 transition-colors";
+const validBorder = "border-contact-border focus:border-contact-accent focus:ring-contact-accent/20";
+const invalidBorder = "border-accent-red focus:border-accent-red focus:ring-accent-red/20";
 
 const labelClasses = "font-script text-lg text-contact-accent";
 
-const NUDGE_DURATION_MS = 4000;
-
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
-  const [agreed, setAgreed] = useState(false);
-  const [showNudge, setShowNudge] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!showNudge) return;
-    const timer = setTimeout(() => setShowNudge(false), NUDGE_DURATION_MS);
-    return () => clearTimeout(timer);
-  }, [showNudge]);
+  const fieldRefs = useRef<Partial<Record<keyof ContactFormValues, HTMLElement | null>>>({});
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (isSending || submitted) return;
-    if (!agreed) {
-      setShowNudge(true);
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactFormSchema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      reason: "",
+      message: "",
+      agreed: false,
+    },
+  });
 
-    const data = new FormData(e.currentTarget);
-    setErrorMessage(null);
-    setIsSending(true);
+  const messageValue = watch("message") ?? "";
+  const agreed = watch("agreed");
 
+  const { ref: nameRhfRef, ...nameField } = register("name");
+  const { ref: emailRhfRef, ...emailField } = register("email");
+  const { ref: phoneRhfRef, ...phoneField } = register("phone");
+  const { ref: reasonRhfRef, ...reasonField } = register("reason");
+  const { ref: messageRhfRef, ...messageField } = register("message");
+  const { ref: agreedRhfRef, ...agreedField } = register("agreed");
+
+  async function onValid(data: ContactFormValues) {
+    setSubmitError(null);
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data.get("name"),
-          email: data.get("email"),
-          phone: data.get("phone"),
-          reason: data.get("reason"),
-          message: data.get("message"),
-          agreed,
-        }),
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
@@ -59,14 +77,22 @@ export function ContactForm() {
       }
 
       setSubmitted(true);
+      reset();
     } catch (error) {
-      setErrorMessage(
+      setSubmitError(
         error instanceof Error
           ? error.message
           : "Something went wrong. Please try again.",
       );
-    } finally {
-      setIsSending(false);
+    }
+  }
+
+  function onInvalid(invalidErrors: typeof errors) {
+    for (const field of CONTACT_FIELD_ORDER) {
+      if (invalidErrors[field]) {
+        scrollAndFocus(fieldRefs.current[field]);
+        return;
+      }
     }
   }
 
@@ -78,7 +104,11 @@ export function ContactForm() {
         aria-hidden
       />
 
-      <form onSubmit={handleSubmit} className="relative flex flex-col gap-5">
+      <form
+        onSubmit={handleSubmit(onValid, onInvalid)}
+        noValidate
+        className="relative flex flex-col gap-5"
+      >
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="name" className={labelClasses}>
@@ -86,12 +116,18 @@ export function ContactForm() {
             </label>
             <input
               id="name"
-              name="name"
               type="text"
-              required
               placeholder="e.g. Anaya"
-              className={inputClasses}
+              className={`${inputClasses} ${errors.name ? invalidBorder : validBorder}`}
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "name-error" : undefined}
+              {...nameField}
+              ref={(el) => {
+                nameRhfRef(el);
+                fieldRefs.current.name = el;
+              }}
             />
+            <FieldError id="name-error" message={errors.name?.message} />
           </div>
           <div className="flex flex-col gap-1.5">
             <label htmlFor="email" className={labelClasses}>
@@ -99,12 +135,18 @@ export function ContactForm() {
             </label>
             <input
               id="email"
-              name="email"
               type="email"
-              required
               placeholder="you@somewhere.com"
-              className={inputClasses}
+              className={`${inputClasses} ${errors.email ? invalidBorder : validBorder}`}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "email-error" : undefined}
+              {...emailField}
+              ref={(el) => {
+                emailRhfRef(el);
+                fieldRefs.current.email = el;
+              }}
             />
+            <FieldError id="email-error" message={errors.email?.message} />
           </div>
         </div>
 
@@ -115,11 +157,18 @@ export function ContactForm() {
             </label>
             <input
               id="phone"
-              name="phone"
               type="tel"
               placeholder="e.g. +1 555 123 4567"
-              className={inputClasses}
+              className={`${inputClasses} ${errors.phone ? invalidBorder : validBorder}`}
+              aria-invalid={!!errors.phone}
+              aria-describedby={errors.phone ? "phone-error" : undefined}
+              {...phoneField}
+              ref={(el) => {
+                phoneRhfRef(el);
+                fieldRefs.current.phone = el;
+              }}
             />
+            <FieldError id="phone-error" message={errors.phone?.message} />
           </div>
           <div className="flex flex-col gap-1.5">
             <label htmlFor="reason" className={labelClasses}>
@@ -128,20 +177,28 @@ export function ContactForm() {
             <div className="relative">
               <select
                 id="reason"
-                name="reason"
                 defaultValue=""
-                className={`${inputClasses} appearance-none pr-10`}
+                className={`${inputClasses} appearance-none pr-10 ${errors.reason ? invalidBorder : validBorder}`}
+                aria-invalid={!!errors.reason}
+                aria-describedby={errors.reason ? "reason-error" : undefined}
+                {...reasonField}
+                ref={(el) => {
+                  reasonRhfRef(el);
+                  fieldRefs.current.reason = el;
+                }}
               >
                 <option value="" disabled>
                   Choose one
                 </option>
-                <option value="session">A session for myself</option>
-                <option value="workshop">A workshop for my team</option>
-                <option value="school">School partnership</option>
-                <option value="other">Something else</option>
+                {CONTACT_REASONS.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
+                  </option>
+                ))}
               </select>
               <ChevronDown className="text-contact-body pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2" />
             </div>
+            <FieldError id="reason-error" message={errors.reason?.message} />
           </div>
         </div>
 
@@ -151,45 +208,64 @@ export function ContactForm() {
           </label>
           <textarea
             id="message"
-            name="message"
-            required
             rows={4}
+            maxLength={MESSAGE_MAX_LENGTH}
             placeholder="Say as little or as much as you'd like. This is a safe place to begin."
-            className={`${inputClasses} h-auto resize-y py-3`}
+            className={`${inputClasses} h-auto resize-y py-3 ${errors.message ? invalidBorder : validBorder}`}
+            aria-invalid={!!errors.message}
+            aria-describedby={[errors.message ? "message-error" : null, "message-counter"]
+              .filter(Boolean)
+              .join(" ")}
+            {...messageField}
+            ref={(el) => {
+              messageRhfRef(el);
+              fieldRefs.current.message = el;
+            }}
           />
+          <div className="flex items-start justify-between gap-4">
+            <FieldError id="message-error" message={errors.message?.message} />
+            <CharacterCounter
+              id="message-counter"
+              current={messageValue.length}
+              max={MESSAGE_MAX_LENGTH}
+              className="ml-auto"
+              mutedClassName="text-contact-body"
+            />
+          </div>
         </div>
 
         <label className="text-contact-body flex items-start gap-3 text-sm">
           <input
             type="checkbox"
-            name="follow-up"
-            checked={agreed}
-            onChange={(e) => {
-              setAgreed(e.target.checked);
-              if (e.target.checked) setShowNudge(false);
-            }}
             className="accent-contact-accent mt-1 size-4 shrink-0"
+            aria-invalid={!!errors.agreed}
+            aria-describedby={errors.agreed ? "agreed-error" : undefined}
+            {...agreedField}
+            ref={(el) => {
+              agreedRhfRef(el);
+              fieldRefs.current.agreed = el;
+            }}
           />
           I&rsquo;d like Recap to reach out to me about my message. My details
           stay private and are never shared.
         </label>
 
         <AnimatePresence>
-          {showNudge && (
+          {errors.agreed && (
             <motion.p
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
+              id="agreed-error"
               role="alert"
               className="border-accent-red/30 bg-accent-red/10 text-accent-red flex items-center gap-2 rounded-xl border px-4 py-3 text-sm"
             >
               <TriangleAlert className="size-4 shrink-0" />
-              Please tick the box above so we know it&rsquo;s okay to reach
-              out.
+              {errors.agreed.message}
             </motion.p>
           )}
-          {errorMessage && (
+          {submitError && (
             <motion.p
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
@@ -199,14 +275,15 @@ export function ContactForm() {
               className="border-accent-red/30 bg-accent-red/10 text-accent-red flex items-center gap-2 rounded-xl border px-4 py-3 text-sm"
             >
               <TriangleAlert className="size-4 shrink-0" />
-              {errorMessage}
+              {submitError}
             </motion.p>
           )}
         </AnimatePresence>
 
         <button
           type="submit"
-          aria-disabled={!agreed || isSending || submitted}
+          disabled={isSubmitting || submitted}
+          aria-busy={isSubmitting}
           className={`flex h-13 items-center justify-center gap-2 rounded-2xl text-base font-medium text-white transition-colors ${
             agreed
               ? "bg-[#2b1f17] hover:bg-[#2b1f17]/90"
@@ -214,7 +291,7 @@ export function ContactForm() {
           }`}
         >
           <Send className="size-4" />
-          {submitted ? "Sent!" : isSending ? "Sending…" : "Send it across"}
+          {submitted ? "Sent!" : isSubmitting ? "Sending…" : "Send it across"}
         </button>
         <p className="text-contact-body text-center text-sm italic">
           Replies are personal and usually arrive within 48 hours.

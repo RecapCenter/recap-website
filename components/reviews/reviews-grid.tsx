@@ -11,12 +11,7 @@ import type { Review } from "@/lib/reviews";
  */
 export function ReviewsGrid({ reviews }: { reviews: Review[] }) {
   return (
-    <section
-      className="px-6 py-16 md:py-20"
-      style={{
-        background: "linear-gradient(180deg, #d3eaf0 0%, #e8f3f6 100%)",
-      }}
-    >
+    <section className="bg-cream px-6 py-16 md:py-20">
       <div className="mx-auto max-w-[1200px]">
         {reviews.length === 0 ? (
           <EmptyState

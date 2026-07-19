@@ -13,7 +13,10 @@ const STATIC_ROUTES = [
   "/recap-lab",
   "/recap-recommends",
   "/reviews",
+  "/faq",
   "/contact",
+  "/privacy",
+  "/terms",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

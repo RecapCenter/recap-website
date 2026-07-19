@@ -108,10 +108,13 @@ export default function Footer() {
             Recap — Realm of Counselling &amp; Psychological Services
           </p>
           <div className="text-cream/60 flex flex-wrap items-center gap-x-4 gap-y-1">
-            <Link href="#" className="hover:text-cream">
+            <Link href="/faq" className="hover:text-cream">
+              FAQ
+            </Link>
+            <Link href="/privacy" className="hover:text-cream">
               Privacy
             </Link>
-            <Link href="#" className="hover:text-cream">
+            <Link href="/terms" className="hover:text-cream">
               Terms
             </Link>
             <span>© 2026</span>

@@ -1,6 +1,6 @@
 import { FadeIn } from "@/components/motion/fade-in";
 import { QuickLinkCard } from "./quick-link-card";
-import aboutIcon from "@/assets/icons/about-logo.svg";
+import aboutIcon from "@/assets/icons/about-logo.webp";
 import servicesIcon from "@/assets/icons/services-logo.svg";
 import caseStoriesIcon from "@/assets/icons/case-stories-logo.svg";
 import recapLabIcon from "@/assets/icons/recap-lab-logo.svg";

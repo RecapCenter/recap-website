@@ -1,4 +1,4 @@
-import { MessageCircle, Camera } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { Card } from "@/components/ui/card";
 import { EyebrowLabel } from "@/components/ui/eyebrow-label";

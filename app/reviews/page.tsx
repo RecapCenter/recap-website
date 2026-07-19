@@ -3,7 +3,6 @@ import { PageIntro } from "@/components/ui/page-intro";
 import { CTABanner } from "@/components/ui/cta-banner";
 import { ReviewsGrid } from "@/components/reviews/reviews-grid";
 import { getCombinedReviews } from "@/lib/reviews";
-import caseStoriesIcon from "@/assets/icons/case-stories-logo.svg";
 
 export const metadata: Metadata = {
   title: "Reviews — Recap",
@@ -17,8 +16,6 @@ export default async function ReviewsPage() {
   return (
     <main>
       <PageIntro
-        icon={caseStoriesIcon}
-        iconBg="var(--pastel-blue)"
         eyebrow="kind words"
         heading={
           <>

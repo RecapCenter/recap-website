@@ -1,7 +1,7 @@
 import { ServiceRow } from "./service-row";
-import counselingImage from "@/assets/images/home/service-counseling.png";
-import specialEducationImage from "@/assets/images/home/service-special-education.png";
-import trainingsImage from "@/assets/images/home/service-trainings.png";
+import counselingImage from "@/assets/images/home/service-counseling.webp";
+import specialEducationImage from "@/assets/images/home/service-special-education.webp";
+import trainingsImage from "@/assets/images/home/service-trainings.webp";
 
 const SERVICES = [
   {

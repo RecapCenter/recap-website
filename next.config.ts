@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         hostname: "img.youtube.com",
         pathname: "/vi/**",
       },
+      {
+        protocol: "https" as const,
+        hostname: "images.unsplash.com",
+      },
     ],
   },
   async headers() {
