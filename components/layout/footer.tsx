@@ -55,9 +55,6 @@ export default function Footer() {
                 still learning.
               </em>
             </p>
-            {/* <p className="text-footer-muted text-xs tracking-widest uppercase">
-              THE RECAP STUDIO · EST. 2019 · BENGALURU
-            </p> */}
           </div>
 
           <div className="flex flex-col gap-2 md:max-w-xs">
@@ -108,10 +105,9 @@ export default function Footer() {
 
         <div className="flex flex-col gap-2 text-sm md:flex-row md:items-center md:justify-between">
           <p className="text-cream/70 font-serif italic">
-            Recap — Counselling &amp; Psychological Services
+            Recap — Realm of Counselling &amp; Psychological Services
           </p>
           <div className="text-cream/60 flex flex-wrap items-center gap-x-4 gap-y-1">
-            <span>made with ❤️</span>
             <Link href="#" className="hover:text-cream">
               Privacy
             </Link>

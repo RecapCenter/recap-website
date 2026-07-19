@@ -3,6 +3,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { IconBadge } from "@/components/ui/icon-badge";
 import { EyebrowLabel } from "@/components/ui/eyebrow-label";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { DecorativeBlob } from "@/components/ui/decorative-blob";
 
 type PageIntroProps = {
   icon: StaticImageData;
@@ -25,11 +26,22 @@ export function PageIntro({
     <section
       className={
         size === "full"
-          ? "px-6 py-24 text-center md:py-32"
-          : "px-6 py-16 text-center md:py-20"
+          ? "bg-cream relative overflow-hidden px-6 py-24 text-center md:py-32"
+          : "bg-cream relative overflow-hidden px-6 py-16 text-center md:py-20"
       }
     >
-      <FadeIn className="mx-auto max-w-2xl">
+      <DecorativeBlob
+        color="#f0c368"
+        size={360}
+        className="top-[-15%] left-[-8%]"
+      />
+      <DecorativeBlob
+        color="#c9b8da"
+        size={360}
+        className="top-[-10%] right-[-8%]"
+      />
+
+      <FadeIn className="relative mx-auto max-w-2xl">
         <div className="flex justify-center">
           <IconBadge bg={iconBg} size="lg">
             <Image

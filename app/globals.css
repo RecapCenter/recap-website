@@ -8,10 +8,10 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-display: var(--font-display);
   --font-script: var(--font-script);
   --font-serif: var(--font-serif);
-  --font-heading: var(--font-display);
+  --font-heading: var(--font-serif);
+  --font-body: var(--font-sans);
 
   /* RECAP palette */
   --color-cream: var(--cream);
@@ -101,10 +101,10 @@
 }
 
 :root {
-  /* RECAP palette (Home / About) */
-  --cream: #fdf8f0;
-  --ink: #17140f;
-  --body-gray: #5b5b54;
+  /* RECAP palette (Home / About) — aligned to the Contact page's warm tones */
+  --cream: #fbf4ec;
+  --ink: #2a2019;
+  --body-gray: #8b7e70;
   --accent-red: #d9432e;
   --accent-orange: #e8622c;
   --highlight-lime: #c3e86b;
@@ -181,10 +181,10 @@
   @apply text-ink text-base leading-relaxed;
 }
 .wp-content h2 {
-  @apply font-display text-ink mt-10 mb-4 text-2xl font-bold;
+  @apply font-serif text-ink mt-10 mb-4 text-2xl;
 }
 .wp-content h3 {
-  @apply font-display text-ink mt-8 mb-3 text-xl font-bold;
+  @apply font-serif text-ink mt-8 mb-3 text-xl;
 }
 .wp-content p {
   @apply text-body-gray mb-5;

@@ -19,7 +19,7 @@ export function ArchImageCard({ image, title, subtext }: ArchImageCardProps) {
           className="scale-125 object-cover"
         />
       </div>
-      <h3 className="font-display text-ink mt-5 text-2xl font-bold">{title}</h3>
+      <h3 className="font-serif text-ink mt-5 text-2xl">{title}</h3>
       <p className="text-body-gray mt-1 text-sm">{subtext}</p>
     </HoverLift>
   );

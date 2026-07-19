@@ -45,7 +45,7 @@ const VALUES = [
 
 export function ValuesSection() {
   return (
-    <section className="bg-white px-6 py-20 md:py-24">
+    <section className="bg-cream px-6 py-20 md:py-24">
       <div className="mx-auto max-w-[1200px]">
         <FadeIn className="text-center">
           <span className="font-script text-ink/70 text-xl">

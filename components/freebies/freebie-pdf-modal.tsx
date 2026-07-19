@@ -18,7 +18,7 @@ export function FreebiePdfModal({ freebie, onOpenChange }: FreebiePdfModalProps)
           {freebie && (
             <div className="relative flex h-[85vh] w-full max-w-3xl flex-col gap-4">
               <div className="flex items-center justify-between gap-4">
-                <h3 className="font-display text-lg font-bold text-white">
+                <h3 className="font-serif text-lg text-white">
                   {freebie.title}
                 </h3>
                 <div className="flex items-center gap-2">

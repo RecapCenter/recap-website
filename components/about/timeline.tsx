@@ -27,13 +27,6 @@ const MILESTONES = [
   },
 ];
 
-const OFFSETS = [
-  "translate-y-0",
-  "translate-y-3",
-  "-translate-y-2",
-  "translate-y-2",
-];
-
 export function Timeline() {
   return (
     <section className="bg-pastel-lavender px-6 py-20 md:py-24">
@@ -47,33 +40,18 @@ export function Timeline() {
           </SectionHeading>
         </FadeIn>
 
-        {/* Desktop: horizontal with a wavy dashed connector */}
+        {/* Desktop: horizontal */}
         <div className="relative mt-16 hidden md:grid md:grid-cols-4 md:gap-6">
-          <svg
-            viewBox="0 0 800 40"
-            preserveAspectRatio="none"
-            className="text-accent-red pointer-events-none absolute top-5 left-0 h-8 w-full"
-            aria-hidden
-          >
-            <path
-              d="M40 30 C160 5, 240 5, 360 20 S560 35, 680 8 S760 5, 780 15"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeDasharray="8 7"
-              strokeLinecap="round"
-            />
-          </svg>
           {MILESTONES.map((m, i) => (
             <FadeIn
               key={m.year}
               delay={i * 0.1}
-              className={`flex flex-col items-center text-center ${OFFSETS[i]}`}
+              className="flex flex-col items-center text-center"
             >
-              <span className="border-accent-red font-display text-ink flex size-14 items-center justify-center rounded-full border-2 bg-white text-sm font-bold">
+              <span className="border-accent-red font-serif text-ink flex size-14 items-center justify-center rounded-full border-2 bg-white text-sm font-bold">
                 {m.year}
               </span>
-              <h3 className="font-display text-ink mt-4 text-lg font-bold">
+              <h3 className="font-serif text-ink mt-4 text-lg">
                 {m.title}
               </h3>
               <p className="text-body-gray mt-1 max-w-[220px] text-sm">
@@ -91,10 +69,10 @@ export function Timeline() {
               delay={i * 0.1}
               className="flex flex-col items-center text-center"
             >
-              <span className="border-accent-red font-display text-ink flex size-14 items-center justify-center rounded-full border-2 bg-white text-sm font-bold">
+              <span className="border-accent-red font-serif text-ink flex size-14 items-center justify-center rounded-full border-2 bg-white text-sm font-bold">
                 {m.year}
               </span>
-              <h3 className="font-display text-ink mt-4 text-lg font-bold">
+              <h3 className="font-serif text-ink mt-4 text-lg">
                 {m.title}
               </h3>
               <p className="text-body-gray mt-1 max-w-xs text-sm">

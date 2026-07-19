@@ -38,7 +38,7 @@ export function ThinkingOutLoudCard({
         </span>
         <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
           <span
-            className="font-display block text-lg leading-tight font-bold text-white"
+            className="font-serif block text-lg leading-tight text-white"
             dangerouslySetInnerHTML={{ __html: title }}
           />
         </span>

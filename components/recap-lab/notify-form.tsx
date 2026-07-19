@@ -17,7 +17,7 @@ export function NotifyForm() {
   }
 
   return (
-    <section className="px-6 pb-20 md:pb-24">
+    <section className="px-6 pb-12 md:pb-16">
       <FadeIn className="mx-auto max-w-xl text-center">
         <SectionHeading as="h3">Want early access?</SectionHeading>
         <p className="text-body-gray mx-auto mt-3 max-w-md text-sm leading-relaxed">

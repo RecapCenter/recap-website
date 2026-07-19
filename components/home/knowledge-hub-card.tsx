@@ -15,7 +15,7 @@ export function KnowledgeHubCard({ className }: { className?: string }) {
         style={{ backgroundColor: CRIMSON }}
       >
         <span />
-        <span className="font-display text-2xl leading-tight font-bold tracking-tight text-white uppercase">
+        <span className="font-serif text-2xl leading-tight font-bold tracking-tight text-white uppercase">
           Knowledge Hub
         </span>
         <span className="mt-6 flex size-12 items-center justify-center rounded-full border-2 border-white">

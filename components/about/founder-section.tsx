@@ -24,7 +24,7 @@ export function FounderSection() {
           <span className="font-script text-ink/70 text-xl">
             meet the founder
           </span>
-          <SectionHeading as="h2" className="mt-3">
+          <SectionHeading as="h3" className="mt-3">
             The one behind the warm kitchen table.
           </SectionHeading>
         </FadeIn>
@@ -32,12 +32,12 @@ export function FounderSection() {
         <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,340px)_1fr] md:gap-16">
           <FadeIn
             delay={0.1}
-            className="relative mx-auto w-full max-w-[280px] md:mx-0"
+            className="relative mx-auto w-full max-w-[280px] self-start md:mx-0"
           >
             <div className="relative aspect-[280/335] w-full overflow-hidden rounded-t-full border-4 border-white shadow-[0_8px_30px_rgba(23,20,15,0.1)]">
               <Image
                 src={founderPhoto}
-                alt="Dr. Reya Rao"
+                alt="Riya Kapoor"
                 fill
                 sizes="(min-width: 768px) 280px, 70vw"
                 className="object-cover"
@@ -50,8 +50,8 @@ export function FounderSection() {
 
           <FadeIn delay={0.2} className="flex flex-col gap-5">
             <div>
-              <h3 className="font-display text-ink text-3xl font-bold">
-                Dr. Reya Rao
+              <h3 className="font-serif text-ink text-3xl">
+                Riya Kapoor
               </h3>
               <p className="text-body-gray mt-1 text-sm">
                 Founder, Clinical Psychologist

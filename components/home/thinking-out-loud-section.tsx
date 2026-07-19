@@ -47,7 +47,7 @@ function IntroTextTile({ className }: { className?: string }) {
         />
       </IconBadge>
       <div>
-        <h3 className="font-display text-ink text-2xl font-bold">
+        <h3 className="font-serif text-ink text-2xl">
           Thinking Out Loud
         </h3>
         <p className="text-body-gray mt-2 text-sm leading-relaxed">
@@ -82,7 +82,7 @@ export async function ThinkingOutLoudSection() {
   });
 
   return (
-    <section className="bg-white px-6 py-20 md:py-24">
+    <section className="bg-cream px-6 py-20 md:py-24">
       <FadeIn>
         {/* Mobile — single stacked column: intro, up to 4 featured posts, Knowledge Hub */}
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 md:hidden">

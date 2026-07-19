@@ -41,7 +41,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         className="flex w-full items-center justify-between gap-4 text-left"
         aria-expanded={open}
       >
-        <span className="font-display text-ink text-lg font-bold md:text-xl">
+        <span className="font-serif text-ink text-lg md:text-xl">
           {question}
         </span>
         <ChevronDown
@@ -69,7 +69,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export function ServicesFAQSection() {
   return (
-    <section className="bg-white px-6 py-20 md:py-24">
+    <section className="bg-cream px-6 py-20 md:py-24">
       <div className="mx-auto max-w-3xl">
         <FadeIn className="text-center">
           <EyebrowLabel withDottedLines>before you write</EyebrowLabel>

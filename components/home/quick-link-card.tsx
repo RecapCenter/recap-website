@@ -41,7 +41,7 @@ export function QuickLinkCard({
           />
         </span>
         <span
-          className="font-display text-xl leading-tight font-bold"
+          className="font-serif text-xl leading-tight font-bold"
           style={{ color: labelColor }}
         >
           {label}

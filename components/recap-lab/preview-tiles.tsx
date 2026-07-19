@@ -28,7 +28,7 @@ const TILES = [
 
 export function PreviewTiles() {
   return (
-    <section className="px-6 pb-20 md:pb-24">
+    <section className="px-6 pt-12 pb-12 md:pt-16 md:pb-16">
       <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
         {TILES.map((tile) => (
           <ValueCard key={tile.title} {...tile} />

@@ -38,7 +38,7 @@ export function CTABanner({
         <div className="relative flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
           <div className="max-w-xl">
             <span className="font-script text-ink/70 text-lg">{eyebrow}</span>
-            <SectionHeading as="h2" className="mt-2 text-2xl md:text-4xl">
+            <SectionHeading as="h2" className="mt-2">
               {heading}
             </SectionHeading>
             <p className="text-ink/70 mt-3 text-base">{subtext}</p>

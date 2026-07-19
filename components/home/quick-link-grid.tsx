@@ -63,7 +63,7 @@ const CARDS = [
 
 export function QuickLinkGrid() {
   return (
-    <section className="bg-white px-6 py-20 md:py-24">
+    <section className="bg-cream px-6 py-20 md:py-24">
       <FadeIn>
         <div className="mx-auto grid max-w-[1200px] grid-flow-row-dense auto-rows-[13rem] grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
           {CARDS.map((card) => (

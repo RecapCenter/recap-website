@@ -4,7 +4,7 @@ import { GlobePolaroids } from "./globe-polaroids";
 
 export function GlobeSection() {
   return (
-    <section className="bg-white px-6 py-20 md:py-24">
+    <section className="bg-cream px-6 py-20 md:py-24">
       <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-10 md:flex-row md:items-start md:justify-between md:gap-6">
         <FadeIn className="max-w-sm text-center md:text-left">
           <span className="font-script text-ink/70 text-lg">

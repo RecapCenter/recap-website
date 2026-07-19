@@ -4,23 +4,20 @@ type SectionHeadingProps = {
   as?: "h1" | "h2" | "h3";
   children: React.ReactNode;
   className?: string;
-  font?: "display" | "serif";
 };
 
 export function SectionHeading({
   as = "h2",
   children,
   className,
-  font = "display",
 }: SectionHeadingProps) {
   const Tag = as;
   return (
     <Tag
       className={cn(
-        "text-ink leading-[1.1] font-bold",
-        font === "display" ? "font-display" : "font-serif",
-        as === "h1" && "text-5xl md:text-7xl",
-        as === "h2" && "text-3xl md:text-5xl",
+        "text-ink font-serif leading-tight",
+        as === "h1" && "text-3xl md:text-5xl",
+        as === "h2" && "text-3xl md:text-4xl",
         as === "h3" && "text-2xl md:text-3xl",
         className,
       )}

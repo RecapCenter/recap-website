@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Baloo_2, Caveat, Playfair_Display } from "next/font/google";
+import { Inter, Caveat, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import "./globals.css";
@@ -24,12 +24,6 @@ const siteUrl = resolveSiteUrl();
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
-});
-
-const baloo2 = Baloo_2({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
 });
 
 const caveat = Caveat({
@@ -84,7 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${baloo2.variable} ${caveat.variable} ${playfair.variable} antialiased`}
+        className={`${inter.variable} ${caveat.variable} ${playfair.variable} antialiased`}
       >
         <Navbar />
         {children}

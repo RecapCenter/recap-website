@@ -41,7 +41,7 @@ export function FreebieCard({
             </IconBadge>
           </div>
           <div className="flex flex-1 flex-col gap-3 p-6">
-            <h3 className="font-display text-ink text-lg font-bold">{title}</h3>
+            <h3 className="font-serif text-ink text-lg">{title}</h3>
             <p className="text-body-gray line-clamp-3 flex-1 text-sm leading-relaxed">
               {description}
             </p>

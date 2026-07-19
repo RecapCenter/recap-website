@@ -44,7 +44,7 @@ const SERVICES = [
 
 export function ServicesDetailSection() {
   return (
-    <section className="bg-white px-6 py-20 md:py-24">
+    <section className="bg-cream px-6 py-20 md:py-24">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-20 md:gap-28">
         {SERVICES.map((service, i) => (
           <ServiceRow key={service.title} {...service} reverse={i % 2 === 1} />

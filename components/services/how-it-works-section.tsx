@@ -40,10 +40,10 @@ export function HowItWorksSection() {
           {STEPS.map((step, i) => (
             <FadeIn key={step.title} delay={i * 0.08}>
               <div className="flex h-full flex-col gap-3 rounded-3xl bg-white p-7">
-                <span className="font-display text-accent-orange text-3xl font-bold">
+                <span className="font-serif text-accent-orange text-3xl font-bold">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-display text-ink text-lg font-bold">
+                <h3 className="font-serif text-ink text-lg">
                   {step.title}
                 </h3>
                 <p className="text-body-gray text-sm leading-relaxed">

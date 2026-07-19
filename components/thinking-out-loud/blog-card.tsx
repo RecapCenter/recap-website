@@ -45,7 +45,7 @@ export function BlogCard({
           <div className="flex flex-1 flex-col gap-3 p-6">
             <h3
               className={cn(
-                "font-display text-ink leading-tight font-bold",
+                "font-serif text-ink leading-tight",
                 featured ? "text-2xl" : "text-xl",
               )}
               dangerouslySetInnerHTML={{ __html: title }}
