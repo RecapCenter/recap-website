@@ -31,7 +31,7 @@ Why a subfolder instead of one big file: must-use plugins don't autoload subdire
 | `freebie` | `freebies` | Downloadable PDFs for `/freebies` | `freebie_category` |
 | `recommendation` | `recommendations` | Items for `/recap-recommends` | `recommendation_category` |
 | `lab_resource` | `lab-resources` | Not consumed yet — `/recap-lab` is still a static "coming soon" page | — |
-| `review` | `reviews` | Client testimonials for the homepage's "Straight from clients" section | — |
+| `review` | `reviews` | Client testimonials — merged with Google reviews for the homepage marquee and `/reviews` page | — |
 
 Native WordPress **Posts** need no changes — they already power `/thinking-out-loud` as-is and aren't touched by this plugin.
 
@@ -96,9 +96,11 @@ The homepage's "Thinking Out Loud" preview simply shows the most recently publis
 
 The homepage itself (`components/home/thinking-out-loud-section.tsx`) shows at most 6 latest posts, image + title only (no excerpt/category/date/author — see the component for the full card treatment), each linking straight to its `/thinking-out-loud/[slug]` detail page. It's the same underlying content as the full blog listing page, just capped to the newest 6.
 
-## Homepage reviews
+## Reviews (homepage + /reviews page)
 
-The homepage's "Straight from clients" section shows the 3 most recently published Reviews, newest first (`getReviews()` in `lib/wordpress/reviews.ts`, same latest-first pattern as Homepage posts above — no curation field here either). If there are zero published Reviews, the section doesn't render at all rather than showing an empty heading.
+Reviews render from a hybrid list assembled server-side in `lib/reviews.ts`'s `getCombinedReviews()`: CMS Reviews (`getWordPressReviews()` in `lib/wordpress/reviews.ts`, newest first — no curation field, same latest-first pattern as Homepage posts above) merged with Google Business reviews (`lib/google-reviews.ts` — rating ≥ 3 only, 6-hour cache, needs `GOOGLE_PLACES_API_KEY`/`GOOGLE_PLACE_ID` in the frontend env). Both sources normalize to the same `{ name, rating, quote }` shape, so the frontend never knows or shows which source a review came from; the merged list sorts by rating descending. Either source failing (including Google simply not being configured) falls back to the other.
+
+Two surfaces consume it: the homepage's "Straight from clients" marquee shows the top 10 (`getCombinedReviews(10)`, section renders nothing when the list is empty), and the `/reviews` page shows the full list in a masonry grid (with an empty state when there are none).
 
 ## REST endpoints
 
@@ -108,7 +110,7 @@ The homepage's "Straight from clients" section shows the 3 most recently publish
 | `GET /wp-json/wp/v2/freebies` | `?_embed` for `freebie_category` term names via `wp:term` |
 | `GET /wp-json/wp/v2/recommendations` | `?_embed` for `recommendation_category` term names via `wp:term` |
 | `GET /wp-json/wp/v2/lab-resources` | Not yet called by the frontend |
-| `GET /wp-json/wp/v2/reviews` | Powers the homepage's "Straight from clients" section (see "Homepage reviews" above) |
+| `GET /wp-json/wp/v2/reviews` | CMS half of the hybrid reviews list (see "Reviews" above) |
 | `GET /wp-json/wp/v2/posts`, `/categories` | Native — unchanged; also powers the homepage's latest-posts preview (see "Homepage posts" above) |
 | `GET /wp-json/wp/v2/gallery_category`, `/freebie_category`, `/recommendation_category` | Taxonomy term lists |
 | `POST /api/revalidate` *(on the Next.js side)* | Webhook target — see "On-demand revalidation" below |

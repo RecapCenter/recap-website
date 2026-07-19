@@ -2,10 +2,10 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Marquee } from "@/components/ui/marquee";
 import { TestimonialCard } from "./testimonial-card";
-import { getReviews } from "@/lib/wordpress/reviews";
+import { getCombinedReviews } from "@/lib/reviews";
 
 export async function TestimonialsSection() {
-  const reviews = await getReviews(10);
+  const reviews = await getCombinedReviews(10);
   if (reviews.length === 0) return null;
 
   const midpoint = Math.ceil(reviews.length / 2);

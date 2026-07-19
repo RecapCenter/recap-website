@@ -1,25 +1,23 @@
 import { wpFetch } from "./client";
 import { collectionTag } from "./revalidation";
 import type { WPReviewRaw } from "./types";
-
-export type Review = {
-  id: number;
-  name: string;
-  rating: number;
-  quote: string;
-};
+import type { Review } from "@/lib/reviews";
 
 function mapReview(raw: WPReviewRaw): Review {
   return {
-    id: raw.id,
+    id: `wp-${raw.id}`,
     name: raw.title.rendered,
     rating: raw.acf.rating,
     quote: raw.acf.quote,
   };
 }
 
-/** Latest reviews, newest first — used by the homepage's "Straight from clients" section. */
-export async function getReviews(limit = 3): Promise<Review[]> {
+/**
+ * CMS testimonials, newest first, already in the shared normalized Review
+ * shape. One source of the hybrid list assembled by lib/reviews.ts's
+ * getCombinedReviews() — consumers should call that, not this directly.
+ */
+export async function getWordPressReviews(limit = 100): Promise<Review[]> {
   try {
     const { data } = await wpFetch<WPReviewRaw[]>("/reviews", {
       params: { per_page: limit },

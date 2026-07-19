@@ -2,9 +2,13 @@ import { Star } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import type { Review } from "@/lib/reviews";
 
-export function TestimonialCard({ quote, name, rating }: Review) {
+/**
+ * Masonry-grid review card: fills its column's width and grows naturally
+ * with the review text — the full review is always shown, no truncation.
+ */
+export function ReviewCard({ quote, name, rating }: Review) {
   return (
-    <Card className="w-72 shrink-0 p-5 sm:w-80">
+    <Card className="p-5">
       <div className="text-ink flex gap-1">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star
@@ -13,9 +17,7 @@ export function TestimonialCard({ quote, name, rating }: Review) {
           />
         ))}
       </div>
-      <p className="text-ink/90 mt-3 line-clamp-4 text-sm leading-relaxed">
-        {quote}
-      </p>
+      <p className="text-ink/90 mt-3 text-sm leading-relaxed">{quote}</p>
       <span className="text-ink mt-4 block text-sm font-semibold">
         {name}
       </span>
