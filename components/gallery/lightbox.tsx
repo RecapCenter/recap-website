@@ -38,7 +38,7 @@ export function Lightbox({ items, openIndex, onOpenChange }: LightboxProps) {
         >
           {item && (
             <div className="relative flex max-h-[85vh] w-full max-w-4xl flex-col items-center gap-4">
-              <DialogClose className="absolute top-0 right-0 flex size-10 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/30">
+              <DialogClose className="absolute top-0 right-0 z-10 flex size-10 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/30">
                 <X className="size-5" />
                 <span className="sr-only">Close</span>
               </DialogClose>
@@ -46,7 +46,7 @@ export function Lightbox({ items, openIndex, onOpenChange }: LightboxProps) {
               <button
                 type="button"
                 onClick={() => go(-1)}
-                className="absolute top-1/2 left-0 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/30 md:-left-14"
+                className="absolute top-1/2 left-0 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/30 md:-left-14"
               >
                 <ChevronLeft className="size-5" />
                 <span className="sr-only">Previous</span>
@@ -54,7 +54,7 @@ export function Lightbox({ items, openIndex, onOpenChange }: LightboxProps) {
               <button
                 type="button"
                 onClick={() => go(1)}
-                className="absolute top-1/2 right-0 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/30 md:-right-14"
+                className="absolute top-1/2 right-0 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/30 md:-right-14"
               >
                 <ChevronRight className="size-5" />
                 <span className="sr-only">Next</span>
