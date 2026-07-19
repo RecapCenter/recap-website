@@ -1,6 +1,8 @@
+import { ArrowRight } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Marquee } from "@/components/ui/marquee";
+import { Button } from "@/components/ui/button";
 import { TestimonialCard } from "./testimonial-card";
 import { getCombinedReviews } from "@/lib/reviews";
 
@@ -55,6 +57,12 @@ export async function TestimonialsSection() {
             background: "linear-gradient(270deg, #e8f3f6 0%, transparent 100%)",
           }}
         />
+      </FadeIn>
+
+      <FadeIn delay={0.2} className="mt-14 flex justify-center">
+        <Button href="/reviews" icon={<ArrowRight className="size-4" />}>
+          Read all Reviews
+        </Button>
       </FadeIn>
     </section>
   );

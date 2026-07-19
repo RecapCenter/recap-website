@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: "Blog", href: "/thinking-out-loud" },
   { label: "Services", href: "/services" },
   { label: "Resources", href: "/freebies" },
+  { label: "Reviews", href: "/reviews" },
   { label: "Contact", href: "/contact" },
 ];
 
