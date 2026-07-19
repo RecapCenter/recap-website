@@ -29,6 +29,8 @@ const HALF = 3;
 const DEFAULT_AUTO_ROTATE_INTERVAL = 2800;
 const WHEEL_COOLDOWN_MS = 600;
 const WHEEL_THRESHOLD = 12;
+const TOUCH_THRESHOLD_PX = 30;
+const DEFAULT_ASPECT = 4 / 5;
 
 const FAN_POSITIONS = [
   { rot: -21, scale: 0.7756, x: -30, y: 7.3, zIndex: 1 },
@@ -214,17 +216,18 @@ export default function SocialCards({
     let leaveTimer: ReturnType<typeof setTimeout> | null = null;
     const centerSlot = visibleEntries.length >> 1;
 
-    /**
-     * `gentle` skips the neighbor-push spread used for mouse hover: it only
-     * lifts/scales the focused card in place. The full push reads well for
-     * a transient, user-driven hover, but repeatedly pushing neighbors apart
-     * on every auto-rotate tick reads as a jarring gap opening and closing —
-     * not the "calm, premium" motion auto-rotate calls for.
-     */
-    const updateHoverLayout = (hoveredSlot: number | null, gentle = false) => {
+    const measureFit = () => {
       const liveCardHalfWidthPx = (cardElements[0].getBoundingClientRect().width || 176) / 2;
-      const mult = getFitMultiplier(container.getBoundingClientRect().width, liveCardHalfWidthPx);
-      const hM = getHeightMultiplier(window.innerWidth);
+      return {
+        mult: getFitMultiplier(container.getBoundingClientRect().width, liveCardHalfWidthPx),
+        hM: getHeightMultiplier(window.innerWidth),
+      };
+    };
+
+    // Mouse-hover emphasis: lifts the hovered card and pushes its neighbors
+    // apart. This is the original interactive-mode behavior — unchanged.
+    const updateHoverLayout = (hoveredSlot: number | null) => {
+      const { mult, hM } = measureFit();
 
       visibleEntries.forEach(({ el, slot }) => {
         const base = config(slot);
@@ -241,7 +244,7 @@ export default function SocialCards({
           if (slot === hoveredSlot) {
             targetY -= 2.5 * hM;
             targetScale *= 1.08;
-          } else if (!gentle) {
+          } else {
             const normalized = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0;
             const pushStrength = 8 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance));
 
@@ -268,6 +271,28 @@ export default function SocialCards({
       });
     };
 
+    /**
+     * Auto-rotate / wheel / touch nav: unlike hover, the newly-focused card
+     * should become the *centered* card (like a carousel), not just get
+     * lifted in place wherever it already sits. Reassigns every card's slot
+     * with a circular rotation around `focusIndex`, then animates all of
+     * them straight to their new base fan position — calm, no neighbor-push.
+     */
+    const rotateFocusTo = (focusIndex: number) => {
+      const { mult, hM } = measureFit();
+      const n = visibleEntries.length;
+
+      visibleEntries.forEach(({ el }, i) => {
+        const slot = ((i - focusIndex + centerSlot) % n + n) % n;
+        const { x, y, rot, scale, zIndex } = config(slot);
+        gsap.to(el, {
+          x: `${x * mult}rem`, y: `${y * hM}rem`, rotation: rot, scale,
+          duration: 0.6, ease: "power2.out", overwrite: "auto",
+        });
+        gsap.set(el, { zIndex });
+      });
+    };
+
     const enterHandlers = visibleEntries.map(({ el, slot }) => {
       const handler = () => {
         if (isAnimating.current) return;
@@ -290,60 +315,83 @@ export default function SocialCards({
     const onResize = () => { if (!isAnimating.current) updateHoverLayout(activeSlot); };
     window.addEventListener("resize", onResize);
 
-    // --- Auto-rotate ---------------------------------------------------
-    // For small card counts (no pagination), "next" means shifting which
-    // slot is emphasized, reusing the exact hover-focus GSAP animation
-    // above. For large sets (pagination), "next" brings a new card into
-    // view via the existing cycle() mechanism.
+    // --- Auto-rotate / wheel / touch: shared "focused card index" ------
+    // For small card counts (no pagination), advancing means re-centering
+    // on the next card via rotateFocusTo. For large sets (pagination),
+    // advancing brings a new card into view via the existing cycle().
+    let focusedIndex = centerIndex % Math.max(1, visibleEntries.length);
+    const advanceFocus = (delta: number) => {
+      if (needsPagination) {
+        cycle(delta > 0 ? "right" : "left");
+        return;
+      }
+      if (visibleEntries.length <= 1) return;
+      focusedIndex = (focusedIndex + delta + visibleEntries.length) % visibleEntries.length;
+      activeSlot = null;
+      if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
+      rotateFocusTo(focusedIndex);
+    };
+
     let autoRotateTimer: ReturnType<typeof setInterval> | null = null;
-    let focusedSlot = centerSlot;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (autoRotate && !prefersReducedMotion && visibleEntries.length > 1) {
       autoRotateTimer = setInterval(() => {
         if (pausedByHoverRef.current || document.hidden || isAnimating.current) return;
-        if (needsPagination) {
-          cycle("right");
-        } else {
-          focusedSlot = (focusedSlot + 1) % visibleEntries.length;
-          activeSlot = focusedSlot;
-          updateHoverLayout(focusedSlot, true);
-        }
+        advanceFocus(1);
       }, autoRotateInterval);
     }
 
-    // --- Wheel navigation ------------------------------------------------
-    let lastWheelAt = 0;
+    // --- Wheel / touch navigation ---------------------------------------
+    let lastNavAt = 0;
     const onWheel = (e: WheelEvent) => {
       if (!enableWheelNavigation) return;
       if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
       const now = Date.now();
-      if (now - lastWheelAt < WHEEL_COOLDOWN_MS) {
-        e.preventDefault();
-        return;
-      }
-      lastWheelAt = now;
       e.preventDefault();
-
-      if (needsPagination) {
-        cycle(e.deltaY > 0 ? "right" : "left");
-      } else if (visibleEntries.length > 1) {
-        focusedSlot =
-          (focusedSlot + (e.deltaY > 0 ? 1 : -1) + visibleEntries.length) % visibleEntries.length;
-        activeSlot = focusedSlot;
-        if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
-        updateHoverLayout(focusedSlot, true);
-      }
+      if (now - lastNavAt < WHEEL_COOLDOWN_MS) return;
+      lastNavAt = now;
+      advanceFocus(e.deltaY > 0 ? 1 : -1);
     };
     if (enableWheelNavigation) {
       container.addEventListener("wheel", onWheel, { passive: false });
+    }
+
+    let touchStartY = 0;
+    let touchActive = false;
+    const onTouchStart = (e: TouchEvent) => {
+      if (!enableWheelNavigation || e.touches.length !== 1) return;
+      touchStartY = e.touches[0].clientY;
+      touchActive = true;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!enableWheelNavigation || !touchActive) return;
+      const deltaY = touchStartY - e.touches[0].clientY;
+      if (Math.abs(deltaY) < TOUCH_THRESHOLD_PX) return;
+      e.preventDefault();
+      const now = Date.now();
+      if (now - lastNavAt < WHEEL_COOLDOWN_MS) return;
+      lastNavAt = now;
+      advanceFocus(deltaY > 0 ? 1 : -1);
+      touchStartY = e.touches[0].clientY;
+    };
+    const onTouchEnd = () => { touchActive = false; };
+    if (enableWheelNavigation) {
+      container.addEventListener("touchstart", onTouchStart, { passive: true });
+      container.addEventListener("touchmove", onTouchMove, { passive: false });
+      container.addEventListener("touchend", onTouchEnd, { passive: true });
     }
 
     return () => {
       enterHandlers.forEach(({ el, handler }) => el.removeEventListener("mouseenter", handler));
       container.removeEventListener("mouseleave", onMouseLeave);
       window.removeEventListener("resize", onResize);
-      if (enableWheelNavigation) container.removeEventListener("wheel", onWheel);
+      if (enableWheelNavigation) {
+        container.removeEventListener("wheel", onWheel);
+        container.removeEventListener("touchstart", onTouchStart);
+        container.removeEventListener("touchmove", onTouchMove);
+        container.removeEventListener("touchend", onTouchEnd);
+      }
       if (leaveTimer) clearTimeout(leaveTimer);
       if (autoRotateTimer) clearInterval(autoRotateTimer);
     };
@@ -365,15 +413,19 @@ export default function SocialCards({
           className="fan-layout flex relative justify-center items-center w-full max-w-[80rem] h-[22rem] min-[480px]:h-[26rem] min-[640px]:h-[28rem] min-[768px]:h-[34rem] min-[1024px]:h-[38rem]"
         >
           {cards.map((card, index) => {
+            const aspect = card.width && card.height ? card.width / card.height : DEFAULT_ASPECT;
             const image = (
-              <div className="relative w-44 h-56 min-[640px]:w-48 min-[640px]:h-60 min-[1024px]:w-52 min-[1024px]:h-64 overflow-hidden rounded-2xl shadow-[0_8px_30px_rgba(23,20,15,0.15)]">
+              <div
+                className="relative w-full overflow-hidden rounded-2xl shadow-[0_8px_30px_rgba(23,20,15,0.15)]"
+                style={{ aspectRatio: aspect }}
+              >
                 <Image
                   src={card.imgUrl}
                   fill
                   loading="lazy"
                   sizes="(min-width: 1024px) 13rem, (min-width: 640px) 12rem, 11rem"
                   alt={card.alt || `Gallery photo ${index + 1}`}
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
             );
@@ -383,14 +435,14 @@ export default function SocialCards({
                 href={card.linkUrl}
                 target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
                 rel="noopener noreferrer"
-                className="fan-card absolute top-1/2 left-1/2 -ml-22 -mt-28 block cursor-pointer min-[640px]:-ml-24 min-[640px]:-mt-30 min-[1024px]:-ml-26 min-[1024px]:-mt-32"
+                className="fan-card absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 block cursor-pointer w-[clamp(7.5rem,16vw,13rem)]"
               >
                 {image}
               </a>
             ) : (
               <div
                 key={index}
-                className="fan-card absolute top-1/2 left-1/2 -ml-22 -mt-28 min-[640px]:-ml-24 min-[640px]:-mt-30 min-[1024px]:-ml-26 min-[1024px]:-mt-32"
+                className="fan-card absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[clamp(7.5rem,16vw,13rem)]"
               >
                 {image}
               </div>

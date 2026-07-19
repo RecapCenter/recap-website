@@ -18,7 +18,6 @@ export async function GallerySection() {
   const cards = photos.map((photo) => ({
     imgUrl: photo.imageUrl,
     alt: photo.title,
-    linkUrl: "/gallery",
     width: photo.width,
     height: photo.height,
   }));
