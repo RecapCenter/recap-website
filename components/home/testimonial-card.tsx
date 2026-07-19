@@ -1,29 +1,19 @@
-import Image, { type StaticImageData } from "next/image";
 import { Star } from "lucide-react";
+import type { Review } from "@/lib/wordpress/reviews";
 
-type TestimonialCardProps = {
-  quote: string;
-  name: string;
-  avatar: StaticImageData;
-};
-
-export function TestimonialCard({ quote, name, avatar }: TestimonialCardProps) {
+export function TestimonialCard({ quote, name, rating }: Review) {
   return (
     <div>
       <div className="text-ink flex gap-1">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} className="fill-ink size-4" />
+          <Star
+            key={i}
+            className={i < rating ? "fill-ink size-4" : "fill-none size-4"}
+          />
         ))}
       </div>
       <p className="text-ink/90 mt-4 text-base leading-relaxed">{quote}</p>
-      <div className="mt-5 flex items-center gap-3">
-        <Image
-          src={avatar}
-          alt={name}
-          className="size-12 rounded-full object-cover"
-        />
-        <span className="text-ink font-semibold">{name}</span>
-      </div>
+      <span className="text-ink mt-5 block font-semibold">{name}</span>
     </div>
   );
 }

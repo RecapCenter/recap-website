@@ -4,7 +4,22 @@ import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const DEFAULT_SITE_URL = "http://localhost:3000";
+
+function resolveSiteUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL;
+  if (!raw) return DEFAULT_SITE_URL;
+  try {
+    return new URL(raw).toString();
+  } catch {
+    console.warn(
+      `NEXT_PUBLIC_SITE_URL is not a valid URL — falling back to ${DEFAULT_SITE_URL}`,
+    );
+    return DEFAULT_SITE_URL;
+  }
+}
+
+const siteUrl = resolveSiteUrl();
 
 const inter = Inter({
   variable: "--font-sans",

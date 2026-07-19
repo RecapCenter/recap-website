@@ -104,3 +104,14 @@ export type WPLabResourceRaw = {
     description?: string;
   };
 };
+
+export type WPReviewRaw = {
+  id: number;
+  slug: string;
+  title: WPRendered;
+  date: string;
+  acf: {
+    rating: number;
+    quote: string;
+  };
+};

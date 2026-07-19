@@ -4,10 +4,10 @@
  *
  * Only "Posts" (Thinking Out Loud) is native to WordPress and is
  * intentionally left untouched by this plugin. Gallery, Freebies, Recap
- * Recommends, and Recap Lab each get their own post type here so editors
- * get a dedicated wp-admin screen carrying only the fields relevant to
- * that content type (see helpers.php's recap_cpt_defaults() and
- * acf-fields.php for where those fields actually come from).
+ * Recommends, Recap Lab, and Reviews each get their own post type here so
+ * editors get a dedicated wp-admin screen carrying only the fields
+ * relevant to that content type (see helpers.php's recap_cpt_defaults()
+ * and acf-fields.php for where those fields actually come from).
  *
  * @package Recap_Headless_Bridge
  */
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers the four Recap-managed post types.
+ * Registers the five Recap-managed post types.
  *
  * @return void
  */
@@ -93,6 +93,24 @@ function recap_register_post_types(): void {
 				'rest_base'    => 'lab-resources',
 				'menu_icon'    => 'dashicons-lightbulb',
 				'menu_position' => 23,
+			)
+		)
+	);
+
+	register_post_type(
+		'review',
+		array_merge(
+			recap_cpt_defaults(),
+			array(
+				'label'        => 'Reviews',
+				'labels'       => array(
+					'name'         => 'Reviews',
+					'singular_name' => 'Review',
+					'add_new_item' => 'Add New Review',
+				),
+				'rest_base'    => 'reviews',
+				'menu_icon'    => 'dashicons-format-quote',
+				'menu_position' => 24,
 			)
 		)
 	);

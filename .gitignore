@@ -55,3 +55,6 @@ next-env.d.ts
 /tmp/
 /scratchpad/
 *.tmp
+
+.vercel
+.env*

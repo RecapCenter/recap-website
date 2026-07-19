@@ -1,21 +1,12 @@
 import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { TestimonialCard } from "./testimonial-card";
-import avatar1 from "@/assets/images/home/testimonial-avatar-1.png";
-import avatar2 from "@/assets/images/home/testimonial-avatar-2.png";
-import avatar3 from "@/assets/images/home/testimonial-avatar-3.png";
+import { getReviews } from "@/lib/wordpress/reviews";
 
-// TODO: replace placeholder quotes/names (carried over verbatim from source screenshots) with real client testimonials
-const QUOTE =
-  "Boost your product and service's credibility by adding testimonials from your clients. People love recommendations so feedback from others who've tried it is invaluable.";
+export async function TestimonialsSection() {
+  const reviews = await getReviews(3);
+  if (reviews.length === 0) return null;
 
-const TESTIMONIALS = [
-  { quote: QUOTE, name: "Lillian Pratt", avatar: avatar1 },
-  { quote: QUOTE, name: "Nicholas Newark", avatar: avatar2 },
-  { quote: QUOTE, name: "Kyrie Rivera", avatar: avatar3 },
-];
-
-export function TestimonialsSection() {
   return (
     <section
       className="px-6 py-20 md:py-24"
@@ -30,9 +21,9 @@ export function TestimonialsSection() {
           </SectionHeading>
         </FadeIn>
         <div className="mt-14 grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-8">
-          {TESTIMONIALS.map((t, i) => (
-            <FadeIn key={t.name} delay={i * 0.1}>
-              <TestimonialCard {...t} />
+          {reviews.map((review, i) => (
+            <FadeIn key={review.id} delay={i * 0.1}>
+              <TestimonialCard {...review} />
             </FadeIn>
           ))}
         </div>

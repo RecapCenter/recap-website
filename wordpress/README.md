@@ -31,6 +31,7 @@ Why a subfolder instead of one big file: must-use plugins don't autoload subdire
 | `freebie` | `freebies` | Downloadable PDFs for `/freebies` | `freebie_category` |
 | `recommendation` | `recommendations` | Items for `/recap-recommends` | `recommendation_category` |
 | `lab_resource` | `lab-resources` | Not consumed yet — `/recap-lab` is still a static "coming soon" page | — |
+| `review` | `reviews` | Client testimonials for the homepage's "Straight from clients" section | — |
 
 Native WordPress **Posts** need no changes — they already power `/thinking-out-loud` as-is and aren't touched by this plugin.
 
@@ -81,11 +82,23 @@ Every field is registered in PHP (`acf-fields.php`), not clicked together in the
 | `resource_file` | file | Optional |
 | `description` | textarea | Optional |
 
+**Review Details** (`review`)
+| Field | Type | Notes |
+|---|---|---|
+| `rating` | number (1–5) | Required — star rating shown on the card |
+| `quote` | textarea | Required — the review text |
+
+The reviewer's name uses the native Title field, not an ACF field.
+
 ## Homepage posts
 
 The homepage's "Thinking Out Loud" preview simply shows the most recently published Posts, newest first — no editor opt-in step, no manual curation field. `getLatestHomepagePosts()` (`lib/wordpress/posts.ts`) calls the native `GET /wp-json/wp/v2/posts?per_page=<n>` endpoint and relies on WordPress's default `orderby=date&order=desc`.
 
 The homepage itself (`components/home/thinking-out-loud-section.tsx`) shows at most 6 latest posts, image + title only (no excerpt/category/date/author — see the component for the full card treatment), each linking straight to its `/thinking-out-loud/[slug]` detail page. It's the same underlying content as the full blog listing page, just capped to the newest 6.
+
+## Homepage reviews
+
+The homepage's "Straight from clients" section shows the 3 most recently published Reviews, newest first (`getReviews()` in `lib/wordpress/reviews.ts`, same latest-first pattern as Homepage posts above — no curation field here either). If there are zero published Reviews, the section doesn't render at all rather than showing an empty heading.
 
 ## REST endpoints
 
@@ -95,6 +108,7 @@ The homepage itself (`components/home/thinking-out-loud-section.tsx`) shows at m
 | `GET /wp-json/wp/v2/freebies` | `?_embed` for `freebie_category` term names via `wp:term` |
 | `GET /wp-json/wp/v2/recommendations` | `?_embed` for `recommendation_category` term names via `wp:term` |
 | `GET /wp-json/wp/v2/lab-resources` | Not yet called by the frontend |
+| `GET /wp-json/wp/v2/reviews` | Powers the homepage's "Straight from clients" section (see "Homepage reviews" above) |
 | `GET /wp-json/wp/v2/posts`, `/categories` | Native — unchanged; also powers the homepage's latest-posts preview (see "Homepage posts" above) |
 | `GET /wp-json/wp/v2/gallery_category`, `/freebie_category`, `/recommendation_category` | Taxonomy term lists |
 | `POST /api/revalidate` *(on the Next.js side)* | Webhook target — see "On-demand revalidation" below |
@@ -174,7 +188,7 @@ Restart `next dev` (or redeploy) after setting these.
 
 ### 6. Verify it end-to-end
 
-1. In wp-admin, confirm you see **Gallery Items**, **Freebies**, **Recommendations**, and **Lab Resources** in the left sidebar (in that order), each showing only its own ACF fields on the edit screen — no Content Editor, Excerpt, Featured Image, Discussion, Author, Custom Fields, Revisions, or Slug boxes.
+1. In wp-admin, confirm you see **Gallery Items**, **Freebies**, **Recommendations**, **Lab Resources**, and **Reviews** in the left sidebar (in that order), each showing only its own ACF fields on the edit screen — no Content Editor, Excerpt, Featured Image, Discussion, Author, Custom Fields, Revisions, or Slug boxes.
 2. Under **Freebies → Freebie Categories** and **Recommendations → Recommendation Categories**, confirm the starter terms listed above already exist.
 3. Create one item of each type (mark it **Published**, with a category where applicable), then visit e.g. `https://your-wp-site.com/wp-json/wp/v2/gallery` in a browser — you should see JSON with an `acf` key containing your field values and a `category_names` array.
 4. Visit the frontend's `/gallery`, `/freebies`, `/recap-recommends`, and `/thinking-out-loud` — they should now show real content instead of their empty states.

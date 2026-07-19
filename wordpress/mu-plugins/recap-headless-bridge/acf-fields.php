@@ -30,6 +30,7 @@ function recap_register_acf_fields(): void {
 	recap_register_freebie_fields();
 	recap_register_recommendation_fields();
 	recap_register_lab_resource_fields();
+	recap_register_review_fields();
 }
 add_action( 'acf/init', 'recap_register_acf_fields' );
 
@@ -321,6 +322,55 @@ function recap_register_lab_resource_fields(): void {
 					'type'         => 'textarea',
 					'rows'         => 3,
 					'instructions' => 'Optional.',
+				),
+			),
+		)
+	);
+}
+
+/**
+ * Reviews: client testimonials shown in the homepage's "Straight from
+ * clients" section. The reviewer's name uses the native Title field (this
+ * post type's only native support, per recap_cpt_defaults()) rather than a
+ * redundant ACF field.
+ *
+ * @return void
+ */
+function recap_register_review_fields(): void {
+	acf_add_local_field_group(
+		array(
+			'key'          => 'group_recap_review',
+			'title'        => 'Review Details',
+			'show_in_rest' => 1,
+			'location'     => array(
+				array(
+					array(
+						'param'    => 'post_type',
+						'operator' => '==',
+						'value'    => 'review',
+					),
+				),
+			),
+			'fields'       => array(
+				array(
+					'key'          => 'field_recap_review_rating',
+					'name'         => 'rating',
+					'label'        => 'Rating',
+					'type'         => 'number',
+					'min'          => 1,
+					'max'          => 5,
+					'step'         => 1,
+					'default_value' => 5,
+					'instructions' => '1 to 5 stars.',
+					'required'     => 1,
+				),
+				array(
+					'key'          => 'field_recap_review_quote',
+					'name'         => 'quote',
+					'label'        => 'Review',
+					'type'         => 'textarea',
+					'rows'         => 4,
+					'required'     => 1,
 				),
 			),
 		)

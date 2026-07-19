@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string[]
  */
 function recap_revalidate_post_types(): array {
-	return array( 'post', 'gallery_item', 'freebie', 'recommendation', 'lab_resource' );
+	return array( 'post', 'gallery_item', 'freebie', 'recommendation', 'lab_resource', 'review' );
 }
 
 /**
