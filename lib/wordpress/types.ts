@@ -24,6 +24,8 @@ export type WPCategory = {
 export type WPACFImage = {
   url: string;
   alt: string;
+  width?: number;
+  height?: number;
   sizes?: Record<string, string>;
 };
 
