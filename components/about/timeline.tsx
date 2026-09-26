@@ -23,7 +23,7 @@ export function Timeline() {
     <section className="bg-ink text-cream px-6 py-16 md:py-20">
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-12">
         <FadeIn>
-          <span className="font-script text-cream/70 text-xl">
+          <span className="font-script text-cream/70 text-2xl md:text-3xl">
             our little journey
           </span>
           <SectionHeading as="h2" className="text-cream mt-3">

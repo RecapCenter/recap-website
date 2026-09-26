@@ -16,7 +16,7 @@ export function EyebrowLabel({
   const label = (
     <span
       className={cn(
-        "font-script text-xl leading-none",
+        "font-script text-2xl leading-none md:text-3xl",
         color === "orange" ? "text-accent-orange" : "text-ink/70",
         className,
       )}

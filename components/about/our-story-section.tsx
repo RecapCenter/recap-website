@@ -14,7 +14,9 @@ export function OurStorySection() {
     <section className="bg-cream px-6 pt-16 pb-12 md:pt-20 md:pb-16">
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
         <FadeIn>
-          <span className="font-script text-ink/70 text-xl">our story</span>
+          <span className="font-script text-ink/70 text-2xl md:text-3xl">
+            our story
+          </span>
           <p className="text-body-gray mt-3 text-base leading-relaxed">
             Life can feel complicated. A child may struggle to find their words.
             A parent may wonder if they are doing enough. A young person may

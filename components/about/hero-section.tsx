@@ -37,12 +37,14 @@ export function AboutHeroSection() {
             />
           </div>
           <span className="font-script text-ink bg-pastel-yellow-light absolute bottom-4 left-1/2 -translate-x-1/2 -rotate-3 rounded-md px-4 py-1.5 text-xl whitespace-nowrap shadow-sm">
-            meet riya, our founder
+            meet Riya, our founder
           </span>
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <span className="font-script text-ink/70 text-xl">about recap</span>
+          <span className="font-script text-ink/70 text-2xl md:text-3xl">
+            about recap
+          </span>
           <SectionHeading as="h1" className="mt-3">
             A space to understand. A space to grow. A space to{" "}
             <HighlightMark>begin again.</HighlightMark>

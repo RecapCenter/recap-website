@@ -41,7 +41,7 @@ export function ServiceRow({
       </div>
       <div className={cn(reverse && "md:order-1")}>
         <SectionHeading as="h2">
-          <span className="font-script text-ink/70 mb-3 block text-xl">
+          <span className="font-script text-ink/70 mb-3 block text-2xl md:text-3xl">
             {title}
           </span>
           {tagline}

@@ -48,7 +48,9 @@ export function ValuesSection() {
     <section className="bg-cream px-6 pb-20 md:pb-24">
       <div className="border-border mx-auto max-w-[1200px] border-t pt-12 md:pt-16">
         <FadeIn>
-          <span className="font-script text-ink/70 text-xl">our values</span>
+          <span className="font-script text-ink/70 text-2xl md:text-3xl">
+            our values
+          </span>
           <SectionHeading as="h2" className="mt-3">
             What we believe
           </SectionHeading>

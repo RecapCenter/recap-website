@@ -45,7 +45,9 @@ drift back to old patterns.
   `text-3xl md:text-4xl`, sub/card `text-2xl md:text-3xl` (see
   `components/ui/section-heading.tsx`).
 - Body copy: `font-sans` (Inter), `text-base leading-relaxed` for paragraphs.
-- Eyebrow labels / handwritten accents: `font-script` (Caveat), `text-xl`.
+- Eyebrow labels / handwritten accents: `font-script` (Caveat),
+  `text-2xl md:text-3xl` (24px → 30px) — Caveat's small letters need the
+  extra size. `EyebrowLabel` already applies it.
 - Form fields (inputs, selects, textareas, search) are never below
   `text-base` — iOS Safari zooms the page on focus of anything under 16px.
 - FAQ answers are body copy (`text-base`), not captions. Blog post bodies

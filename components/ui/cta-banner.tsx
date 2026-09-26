@@ -27,7 +27,9 @@ export function CTABanner({
   return (
     <section className="from-cream relative overflow-hidden bg-gradient-to-b to-[#f3ecdf] px-6 pt-20 pb-40 text-center md:pt-24 md:pb-44">
       <FadeIn className="relative mx-auto flex max-w-2xl flex-col items-center">
-        <span className="font-script text-gold text-xl">{eyebrow}</span>
+        <span className="font-script text-gold text-2xl md:text-3xl">
+          {eyebrow}
+        </span>
         <SectionHeading as="h2" className="mt-3">
           {heading}
         </SectionHeading>

@@ -29,7 +29,7 @@ export function HowItWorksSection() {
     <section className="bg-pastel-cream-tan px-6 py-20 md:py-24">
       <div className="mx-auto max-w-[1200px]">
         <FadeIn className="text-center">
-          <span className="font-script text-ink/70 text-xl">
+          <span className="font-script text-ink/70 text-2xl md:text-3xl">
             getting started
           </span>
           <SectionHeading as="h2" className="mt-3">

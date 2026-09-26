@@ -58,7 +58,7 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col gap-2 md:max-w-xs">
-            <span className="font-script text-footer-accent text-xl">
+            <span className="font-script text-footer-accent text-2xl md:text-3xl">
               the slow letter
             </span>
             <p className="text-cream/80 text-sm">

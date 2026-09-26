@@ -30,7 +30,7 @@ export function FounderSection() {
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-16">
         <FadeIn className="flex flex-col gap-6">
           <div>
-            <span className="font-script text-ink/70 text-xl">
+            <span className="font-script text-ink/70 text-2xl md:text-3xl">
               meet the founder
             </span>
             <SectionHeading as="h2" className="mt-3">
