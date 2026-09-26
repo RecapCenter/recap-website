@@ -13,9 +13,9 @@ const FAQS = [
       "Usually within 48 hours. If it's urgent, say so in your message and we'll try to move faster.",
   },
   {
-    question: "Are sessions online, in-person, or both?",
+    question: "Are sessions online?",
     answer:
-      "Both — whatever fits your life better. Most families start online and decide from there.",
+      "Yes — all our sessions are held online, so you can join from wherever feels most comfortable.",
   },
   {
     question: "Is my message confidential?",

@@ -15,7 +15,7 @@ const STEPS = [
   {
     title: "Your first session",
     description:
-      "In-person or online, at whatever pace works for you and your family.",
+      "Online, at whatever pace works for you and your family.",
   },
   {
     title: "An ongoing rhythm",

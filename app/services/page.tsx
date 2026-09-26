@@ -9,7 +9,7 @@ import servicesIcon from "@/assets/icons/services-logo.svg";
 export const metadata: Metadata = {
   title: "Services — Recap",
   description:
-    "Counselling, special education support, and trainings for schools and parent groups — support that meets you where you are.",
+    "Special education, counselling and trainings that bring together psychological understanding, education and human connection — support that meets you where you are.",
 };
 
 export default function ServicesPage() {
@@ -18,9 +18,9 @@ export default function ServicesPage() {
       <PageIntro
         icon={servicesIcon}
         iconBg="var(--pastel-lavender)"
-        eyebrow="what we offer"
+        eyebrow="our services"
         heading="Support that meets you where you are."
-        subtext="Three ways we work alongside children, families, and schools — counselling, special education support, and training for the adults around them."
+        subtext="Every person comes with a different story, and meaningful support cannot follow a one-size-fits-all approach. At Recap, our services bring together psychological understanding, education and human connection to help individuals, families, educators and organisations move forward with greater clarity and confidence."
       />
       <ServicesDetailSection />
       <HowItWorksSection />

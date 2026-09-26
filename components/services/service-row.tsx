@@ -4,21 +4,17 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
 
 type ServiceRowProps = {
-  number: string;
   image: StaticImageData;
-  accentBg: string;
   title: string;
   tagline: string;
   paragraphs: readonly string[];
-  closingLine: string;
+  closingLine?: string;
   audience: readonly string[];
   reverse?: boolean;
 };
 
 export function ServiceRow({
-  number,
   image,
-  accentBg,
   title,
   tagline,
   paragraphs,
@@ -45,7 +41,7 @@ export function ServiceRow({
       <div className={cn(reverse && "md:order-1")}>
         <SectionHeading as="h2">
           <span className="font-script text-ink/70 mb-3 block text-xl">
-            {number} — {title}
+            {title}
           </span>
           {tagline}
         </SectionHeading>
@@ -54,23 +50,13 @@ export function ServiceRow({
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-        <p className="font-serif text-ink mt-6 text-xl">{closingLine}</p>
-        <div className="mt-6">
-          <span className="text-body-gray text-xs font-semibold tracking-widest uppercase">
-            For
-          </span>
-          <ul className="mt-3 flex flex-wrap gap-2">
-            {audience.map((who) => (
-              <li
-                key={who}
-                className="text-ink rounded-full px-4 py-1.5 text-sm"
-                style={{ backgroundColor: accentBg }}
-              >
-                {who}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {closingLine && (
+          <p className="font-serif text-ink mt-6 text-xl">{closingLine}</p>
+        )}
+        <p className="text-body-gray mt-6 text-sm leading-relaxed">
+          <span className="text-ink font-semibold">For:</span>{" "}
+          {audience.join(" • ")}
+        </p>
       </div>
     </FadeIn>
   );

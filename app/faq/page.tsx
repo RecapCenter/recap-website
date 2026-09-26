@@ -30,9 +30,9 @@ const GROUPS: FAQGroup[] = [
           "You don't have to know before you write in — tell us what's going on and we'll point you the right way. Most families start with a quick chat, not a decision.",
       },
       {
-        question: "Are sessions online, in-person, or both?",
+        question: "Are sessions online?",
         answer:
-          "Both — whatever fits your life better. Most families start online and decide from there.",
+          "Yes — all our sessions are held online, so you can join from wherever feels most comfortable.",
       },
       {
         question: "How soon will I hear back after I reach out?",
