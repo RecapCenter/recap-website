@@ -23,7 +23,7 @@ const DESKTOP_POST_COUNT = 6;
 function IntroTextTile({ className }: { className?: string }) {
   return (
     <div
-      className={`flex flex-col gap-3 rounded-3xl p-6 ${className ?? ""}`}
+      className={`flex flex-col items-start justify-center gap-3 rounded-3xl p-6 text-left ${className ?? ""}`}
       style={{ backgroundColor: TILE_BG }}
     >
       <IconBadge bg="rgba(255,255,255,0.3)" size="lg">
