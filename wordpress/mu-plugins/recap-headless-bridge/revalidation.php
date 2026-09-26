@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string[]
  */
 function recap_revalidate_post_types(): array {
-	return array( 'post', 'gallery_item', 'freebie', 'recommendation', 'lab_resource', 'review' );
+	return array( 'post', 'gallery_item', 'freebie', 'recommendation', 'lab_resource', 'review', 'country_photo' );
 }
 
 /**
@@ -77,6 +77,7 @@ function recap_taxonomy_revalidate_post_type( string $taxonomy ): ?string {
 		'recommendation_category'  => 'recommendation',
 		'freebie_category'         => 'freebie',
 		'gallery_category'         => 'gallery_item',
+		'country'                  => 'country_photo',
 	);
 
 	return $map[ $taxonomy ] ?? null;
@@ -108,3 +109,26 @@ function recap_notify_revalidate_term( $term_id, $tt_id, string $taxonomy ): voi
 }
 add_action( 'created_term', 'recap_notify_revalidate_term', 10, 3 );
 add_action( 'edited_term', 'recap_notify_revalidate_term', 10, 3 );
+add_action( 'delete_term', 'recap_notify_revalidate_term', 10, 3 );
+
+/**
+ * Country pins live in ACF term fields, which ACF saves after
+ * `created_term`/`edited_term` have already fired — so a changed
+ * coordinate or polaroid photo would otherwise reach the frontend's cache
+ * one revalidation window late. ACF passes term IDs here as "term_<id>".
+ *
+ * @param int|string $post_id ACF object ID.
+ * @return void
+ */
+function recap_notify_revalidate_country_fields( $post_id ): void {
+	if ( ! is_string( $post_id ) || ! str_starts_with( $post_id, 'term_' ) ) {
+		return;
+	}
+
+	$term = get_term( (int) substr( $post_id, 5 ) );
+
+	if ( $term instanceof WP_Term && 'country' === $term->taxonomy ) {
+		recap_notify_revalidate_term( $term->term_id, $term->term_taxonomy_id, 'country' );
+	}
+}
+add_action( 'acf/save_post', 'recap_notify_revalidate_country_fields', 20 );

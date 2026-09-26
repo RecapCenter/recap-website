@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers the three Recap-managed taxonomies. Each uses the standard
+ * Registers the four Recap-managed taxonomies. Each uses the standard
  * WordPress checkbox meta box on its post type's edit screen (no custom
  * ACF taxonomy field) — a well-understood, zero-surprise pattern editors
  * already recognize from Posts/Categories.
@@ -58,6 +58,29 @@ function recap_register_taxonomies(): void {
 			'show_ui'           => true,
 			'show_in_rest'      => true,
 			'rest_base'         => 'recommendation_category',
+			'show_admin_column' => true,
+		)
+	);
+
+	// Each term is one pin on the homepage globe and one
+	// /around-the-world/<slug> page. Its coordinates and polaroid cover
+	// photo are ACF term fields (acf-fields.php). Hierarchical only so
+	// wp-admin shows a pick-from-list checkbox box instead of a free-text
+	// tag field — countries are never nested.
+	register_taxonomy(
+		'country',
+		'country_photo',
+		array(
+			'label'             => 'Countries',
+			'labels'            => array(
+				'name'          => 'Countries',
+				'singular_name' => 'Country',
+				'add_new_item'  => 'Add New Country',
+			),
+			'hierarchical'      => true,
+			'show_ui'           => true,
+			'show_in_rest'      => true,
+			'rest_base'         => 'countries',
 			'show_admin_column' => true,
 		)
 	);

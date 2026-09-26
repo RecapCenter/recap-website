@@ -11,8 +11,8 @@ The plugin is a thin loader, `mu-plugins/recap-headless-bridge.php`, that requir
 | File | Responsibility |
 |---|---|
 | `helpers.php` | Shared low-level utilities: the revalidation webhook sender, shared CPT registration defaults, and the taxonomy-term-seeding helper. Loaded first — every other file calls into this one. |
-| `post-types.php` | Registers the four custom post types and their image sizes. |
-| `taxonomies.php` | Registers the three category taxonomies and seeds their starter terms. |
+| `post-types.php` | Registers the custom post types and their image sizes. |
+| `taxonomies.php` | Registers the category taxonomies (plus `country`) and seeds their starter terms. |
 | `acf-fields.php` | Registers every ACF field group — one function per post type, so each is easy to find and edit independently. |
 | `options-page.php` | Registers the (currently empty) "Site Settings" ACF Options Page — infrastructure for later. |
 | `admin-ux.php` | wp-admin cleanup that `supports` alone can't do (currently just hiding the Slug meta box). |
@@ -32,6 +32,7 @@ Why a subfolder instead of one big file: must-use plugins don't autoload subdire
 | `recommendation` | `recommendations` | Items for `/recap-recommends` | `recommendation_category` |
 | `lab_resource` | `lab-resources` | Not consumed yet — `/recap-lab` is still a static "coming soon" page | — |
 | `review` | `reviews` | Client testimonials — merged with Google reviews for the homepage marquee and `/reviews` page | — |
+| `country_photo` | `around-the-world` | Photos for `/around-the-world/<country>` — shown in wp-admin as **Around the World**. Deliberately separate from `gallery_item`: these never appear on `/gallery` | `country` |
 
 Native WordPress **Posts** need no changes — they already power `/thinking-out-loud` as-is and aren't touched by this plugin.
 
@@ -42,6 +43,7 @@ Native WordPress **Posts** need no changes — they already power `/thinking-out
 | `gallery_category` | `gallery_item` | None — add your own under **Gallery Items → Gallery Categories** |
 | `freebie_category` | `freebie` | Worksheets, Guides, Templates, Assessments, Checklists, E-books |
 | `recommendation_category` | `recommendation` | Books, Podcasts, Music, Research Papers, Videos, Websites, Apps, Courses |
+| `country` | `country_photo` | None — add countries under **Around the World → Countries**. Hierarchical only to get a checkbox picker; never nest countries |
 
 Seeding is idempotent (`taxonomies.php`'s `recap_seed_taxonomy_terms()`) — adding a new term to the list and re-deploying only creates what's missing, it never duplicates or removes terms an editor has already changed.
 
@@ -90,6 +92,28 @@ Every field is registered in PHP (`acf-fields.php`), not clicked together in the
 
 The reviewer's name uses the native Title field, not an ACF field.
 
+**Country Photo Details** (`country_photo`) — photos only, no video
+| Field | Type | Notes |
+|---|---|---|
+| `photo` | image | Required |
+| `caption` | textarea | Optional |
+| `display_order` | number | Optional — lower shows first |
+
+**Globe Pin** (`country` taxonomy term fields)
+| Field | Type | Notes |
+|---|---|---|
+| `latitude` | number (−90–90) | Required — where the pin sits on the homepage globe |
+| `longitude` | number (−180–180) | Required — west of Greenwich is negative |
+| `cover_photo` | image | Required — the photo inside the globe's polaroid |
+
+## Around the World (homepage globe + country pages)
+
+Each **Country** term is one polaroid on the homepage globe (`components/home/globe-section.tsx`) and one page at `/around-the-world/<term-slug>` (`app/around-the-world/[country]/page.tsx`), headed by the country's name and showing its photos in the Gallery's masonry grid. The globe is the only way in — the pages are intentionally not in the nav, footer, or sitemap.
+
+A country shows up (pin and page) only once it has a latitude, a longitude, a polaroid photo **and** at least one published photo assigned to it; otherwise it's skipped on the globe and its URL 404s. See `getCountries()` in `lib/wordpress/around-the-world.ts`.
+
+To add a country: **Around the World → Countries → Add New** (name + the three Globe Pin fields), then add photos under **Around the World → Add New Country Photo** and tick that country in the Countries box.
+
 ## Homepage posts
 
 The homepage's "Thinking Out Loud" preview simply shows the most recently published Posts, newest first — no editor opt-in step, no manual curation field. `getLatestHomepagePosts()` (`lib/wordpress/posts.ts`) calls the native `GET /wp-json/wp/v2/posts?per_page=<n>` endpoint and relies on WordPress's default `orderby=date&order=desc`.
@@ -111,6 +135,8 @@ Two surfaces consume it: the homepage's "Straight from clients" marquee shows th
 | `GET /wp-json/wp/v2/recommendations` | `?_embed` for `recommendation_category` term names via `wp:term` |
 | `GET /wp-json/wp/v2/lab-resources` | Not yet called by the frontend |
 | `GET /wp-json/wp/v2/reviews` | CMS half of the hybrid reviews list (see "Reviews" above) |
+| `GET /wp-json/wp/v2/around-the-world?countries=<term id>` | One country's photos |
+| `GET /wp-json/wp/v2/countries?hide_empty=true` | Country terms with their Globe Pin fields under `acf` |
 | `GET /wp-json/wp/v2/posts`, `/categories` | Native — unchanged; also powers the homepage's latest-posts preview (see "Homepage posts" above) |
 | `GET /wp-json/wp/v2/gallery_category`, `/freebie_category`, `/recommendation_category` | Taxonomy term lists |
 | `POST /api/revalidate` *(on the Next.js side)* | Webhook target — see "On-demand revalidation" below |
@@ -119,7 +145,7 @@ Every post response also carries a `category_names` field (plain array of term-n
 
 ## On-demand revalidation
 
-Unchanged in shape from before this refactor: `revalidation.php` hooks `transition_post_status` (fires on first publish, on later edits to an already-published item, and on unpublish/trash) and `created_term`/`edited_term` for the three category taxonomies, and POSTs to your Next.js site's `/api/revalidate` route. Both hooks now share one HTTP-sending helper, `recap_send_revalidate_webhook()` (`helpers.php`), instead of duplicating the `wp_remote_post()` call.
+Unchanged in shape from before this refactor: `revalidation.php` hooks `transition_post_status` (fires on first publish, on later edits to an already-published item, and on unpublish/trash) and `created_term`/`edited_term`/`delete_term` for the Recap taxonomies (plus `acf/save_post` for Country term fields, which ACF saves after the term hooks fire), and POSTs to your Next.js site's `/api/revalidate` route. Both hooks now share one HTTP-sending helper, `recap_send_revalidate_webhook()` (`helpers.php`), instead of duplicating the `wp_remote_post()` call.
 
 ## Future extension guide
 
@@ -190,7 +216,7 @@ Restart `next dev` (or redeploy) after setting these.
 
 ### 6. Verify it end-to-end
 
-1. In wp-admin, confirm you see **Gallery Items**, **Freebies**, **Recommendations**, **Lab Resources**, and **Reviews** in the left sidebar (in that order), each showing only its own ACF fields on the edit screen — no Content Editor, Excerpt, Featured Image, Discussion, Author, Custom Fields, Revisions, or Slug boxes.
+1. In wp-admin, confirm you see **Gallery Items**, **Freebies**, **Recommendations**, **Lab Resources**, **Reviews**, and **Around the World** in the left sidebar (in that order), each showing only its own ACF fields on the edit screen — no Content Editor, Excerpt, Featured Image, Discussion, Author, Custom Fields, Revisions, or Slug boxes.
 2. Under **Freebies → Freebie Categories** and **Recommendations → Recommendation Categories**, confirm the starter terms listed above already exist.
 3. Create one item of each type (mark it **Published**, with a category where applicable), then visit e.g. `https://your-wp-site.com/wp-json/wp/v2/gallery` in a browser — you should see JSON with an `acf` key containing your field values and a `category_names` array.
 4. Visit the frontend's `/gallery`, `/freebies`, `/recap-recommends`, and `/thinking-out-loud` — they should now show real content instead of their empty states.

@@ -51,8 +51,37 @@ function recap_fix_acf_media_fields(): void {
 	recap_register_acf_media_fix( 'freebie', array( 'pdf_file', 'thumbnail' ) );
 	recap_register_acf_media_fix( 'recommendation', array( 'image' ) );
 	recap_register_acf_media_fix( 'lab_resource', array( 'thumbnail', 'resource_file' ) );
+	recap_register_acf_media_fix( 'country_photo', array( 'photo' ) );
+	recap_register_acf_term_media_fix( 'country', array( 'cover_photo' ) );
 }
 add_action( 'rest_api_init', 'recap_fix_acf_media_fields' );
+
+/**
+ * Term equivalent of recap_register_acf_media_fix(): the same raw
+ * attachment-ID problem applies to ACF image fields on taxonomy terms.
+ *
+ * @param string   $taxonomy Taxonomy slug.
+ * @param string[] $fields   ACF field names (image/file type) to reformat.
+ * @return void
+ */
+function recap_register_acf_term_media_fix( string $taxonomy, array $fields ): void {
+	add_filter(
+		"rest_prepare_{$taxonomy}",
+		function ( WP_REST_Response $response, WP_Term $term ) use ( $fields ) {
+			if ( ! isset( $response->data['acf'] ) || ! is_array( $response->data['acf'] ) ) {
+				return $response;
+			}
+
+			foreach ( $fields as $field ) {
+				$response->data['acf'][ $field ] = get_field( $field, $term ) ?: null;
+			}
+
+			return $response;
+		},
+		10,
+		2
+	);
+}
 
 /**
  * Re-formats a post type's image/file ACF fields in its REST response,

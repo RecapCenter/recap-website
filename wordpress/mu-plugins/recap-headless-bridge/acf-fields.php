@@ -31,6 +31,8 @@ function recap_register_acf_fields(): void {
 	recap_register_recommendation_fields();
 	recap_register_lab_resource_fields();
 	recap_register_review_fields();
+	recap_register_country_photo_fields();
+	recap_register_country_fields();
 }
 add_action( 'acf/init', 'recap_register_acf_fields' );
 
@@ -371,6 +373,119 @@ function recap_register_review_fields(): void {
 					'type'         => 'textarea',
 					'rows'         => 4,
 					'required'     => 1,
+				),
+			),
+		)
+	);
+}
+
+/**
+ * Around the World photos: photos only (no video), shown on the
+ * /around-the-world/<country> page of the Country they're assigned to
+ * (the `country` taxonomy box on the same edit screen).
+ *
+ * @return void
+ */
+function recap_register_country_photo_fields(): void {
+	acf_add_local_field_group(
+		array(
+			'key'          => 'group_recap_country_photo',
+			'title'        => 'Country Photo Details',
+			'show_in_rest' => 1,
+			'location'     => array(
+				array(
+					array(
+						'param'    => 'post_type',
+						'operator' => '==',
+						'value'    => 'country_photo',
+					),
+				),
+			),
+			'fields'       => array(
+				array(
+					'key'           => 'field_recap_country_photo_photo',
+					'name'          => 'photo',
+					'label'         => 'Upload Image',
+					'type'          => 'image',
+					'return_format' => 'array',
+					'preview_size'  => 'recap_gallery_grid',
+					'required'      => 1,
+					'instructions'  => 'Remember to tick its Country in the Countries box.',
+				),
+				array(
+					'key'          => 'field_recap_country_photo_caption',
+					'name'         => 'caption',
+					'label'        => 'Caption',
+					'type'         => 'textarea',
+					'rows'         => 2,
+					'instructions' => 'Optional.',
+				),
+				array(
+					'key'          => 'field_recap_country_photo_display_order',
+					'name'         => 'display_order',
+					'label'        => 'Display Order',
+					'type'         => 'number',
+					'instructions' => 'Lower numbers show first. Leave blank to sort by date.',
+				),
+			),
+		)
+	);
+}
+
+/**
+ * Country term fields: where the country's pin sits on the homepage globe
+ * and which photo its polaroid shows. A country only appears on the globe
+ * once it has all three of these plus at least one published photo.
+ *
+ * @return void
+ */
+function recap_register_country_fields(): void {
+	acf_add_local_field_group(
+		array(
+			'key'          => 'group_recap_country',
+			'title'        => 'Globe Pin',
+			'show_in_rest' => 1,
+			'location'     => array(
+				array(
+					array(
+						'param'    => 'taxonomy',
+						'operator' => '==',
+						'value'    => 'country',
+					),
+				),
+			),
+			'fields'       => array(
+				array(
+					'key'          => 'field_recap_country_latitude',
+					'name'         => 'latitude',
+					'label'        => 'Latitude',
+					'type'         => 'number',
+					'min'          => -90,
+					'max'          => 90,
+					'step'         => 'any',
+					'required'     => 1,
+					'instructions' => 'e.g. 36.2 for Japan. Search "<country> latitude longitude" to find it.',
+				),
+				array(
+					'key'          => 'field_recap_country_longitude',
+					'name'         => 'longitude',
+					'label'        => 'Longitude',
+					'type'         => 'number',
+					'min'          => -180,
+					'max'          => 180,
+					'step'         => 'any',
+					'required'     => 1,
+					'instructions' => 'e.g. 138.25 for Japan. West of Greenwich is negative.',
+				),
+				array(
+					'key'           => 'field_recap_country_cover_photo',
+					'name'          => 'cover_photo',
+					'label'         => 'Polaroid Photo',
+					'type'          => 'image',
+					'return_format' => 'array',
+					'preview_size'  => 'recap_gallery_grid',
+					'required'      => 1,
+					'instructions'  => 'Shown in the polaroid on the homepage globe. Square-ish photos work best.',
 				),
 			),
 		)

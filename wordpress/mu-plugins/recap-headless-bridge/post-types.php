@@ -4,7 +4,7 @@
  *
  * Only "Posts" (Thinking Out Loud) is native to WordPress and is
  * intentionally left untouched by this plugin. Gallery, Freebies, Recap
- * Recommends, Recap Lab, and Reviews each get their own post type here so
+ * Recommends, Recap Lab, Reviews, and Around the World each get their own post type here so
  * editors get a dedicated wp-admin screen carrying only the fields
  * relevant to that content type (see helpers.php's recap_cpt_defaults()
  * and acf-fields.php for where those fields actually come from).
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers the five Recap-managed post types.
+ * Registers the six Recap-managed post types.
  *
  * @return void
  */
@@ -111,6 +111,28 @@ function recap_register_post_types(): void {
 				'rest_base'    => 'reviews',
 				'menu_icon'    => 'dashicons-format-quote',
 				'menu_position' => 24,
+			)
+		)
+	);
+
+	// Deliberately separate from gallery_item: these photos must never
+	// appear on /gallery, only on their country's /around-the-world page.
+	register_post_type(
+		'country_photo',
+		array_merge(
+			recap_cpt_defaults(),
+			array(
+				'label'        => 'Around the World',
+				'labels'       => array(
+					'name'          => 'Around the World',
+					'singular_name' => 'Country Photo',
+					'add_new_item'  => 'Add New Country Photo',
+					'all_items'     => 'All Country Photos',
+				),
+				'rest_base'    => 'around-the-world',
+				'menu_icon'    => 'dashicons-admin-site-alt3',
+				'menu_position' => 25,
+				'taxonomies'   => array( 'country' ),
 			)
 		)
 	);
