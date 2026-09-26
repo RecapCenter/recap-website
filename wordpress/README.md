@@ -18,6 +18,7 @@ The plugin is a thin loader, `mu-plugins/recap-headless-bridge.php`, that requir
 | `admin-ux.php` | wp-admin cleanup that `supports` alone can't do (currently just hiding the Slug meta box). |
 | `rest-api.php` | Adds the `category_names` convenience field to REST responses. |
 | `revalidation.php` | Fires the on-demand revalidation webhook on publish/update and on taxonomy term changes. |
+| `newsletter.php` | Private `POST /wp-json/recap/v1/subscribe` endpoint that adds footer newsletter signups to MailPoet. |
 
 Why a subfolder instead of one big file: must-use plugins don't autoload subdirectories (WordPress only scans `.php` files directly inside `mu-plugins/`), so the loader `require_once`s each module explicitly, in dependency order. This keeps every concern in its own file — registering a new field type doesn't mean scrolling through revalidation logic — while still deploying as a single must-use plugin with nothing to "activate."
 
@@ -126,6 +127,12 @@ Reviews render from a hybrid list assembled server-side in `lib/reviews.ts`'s `g
 
 Two surfaces consume it: the homepage's "Straight from clients" marquee shows the top 10 (`getCombinedReviews(10)`, section renders nothing when the list is empty), and the `/reviews` page shows the full list in a masonry grid (with an empty state when there are none).
 
+## Newsletter ("the slow letter")
+
+The footer signup form posts to the frontend's `POST /api/newsletter`, which forwards the email server-to-server to `POST /wp-json/recap/v1/subscribe` (`newsletter.php`) with the shared secret in an `x-recap-secret` header — the same `RECAP_REVALIDATE_SECRET` / `WORDPRESS_REVALIDATE_SECRET` pair revalidation uses, so nothing new to configure. The endpoint adds the address to the MailPoet list **The Slow Letter** (created automatically on the first signup) and MailPoet sends its confirmation email; the address only counts as subscribed once the person clicks that link.
+
+Setup: install and activate the free **MailPoet** plugin, run its setup wizard (sender name/address — use a recapcenter.com address), then write and send newsletters from **MailPoet → Emails** to the "The Slow Letter" list. The endpoint answers 503 while MailPoet is inactive, and the form shows a "try again later" message.
+
 ## REST endpoints
 
 | Endpoint | Notes |
@@ -185,6 +192,7 @@ wp-content/mu-plugins/recap-headless-bridge/options-page.php
 wp-content/mu-plugins/recap-headless-bridge/admin-ux.php
 wp-content/mu-plugins/recap-headless-bridge/rest-api.php
 wp-content/mu-plugins/recap-headless-bridge/revalidation.php
+wp-content/mu-plugins/recap-headless-bridge/newsletter.php
 ```
 
 Must-use plugins load automatically — there's nothing to "activate" in wp-admin. (If `wp-content/mu-plugins/` doesn't exist yet, just create it.)

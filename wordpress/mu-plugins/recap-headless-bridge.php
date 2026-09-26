@@ -31,3 +31,4 @@ require_once RECAP_BRIDGE_DIR . '/options-page.php';
 require_once RECAP_BRIDGE_DIR . '/admin-ux.php';
 require_once RECAP_BRIDGE_DIR . '/rest-api.php';
 require_once RECAP_BRIDGE_DIR . '/revalidation.php';
+require_once RECAP_BRIDGE_DIR . '/newsletter.php';
