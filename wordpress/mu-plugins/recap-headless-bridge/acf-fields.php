@@ -244,7 +244,7 @@ function recap_register_recommendation_fields(): void {
 					'type'          => 'image',
 					'return_format' => 'array',
 					'preview_size'  => 'recap_recommendation_square',
-					'required'      => 1,
+					'instructions'  => 'Optional for YouTube/Vimeo links — the video\'s own thumbnail is used automatically. Required for everything else.',
 				),
 				array(
 					'key'          => 'field_recap_recommendation_description',

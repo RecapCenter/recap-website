@@ -72,7 +72,7 @@ Every field is registered in PHP (`acf-fields.php`), not clicked together in the
 **Recommendation Details** (`recommendation`)
 | Field | Type | Notes |
 |---|---|---|
-| `image` | image | Required — replaces the native Featured Image box |
+| `image` | image | Replaces the native Featured Image box. Optional when `external_link` is a YouTube/Vimeo video — the frontend uses the video's own thumbnail instead (`lib/video-thumbnails.ts`); needed for every other link |
 | `description` | textarea | Optional |
 | `external_link` | url | Required |
 

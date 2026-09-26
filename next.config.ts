@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         hostname: "img.youtube.com",
         pathname: "/vi/**",
       },
+      {
+        // Vimeo video thumbnails for Recap Recommends (lib/video-thumbnails.ts)
+        protocol: "https" as const,
+        hostname: "i.vimeocdn.com",
+      },
     ],
   },
   async headers() {

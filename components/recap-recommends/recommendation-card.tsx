@@ -16,6 +16,7 @@ export function RecommendationCard({
   title,
   description,
   imageUrl,
+  imageLetterboxed,
   externalLink,
   category,
 }: Recommendation) {
@@ -24,14 +25,15 @@ export function RecommendationCard({
   return (
     <HoverLift className="h-full">
       <Card className="flex h-full flex-col">
-        <div className="relative aspect-square w-full">
+        <div className="relative aspect-square w-full overflow-hidden">
           {imageUrl && (
             <Image
               src={imageUrl}
               alt=""
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover"
+              // Scaling past YouTube's baked-in black bars (4:3 frame, 16:9 video).
+              className={cn("object-cover", imageLetterboxed && "scale-[1.34]")}
             />
           )}
           {category && (
@@ -46,7 +48,7 @@ export function RecommendationCard({
           )}
         </div>
         <div className="flex flex-1 flex-col gap-3 p-6">
-          <h3 className="font-serif text-ink text-lg">{title}</h3>
+          <h3 className="text-ink font-serif text-lg">{title}</h3>
           <p className="text-body-gray line-clamp-2 flex-1 text-sm leading-relaxed">
             {description}
           </p>
