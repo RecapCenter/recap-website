@@ -7,7 +7,6 @@ import {
   getCountryBySlug,
   getCountryPhotos,
 } from "@/lib/wordpress/around-the-world";
-import thinkingOutLoudIcon from "@/assets/icons/thinking-out-loud-logo.svg";
 
 /*
  * One page per WordPress "Country" term, reached only from its polaroid on
@@ -52,8 +51,6 @@ export default async function CountryPage({
   return (
     <main>
       <PageIntro
-        icon={thinkingOutLoudIcon}
-        iconBg="var(--accent-orange)"
         eyebrow="around the world"
         heading={country.name}
         size="compact"
