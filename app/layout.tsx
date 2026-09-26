@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Caveat, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import "./globals.css";
 
 const DEFAULT_SITE_URL = "http://localhost:3000";
@@ -83,6 +84,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <GoogleAnalytics />
       </body>
     </html>
   );

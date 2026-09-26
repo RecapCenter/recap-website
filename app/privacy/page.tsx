@@ -14,25 +14,26 @@ const SECTIONS = [
     title: "What we collect",
     body: [
       "When you write to us through the contact form, we collect what you choose to share — your name, email, phone number, and message. If you subscribe to the slow letter, we collect your email address to send it.",
-      "Like most websites, we also collect basic, non-identifying analytics (pages visited, general location, device type) to understand how people use the site and where to improve it.",
+      "We use Google Analytics to understand how people use the site — which pages are visited, roughly where visitors are (country or city, never a street address), and what kind of device they're on. We use this only in aggregate, to see what's working and what to improve; we don't use it to identify you.",
     ],
   },
   {
     title: "How we use it",
     body: [
       "We use what you share to reply to your message, schedule sessions, and send the slow letter if you've asked for it. We don't use your information for anything you haven't agreed to, and we don't run targeted advertising.",
+      "Every slow letter includes a link to unsubscribe, and you can also unsubscribe at any time from our unsubscribe page. If you tell us why you're leaving, we keep that note only to help us improve the newsletter.",
     ],
   },
   {
     title: "Who we share it with",
     body: [
-      "We don't sell or rent your information, ever. We share it only with the tools that help us run Recap — our email and scheduling providers, for example — and only as much as each one needs to do its job.",
+      "We don't sell or rent your information, ever. We share it only with the tools that help us run Recap, and only as much as each one needs to do its job: Google Workspace (our email, which receives contact form messages), MailPoet (which stores the slow letter's subscriber list and sends it), and Google Analytics (site traffic, as described above).",
     ],
   },
   {
     title: "Cookies",
     body: [
-      "We use a small number of cookies to keep the site working smoothly and to understand overall traffic. You can turn cookies off in your browser at any time; the site will still work, though some things (like remembering a form draft) may not.",
+      "The only cookies on this site are set by Google Analytics, to count visits and tell new visitors from returning ones. We don't use advertising or tracking cookies beyond that. You can block cookies in your browser, or install Google's opt-out add-on (tools.google.com/dlpage/gaoptout), and the site will work exactly the same.",
     ],
   },
   {
@@ -75,11 +76,13 @@ export default function PrivacyPage() {
 
       <section className="bg-cream px-6 py-20 md:py-24">
         <FadeIn className="mx-auto flex max-w-3xl flex-col gap-12">
-          <p className="text-body-gray text-sm italic">Last updated: July 2026</p>
+          <p className="text-body-gray text-sm italic">
+            Last updated: September 2026
+          </p>
 
           {SECTIONS.map((section) => (
             <div key={section.title}>
-              <h2 className="font-serif text-ink text-2xl md:text-3xl">
+              <h2 className="text-ink font-serif text-2xl md:text-3xl">
                 {section.title}
               </h2>
               <div className="text-body-gray mt-3 flex flex-col gap-3 text-base leading-relaxed">
@@ -91,7 +94,7 @@ export default function PrivacyPage() {
           ))}
 
           <div>
-            <h2 className="font-serif text-ink text-2xl md:text-3xl">
+            <h2 className="text-ink font-serif text-2xl md:text-3xl">
               Questions?
             </h2>
             <p className="text-body-gray mt-3 text-base leading-relaxed">
