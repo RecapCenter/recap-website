@@ -9,28 +9,16 @@ import { getLatestHomepagePosts } from "@/lib/wordpress/posts";
 /** Matches the Thinking Out Loud tile in the Quick Link grid (quick-link-grid.tsx). */
 const TILE_BG = "var(--pastel-mustard)";
 
-const COLUMN_HEIGHT = "h-[34rem]";
-
 /** Mobile shows exactly this many latest posts, stacked, between the intro and Knowledge Hub. */
 const MOBILE_POST_COUNT = 4;
 
 /**
- * Desktop bento slots — Title (static) and Knowledge Hub (static) are the
- * only fixed tiles; every other tile is the latest WordPress posts, newest
- * first. Column 1 pairs the intro tile with one tall post (Blog 1); columns
- * 2 and 3 each hold two even posts; column 4 pairs one tall post (Blog 6)
- * with the always-present Knowledge Hub. A column only renders if at least
- * one post is assigned to it, so fewer than 6 published posts gracefully
- * drops trailing columns/tiles.
+ * Tablet/desktop show this many latest posts, newest first. With the intro
+ * and Knowledge Hub tiles that's an even 4×2 grid (2×4 on tablet) of
+ * identically sized tiles, so every post thumbnail gets the same frame.
+ * Fewer published posts simply leaves the grid shorter.
  */
-const DESKTOP_SLOT_LAYOUT = [
-  { column: 1, size: "flex-[2]" },
-  { column: 2, size: "flex-1" },
-  { column: 2, size: "flex-1" },
-  { column: 3, size: "flex-1" },
-  { column: 3, size: "flex-1" },
-  { column: 4, size: "flex-[2]" },
-] as const;
+const DESKTOP_POST_COUNT = 6;
 
 function IntroTextTile({ className }: { className?: string }) {
   return (
@@ -48,44 +36,27 @@ function IntroTextTile({ className }: { className?: string }) {
         />
       </IconBadge>
       <div>
-        <h3 className="font-serif text-2xl text-white">
-          Thinking Out Loud
-        </h3>
+        <h3 className="font-serif text-2xl text-white">Thinking Out Loud</h3>
         <p className="mt-2 text-sm leading-relaxed text-white/85">
-          Real stories of change, growth, and perspective drawn from
-          everyday work with children, families, and schools.
+          Real stories of change, growth, and perspective drawn from everyday
+          work with children, families, and schools.
         </p>
       </div>
     </div>
   );
 }
 
-export async function ThinkingOutLoudSection() {
-  const posts = await getLatestHomepagePosts(DESKTOP_SLOT_LAYOUT.length);
-  const mobilePosts = posts.slice(0, MOBILE_POST_COUNT);
+/** Every post tile is square on every device, so one thumbnail shape fits all. */
+const POST_TILE = "aspect-square h-auto";
 
-  const columns = new Map<
-    number,
-    { id: number; href: string; title: string; imageUrl: string | null; size: string }[]
-  >();
-  posts.forEach((post, index) => {
-    const slot = DESKTOP_SLOT_LAYOUT[index];
-    if (!slot) return;
-    const tiles = columns.get(slot.column) ?? [];
-    tiles.push({
-      id: post.id,
-      href: `/thinking-out-loud/${post.slug}`,
-      title: post.title,
-      imageUrl: post.featuredImage?.url ?? null,
-      size: slot.size,
-    });
-    columns.set(slot.column, tiles);
-  });
+export async function ThinkingOutLoudSection() {
+  const posts = await getLatestHomepagePosts(DESKTOP_POST_COUNT);
+  const mobilePosts = posts.slice(0, MOBILE_POST_COUNT);
 
   return (
     <section className="bg-cream px-6 py-20 md:py-24">
       <FadeIn>
-        {/* Mobile — single stacked column: intro, up to 4 featured posts, Knowledge Hub */}
+        {/* Mobile — single stacked column: intro, up to 4 posts, Knowledge Hub */}
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 md:hidden">
           <IntroTextTile />
           {mobilePosts.map((post) => (
@@ -94,49 +65,26 @@ export async function ThinkingOutLoudSection() {
               href={`/thinking-out-loud/${post.slug}`}
               title={post.title}
               imageUrl={post.featuredImage?.url ?? null}
-              className="h-64"
+              className={POST_TILE}
             />
           ))}
           <KnowledgeHubCard className="h-40" />
         </div>
 
-        {/* Desktop — bento grid: Title/Blog1 | Blog2/Blog3 | Blog4/Blog5 | Blog6/Knowledge Hub */}
-        <div className="mx-auto hidden max-w-[1200px] grid-cols-4 gap-6 md:grid">
-          <div className={`flex flex-col gap-6 ${COLUMN_HEIGHT}`}>
-            <IntroTextTile className="flex-1" />
-            {(columns.get(1) ?? []).map((tile) => (
-              <ThinkingOutLoudCard
-                key={tile.id}
-                href={tile.href}
-                title={tile.title}
-                imageUrl={tile.imageUrl}
-                className={tile.size}
-              />
-            ))}
-          </div>
-
-          {[2, 3, 4].map((columnIndex) => {
-            const tiles = columns.get(columnIndex) ?? [];
-            if (columnIndex !== 4 && tiles.length === 0) return null;
-
-            return (
-              <div
-                key={columnIndex}
-                className={`flex flex-col gap-6 ${COLUMN_HEIGHT}`}
-              >
-                {tiles.map((tile) => (
-                  <ThinkingOutLoudCard
-                    key={tile.id}
-                    href={tile.href}
-                    title={tile.title}
-                    imageUrl={tile.imageUrl}
-                    className={tile.size}
-                  />
-                ))}
-                {columnIndex === 4 && <KnowledgeHubCard className="flex-1" />}
-              </div>
-            );
-          })}
+        {/* Tablet/desktop — even grid of equal square tiles:
+            Intro, Post 1–6, Knowledge Hub (2 columns on tablet, 4 on desktop) */}
+        <div className="mx-auto hidden max-w-[1200px] grid-cols-2 gap-6 md:grid lg:grid-cols-4">
+          <IntroTextTile />
+          {posts.map((post) => (
+            <ThinkingOutLoudCard
+              key={post.id}
+              href={`/thinking-out-loud/${post.slug}`}
+              title={post.title}
+              imageUrl={post.featuredImage?.url ?? null}
+              className={POST_TILE}
+            />
+          ))}
+          <KnowledgeHubCard className="min-h-40" />
         </div>
       </FadeIn>
     </section>
