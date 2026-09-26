@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PullQuoteCard } from "./pull-quote-card";
-import founderPhoto from "@/assets/images/about/founder-photo.png";
+import founderPhoto from "@/assets/images/about/founder-photo.webp";
 
 const CREDENTIALS = [
   "M.A. Counselling Psychology",
