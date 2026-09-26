@@ -80,7 +80,7 @@ export async function GallerySection() {
 
       <div className="relative mx-auto flex h-full max-w-[1200px] items-center px-6">
         <FadeIn className="mx-auto max-w-md text-center md:mx-0 md:w-1/3 md:max-w-none md:text-left">
-          <span className="font-script text-lg text-white/70">
+          <span className="font-script text-xl text-white/70">
             a glimpse into recap
           </span>
           <SectionHeading as="h2" className="mt-2 text-white">

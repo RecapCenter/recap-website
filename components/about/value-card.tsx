@@ -22,7 +22,7 @@ export function ValueCard({
         style={{ backgroundColor: bg }}
       >
         <span style={{ color: titleColor }}>{icon}</span>
-        <h3 className="text-xl font-bold" style={{ color: titleColor }}>
+        <h3 className="font-serif text-xl" style={{ color: titleColor }}>
           {title}
         </h3>
         <p className="text-body-gray text-sm leading-relaxed">{description}</p>

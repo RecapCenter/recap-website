@@ -85,7 +85,7 @@ export function ExpandableSearch({
           aria-label={placeholder}
           tabIndex={open ? 0 : -1}
           className={cn(
-            "text-ink h-full w-full min-w-0 bg-transparent pr-2 text-sm placeholder:text-body-gray/70 focus:outline-none",
+            "text-ink h-full w-full min-w-0 bg-transparent pr-2 text-base placeholder:text-body-gray/70 focus:outline-none",
             !open && "pointer-events-none opacity-0",
           )}
         />

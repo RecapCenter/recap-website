@@ -184,8 +184,10 @@
   }
 }
 
+/* Blog post body: 18px — long-form reading is more comfortable a step up
+   from the site's 16px body copy. */
 .wp-content {
-  @apply text-ink text-base leading-relaxed;
+  @apply text-ink text-lg leading-relaxed;
 }
 .wp-content h2 {
   @apply font-serif text-ink mt-10 mb-4 text-2xl;

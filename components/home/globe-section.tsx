@@ -22,7 +22,7 @@ export async function GlobeSection() {
       {/* Desktop: heading in the left third, globe centred in the right two-thirds */}
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center justify-items-center gap-10 md:grid-cols-3 md:gap-6">
         <FadeIn className="max-w-sm text-center md:justify-self-start md:text-left">
-          <span className="font-script text-ink/70 text-lg">
+          <span className="font-script text-ink/70 text-xl">
             a global perspective
           </span>
           <SectionHeading as="h2" className="mt-2">

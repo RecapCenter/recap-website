@@ -45,7 +45,13 @@ drift back to old patterns.
   `text-3xl md:text-4xl`, sub/card `text-2xl md:text-3xl` (see
   `components/ui/section-heading.tsx`).
 - Body copy: `font-sans` (Inter), `text-base leading-relaxed` for paragraphs.
-- Eyebrow labels / handwritten accents: `font-script` (Caveat).
+- Eyebrow labels / handwritten accents: `font-script` (Caveat), `text-xl`.
+- Form fields (inputs, selects, textareas, search) are never below
+  `text-base` — iOS Safari zooms the page on focus of anything under 16px.
+- FAQ answers are body copy (`text-base`), not captions. Blog post bodies
+  (`.wp-content`) use `text-lg` for long-form reading. `text-sm` is for card
+  descriptions/captions, `text-xs` for meta (dates, file sizes) — nothing
+  smaller.
 - `font-display` (Baloo 2) has been retired — do not reintroduce it. The only
   intentional exception to the "no bold headings" rule is large numeral
   badges/stats (e.g. About's stat numbers, timeline year circles, Services'

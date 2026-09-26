@@ -50,7 +50,7 @@ export function NewsletterForm() {
             placeholder="you@somewhere.com"
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "newsletter-email-error" : undefined}
-            className="text-cream placeholder:text-footer-muted w-full bg-transparent text-sm focus:outline-none sm:w-56"
+            className="text-cream placeholder:text-footer-muted w-full bg-transparent text-base focus:outline-none sm:w-56"
             {...emailField}
             ref={(el) => {
               emailRhfRef(el);

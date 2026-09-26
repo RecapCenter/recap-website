@@ -18,7 +18,8 @@ import {
 import { scrollAndFocus } from "@/lib/validation/scroll-to-error";
 
 const inputClasses =
-  "h-11 w-full rounded-xl border bg-contact-input px-4 text-sm text-contact-ink placeholder:text-contact-body focus:outline-none focus:ring-2 transition-colors";
+  // text-base (16px), not smaller: iOS Safari zooms the page on focus of any field under 16px.
+  "h-11 w-full rounded-xl border bg-contact-input px-4 text-base text-contact-ink placeholder:text-contact-body focus:outline-none focus:ring-2 transition-colors";
 const validBorder = "border-contact-border focus:border-contact-accent focus:ring-contact-accent/20";
 const invalidBorder = "border-accent-red focus:border-accent-red focus:ring-accent-red/20";
 

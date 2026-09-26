@@ -64,7 +64,7 @@ export function NotifyForm() {
                 aria-label="Email address"
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "notify-email-error" : undefined}
-                className="text-ink placeholder:text-body-gray/70 w-full bg-transparent text-sm focus:outline-none sm:w-56"
+                className="text-ink placeholder:text-body-gray/70 w-full bg-transparent text-base focus:outline-none sm:w-56"
                 {...emailField}
                 ref={(el) => {
                   emailRhfRef(el);
