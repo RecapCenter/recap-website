@@ -6,7 +6,8 @@ import { KnowledgeHubCard } from "./knowledge-hub-card";
 import caseStoriesIcon from "@/assets/icons/case-stories-logo.svg";
 import { getLatestHomepagePosts } from "@/lib/wordpress/posts";
 
-const LIGHT_GRAY = "#e7e5e2";
+/** Matches the Thinking Out Loud tile in the Quick Link grid (quick-link-grid.tsx). */
+const TILE_BG = "var(--pastel-mustard)";
 
 const COLUMN_HEIGHT = "h-[34rem]";
 
@@ -35,9 +36,9 @@ function IntroTextTile({ className }: { className?: string }) {
   return (
     <div
       className={`flex flex-col gap-3 rounded-3xl p-6 ${className ?? ""}`}
-      style={{ backgroundColor: LIGHT_GRAY }}
+      style={{ backgroundColor: TILE_BG }}
     >
-      <IconBadge bg="#c9c7c2" size="lg">
+      <IconBadge bg="rgba(255,255,255,0.3)" size="lg">
         <Image
           src={caseStoriesIcon}
           alt=""
@@ -47,10 +48,10 @@ function IntroTextTile({ className }: { className?: string }) {
         />
       </IconBadge>
       <div>
-        <h3 className="font-serif text-ink text-2xl">
+        <h3 className="font-serif text-2xl text-white">
           Thinking Out Loud
         </h3>
-        <p className="text-body-gray mt-2 text-sm leading-relaxed">
+        <p className="mt-2 text-sm leading-relaxed text-white/85">
           Real stories of change, growth, and perspective drawn from
           everyday work with children, families, and schools.
         </p>
