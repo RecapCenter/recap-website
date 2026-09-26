@@ -26,7 +26,7 @@ export function FreebieCard({
         className="block h-full w-full text-left"
       >
         <Card className="flex h-full flex-col">
-          <div className="relative aspect-[3/4] w-full">
+          <div className="relative aspect-square w-full overflow-hidden">
             {thumbnailUrl && (
               <Image
                 src={thumbnailUrl}

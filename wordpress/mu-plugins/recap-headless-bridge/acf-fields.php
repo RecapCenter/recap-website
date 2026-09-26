@@ -198,7 +198,7 @@ function recap_register_freebie_fields(): void {
 					'type'          => 'image',
 					'return_format' => 'array',
 					'preview_size'  => 'recap_freebie_thumb',
-					'instructions'  => 'Optional — shown on the freebie card.',
+					'instructions'  => 'Optional — shown on the freebie card. Square works best (e.g. 1200×1200px); other shapes are cropped to a square.',
 				),
 				array(
 					'key'          => 'field_recap_freebie_description',
