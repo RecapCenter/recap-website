@@ -33,7 +33,7 @@ export default async function GalleryPage({
         icon={thinkingOutLoudIcon}
         iconBg="var(--accent-orange)"
         eyebrow="moments, captured"
-        heading="A look inside our world."
+        heading="Look inside our world."
         subtext="Photos and videos from sessions, workshops, and the everyday moments in between."
         size="compact"
       />
