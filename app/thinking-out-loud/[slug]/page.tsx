@@ -50,7 +50,7 @@ export default async function BlogPostPage({
   return (
     <main>
       <article>
-        <div className="px-6 pt-10 pb-6">
+        <div className="px-6 pt-[calc(var(--nav-height)+2.5rem)] pb-6">
           <Link
             href="/thinking-out-loud"
             className="text-body-gray hover:text-ink inline-flex items-center gap-2 text-sm"

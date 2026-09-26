@@ -81,6 +81,18 @@ drift back to old patterns.
   still needs real top padding on the section after it — a flush zero-gap
   seam only reads as "intentional" when both sides are the same neutral tone.
 
+**Fixed, transparent navbar**
+
+- The navbar (`components/layout/navbar.tsx`) is `fixed` on every page and
+  device: transparent at the top, cream (`bg-cream/95` + blur + border) once
+  scrolled or while the mobile menu is open. It takes no space in the flow.
+- So every page's first section must add `var(--nav-height)` (defined in
+  `app/globals.css`) to its top padding, e.g.
+  `pt-[calc(var(--nav-height)+4rem)]` instead of `pt-16`. `PageIntro`, the
+  About/Contact/Recap Lab heroes, the blog post page and 404 already do. The
+  homepage hero is the one exception: its artwork deliberately runs under the
+  bar.
+
 **Shared components to reuse rather than reinvent**
 
 `SectionHeading`, `Button`, `Card`, `IconBadge`, `EyebrowLabel`,

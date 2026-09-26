@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <section className="bg-cream flex min-h-[70vh] items-center justify-center px-6 py-24 text-center">
+    <section className="bg-cream flex min-h-[70vh] items-center justify-center px-6 pt-[calc(var(--nav-height)+6rem)] pb-24 text-center">
       <div className="mx-auto max-w-xl">
         <EyebrowLabel withDottedLines>oops, wrong turn</EyebrowLabel>
         <SectionHeading as="h1" className="mt-4">

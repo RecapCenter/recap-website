@@ -19,6 +19,11 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // The bar is fixed and floats over the top of every page, so each page's
+  // first section pads itself by --nav-height (app/globals.css).
+  // Transparent at the top of the page; cream once scrolled or while the
+  // mobile menu is open (so the menu never floats over content unreadably).
+  const solid = scrolled || open;
 
   useEffect(() => {
     function handleScroll() {
@@ -30,7 +35,14 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="bg-cream/95 sticky top-0 z-50 border-b border-black/5 backdrop-blur">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ease-out",
+        solid
+          ? "bg-cream/95 border-black/5 backdrop-blur"
+          : "border-transparent bg-transparent",
+      )}
+    >
       <div
         className={cn(
           "mx-auto flex max-w-[1200px] items-center justify-between px-6 transition-[padding] duration-300 ease-out md:px-10",

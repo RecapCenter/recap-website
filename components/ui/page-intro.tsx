@@ -30,8 +30,8 @@ export function PageIntro({
     <section
       className={
         size === "full"
-          ? "bg-cream relative overflow-hidden px-6 py-24 text-center md:py-32"
-          : "bg-cream relative overflow-hidden px-6 py-16 text-center md:py-20"
+          ? "bg-cream relative overflow-hidden px-6 pt-[calc(var(--nav-height)+6rem)] pb-24 text-center md:pt-[calc(var(--nav-height)+8rem)] md:pb-32"
+          : "bg-cream relative overflow-hidden px-6 pt-[calc(var(--nav-height)+4rem)] pb-16 text-center md:pt-[calc(var(--nav-height)+5rem)] md:pb-20"
       }
     >
       <DecorativeBlob

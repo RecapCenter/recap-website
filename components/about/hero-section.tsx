@@ -9,7 +9,7 @@ import {
 export function AboutHeroSection() {
   return (
     <section
-      className="relative overflow-hidden px-6 py-24 text-center md:py-32"
+      className="relative overflow-hidden px-6 pt-[calc(var(--nav-height)+6rem)] pb-24 text-center md:pt-[calc(var(--nav-height)+8rem)] md:pb-32"
       style={{
         background:
           "radial-gradient(120% 100% at 50% 20%, #fdf6d8 0%, #f7de8e 55%, #f9e9a0 100%)",

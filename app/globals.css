@@ -116,6 +116,11 @@
   --pastel-yellow-light: #f7de9e;
   --pastel-lavender-light: #d6c4e8;
 
+  /* Height of the fixed navbar at the top of the page (36px logo + 2×16px
+     padding). It floats over every page, so each page's first section adds
+     this to its top padding — see components/layout/navbar.tsx. */
+  --nav-height: 4.25rem;
+
   /* Footer (dark band, shared across all pages) */
   --footer-bg: #1a120c;
   --footer-accent: #e8873a;
@@ -174,6 +179,8 @@
   }
   html {
     @apply font-sans;
+    /* Keeps scrollIntoView/anchor targets from landing under the fixed navbar. */
+    scroll-padding-top: var(--nav-height);
   }
 }
 

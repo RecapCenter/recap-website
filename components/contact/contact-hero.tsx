@@ -34,7 +34,7 @@ function SproutIcon() {
 
 export function ContactHero() {
   return (
-    <section className="bg-contact-bg relative overflow-hidden px-6 py-24 text-center md:py-32">
+    <section className="bg-contact-bg relative overflow-hidden px-6 pt-[calc(var(--nav-height)+6rem)] pb-24 text-center md:pt-[calc(var(--nav-height)+8rem)] md:pb-32">
       <DecorativeBlob
         color="#f0c368"
         size={420}

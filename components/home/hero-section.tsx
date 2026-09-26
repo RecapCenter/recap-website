@@ -22,6 +22,7 @@ export function HeroSection() {
   const { props: mobile } = getImageProps({ ...shared, src: heroMobile });
 
   return (
+    // The artwork runs under the transparent fixed navbar on every device.
     <section className="relative overflow-hidden">
       <h1 className="sr-only">
         Realm of Counselling &amp; Psychological Services

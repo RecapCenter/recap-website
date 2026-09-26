@@ -9,7 +9,7 @@ import recapLabIcon from "@/assets/icons/recap-lab-logo.svg";
 export function ComingSoonHero() {
   return (
     <section
-      className="relative overflow-hidden px-6 py-24 text-center md:py-32"
+      className="relative overflow-hidden px-6 pt-[calc(var(--nav-height)+6rem)] pb-24 text-center md:pt-[calc(var(--nav-height)+8rem)] md:pb-32"
       style={{
         background:
           "radial-gradient(120% 100% at 50% 20%, #fde9d3 0%, #f7b98e 55%, #f9c9a0 100%)",
