@@ -56,10 +56,12 @@ export async function GallerySection() {
 
   return (
     <section className="relative h-[640px] overflow-hidden bg-neutral-950 md:h-[720px]">
-      {/* Background: scrolling photo columns, faded out at top and bottom */}
+      {/* Background: scrolling photo columns. The top/bottom fade is drawn by
+          the overlay below rather than a CSS mask — Safari re-rasterises
+          masked content on every frame while it moves, which lagged. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 flex gap-4 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] px-4"
+        className="pointer-events-none absolute inset-0 flex gap-4 px-4"
       >
         {COLUMNS.map((column, i) => (
           <PhotoColumn
@@ -70,6 +72,11 @@ export async function GallerySection() {
           />
         ))}
       </div>
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-neutral-950),transparent_15%,transparent_85%,var(--color-neutral-950))]"
+      />
 
       {/* Black-to-grey gradient behind the copy: a centred band on mobile,
           solid black on the left fading through grey to clear from tablet up */}
