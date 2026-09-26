@@ -12,8 +12,7 @@ const VALUES = [
   {
     icon: <SproutIcon className="size-10" />,
     title: "People deserve to be understood…",
-    description:
-      "Before they are judged, labelled, or defined by a problem.",
+    description: "Before they are judged, labelled, or defined by a problem.",
     bg: "var(--pastel-peach)",
     titleColor: "var(--accent-orange)",
   },
@@ -45,15 +44,16 @@ const VALUES = [
 
 export function ValuesSection() {
   return (
-    <section className="bg-cream px-6 py-20 md:py-24">
-      <div className="mx-auto max-w-[1200px]">
-        <FadeIn className="text-center">
+    // Continues OurStorySection's chapter: same background, no top padding.
+    <section className="bg-cream px-6 pb-20 md:pb-24">
+      <div className="border-border mx-auto max-w-[1200px] border-t pt-12 md:pt-16">
+        <FadeIn>
           <span className="font-script text-ink/70 text-xl">our values</span>
           <SectionHeading as="h2" className="mt-3">
             What we believe
           </SectionHeading>
         </FadeIn>
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {VALUES.map((value, i) => (
             <FadeIn key={value.title} delay={i * 0.08}>
               <ValueCard {...value} />

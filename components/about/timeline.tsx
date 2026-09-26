@@ -9,43 +9,54 @@ const MILESTONES = [
   {
     value: "Ongoing",
     title: "Research & Learning",
-    description: "Keeping our practice curious, reflective and evidence-informed",
+    description:
+      "Keeping our practice curious, reflective and evidence-informed",
   },
 ];
 
+/**
+ * "Our little journey" as a dark ink band of figures — the About page's one
+ * high-contrast moment between the cream story and founder chapters.
+ */
 export function Timeline() {
   return (
-    <section className="bg-pastel-lavender px-6 py-20 md:py-24">
-      <div className="mx-auto max-w-[1200px]">
-        <FadeIn className="text-center">
-          <span className="font-script text-ink/70 text-xl">
+    <section className="bg-ink text-cream px-6 py-16 md:py-20">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-12">
+        <FadeIn>
+          <span className="font-script text-cream/70 text-xl">
             our little journey
           </span>
-          <SectionHeading as="h2" className="mt-3">
+          <SectionHeading as="h2" className="text-cream mt-3">
             5 years, one steady hand.
           </SectionHeading>
         </FadeIn>
 
-        {/* Vertical stack on mobile, single row from md up */}
-        <div className="mt-14 grid grid-cols-1 gap-10 md:mt-16 md:grid-cols-5 md:gap-6">
+        <ul className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
           {MILESTONES.map((m, i) => (
-            <FadeIn
+            <li
               key={m.title}
-              delay={i * 0.1}
-              className="flex flex-col items-center text-center"
+              className={
+                // Spans both columns on phones so the last row isn't half empty.
+                i === MILESTONES.length - 1 ? "col-span-2 sm:col-span-1" : ""
+              }
             >
-              <span className="border-accent-red font-serif text-ink flex size-20 items-center justify-center rounded-full border-2 bg-white text-base font-bold">
-                {m.value}
-              </span>
-              <h3 className="font-serif text-ink mt-4 text-lg">{m.title}</h3>
-              {m.description && (
-                <p className="text-body-gray mt-1 max-w-xs text-sm md:max-w-[200px]">
-                  {m.description}
-                </p>
-              )}
-            </FadeIn>
+              <FadeIn
+                delay={i * 0.08}
+                className="border-cream/25 flex flex-col gap-1 border-t pt-4"
+              >
+                <span className="font-serif text-3xl font-bold tabular-nums md:text-4xl">
+                  {m.value}
+                </span>
+                <span className="text-cream text-base">{m.title}</span>
+                {m.description && (
+                  <span className="text-cream/65 text-sm leading-snug">
+                    {m.description}
+                  </span>
+                )}
+              </FadeIn>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

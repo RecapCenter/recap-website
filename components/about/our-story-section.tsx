@@ -9,7 +9,9 @@ const NO_SINGLE_WAY = [
 
 export function OurStorySection() {
   return (
-    <section className="bg-cream px-6 py-20 md:py-28">
+    // Flows straight into ValuesSection below (same background, no gap), so
+    // story and beliefs read as one chapter.
+    <section className="bg-cream px-6 pt-16 pb-12 md:pt-20 md:pb-16">
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
         <FadeIn>
           <span className="font-script text-ink/70 text-xl">our story</span>
@@ -27,15 +29,15 @@ export function OurStorySection() {
           <p className="text-body-gray mt-6 text-base leading-relaxed">
             We bring together psychology, education, relationships and lived
             experience to make support more meaningful and accessible. Our work
-            extends across counselling, emotional and social learning,
-            inclusive education, parent guidance, psychological support,
-            professional learning and research-informed interventions.
+            extends across counselling, emotional and social learning, inclusive
+            education, parent guidance, psychological support, professional
+            learning and research-informed interventions.
           </p>
         </FadeIn>
 
         <FadeIn delay={0.1} className="flex flex-col gap-6">
           <div className="text-body-gray flex flex-col gap-4 text-base leading-relaxed">
-            <p className="font-serif text-ink text-2xl">
+            <p className="text-ink font-serif text-2xl">
               But beyond the services, Recap is about perspective.
             </p>
             <p>
@@ -45,9 +47,9 @@ export function OurStorySection() {
             </p>
           </div>
 
-          <ul className="bg-pastel-yellow-light flex flex-col gap-2 rounded-3xl p-7">
+          <ul className="border-pastel-mustard flex flex-col gap-2 border-l-[3px] pl-5">
             {NO_SINGLE_WAY.map((line) => (
-              <li key={line} className="font-serif text-ink text-lg">
+              <li key={line} className="text-ink font-serif text-lg md:text-xl">
                 {line}
               </li>
             ))}
@@ -57,7 +59,7 @@ export function OurStorySection() {
             Recap is a place to pause, understand, reconnect and move
             forward—with greater awareness and a little more possibility.
           </p>
-          <p className="font-script text-ink text-2xl">
+          <p className="font-script text-accent-orange text-3xl leading-tight">
             From managing chaos to developing perspective.
           </p>
         </FadeIn>

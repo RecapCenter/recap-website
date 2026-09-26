@@ -6,7 +6,7 @@ export function PullQuoteCard({
   attribution?: string;
 }) {
   return (
-    <figure className="rounded-3xl bg-white/70 p-6 shadow-[0_8px_30px_rgba(23,20,15,0.06)]">
+    <figure className="m-0 rounded-3xl bg-white p-7 shadow-[0_10px_30px_rgba(42,32,25,0.07)] md:p-8">
       <span className="text-accent-red font-serif text-4xl leading-none">
         &ldquo;
       </span>
