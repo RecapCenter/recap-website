@@ -28,7 +28,7 @@ export function VideoThumbnail({
       type="button"
       onClick={onOpen}
       aria-label={caption ? `Play video: ${caption}` : `Play video: ${title}`}
-      className="group relative block w-full cursor-pointer overflow-hidden rounded-3xl shadow-[0_1px_3px_rgba(23,20,15,0.08)] transition-shadow duration-300 hover:shadow-[0_12px_30px_rgba(23,20,15,0.16)]"
+      className="group relative block w-full cursor-pointer overflow-hidden rounded-sm shadow-[0_1px_3px_rgba(23,20,15,0.08)] transition-shadow duration-300 hover:shadow-[0_12px_30px_rgba(23,20,15,0.16)]"
     >
       {imageUrl && (
         <Image

@@ -6,8 +6,8 @@ type GalleryItemProps = GalleryItemType & {
   onOpen: () => void;
 };
 
-/** Routes each gallery entry to the right tile: static photos never open a
- * popup, only videos do. */
+/** Routes each gallery entry to the right tile: photos open full size in a
+ * new tab, videos open the in-page popup. */
 export function GalleryItem({ type, onOpen, ...item }: GalleryItemProps) {
   if (type === "video") {
     return <VideoThumbnail {...item} onOpen={onOpen} />;
