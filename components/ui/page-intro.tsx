@@ -14,7 +14,7 @@ type PageIntroProps = {
   iconBg?: string;
   eyebrow: string;
   heading: React.ReactNode;
-  subtext: string;
+  subtext?: string;
   size?: "compact" | "full";
 };
 
@@ -69,9 +69,11 @@ export function PageIntro({
         <SectionHeading as="h1" className="mt-3">
           {heading}
         </SectionHeading>
-        <p className="text-body-gray mx-auto mt-6 max-w-xl text-base leading-relaxed">
-          {subtext}
-        </p>
+        {subtext && (
+          <p className="text-body-gray mx-auto mt-6 max-w-xl text-base leading-relaxed">
+            {subtext}
+          </p>
+        )}
       </FadeIn>
     </section>
   );

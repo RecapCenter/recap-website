@@ -5,6 +5,7 @@ export const WP_CONTENT_TAGS = {
   recommendation: "wp:recommendations",
   lab_resource: "wp:lab",
   review: "wp:reviews",
+  country_photo: "wp:around-the-world",
   category: "wp:categories",
 } as const;
 

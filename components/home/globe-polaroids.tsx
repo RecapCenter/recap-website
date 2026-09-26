@@ -3,79 +3,32 @@
 import type React from "react";
 import { useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import createGlobe from "cobe";
 
-interface PolaroidMarker {
+export interface PolaroidMarker {
+  /** Must be CSS-identifier safe — it's used in cobe's anchor/var names. */
   id: string;
   location: [number, number];
   image: string;
   caption: string;
   rotate: number;
+  href: string;
 }
 
 interface GlobePolaoridsProps {
-  markers?: PolaroidMarker[];
+  markers: PolaroidMarker[];
   className?: string;
   speed?: number;
-  linkHref?: string;
 }
 
-const defaultMarkers: PolaroidMarker[] = [
-  {
-    id: "polaroid-sf",
-    location: [37.78, -122.44],
-    image:
-      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=120&h=120&fit=crop",
-    caption: "San Francisco",
-    rotate: -5,
-  },
-  {
-    id: "polaroid-nyc",
-    location: [40.71, -74.01],
-    image:
-      "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=120&h=120&fit=crop",
-    caption: "New York",
-    rotate: 4,
-  },
-  {
-    id: "polaroid-tokyo",
-    location: [35.68, 139.65],
-    image:
-      "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=120&h=120&fit=crop",
-    caption: "Tokyo",
-    rotate: -3,
-  },
-  {
-    id: "polaroid-sydney",
-    location: [-33.87, 151.21],
-    image:
-      "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=120&h=120&fit=crop",
-    caption: "Sydney",
-    rotate: 6,
-  },
-  {
-    id: "polaroid-paris",
-    location: [48.86, 2.35],
-    image:
-      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=120&h=120&fit=crop",
-    caption: "Paris",
-    rotate: -4,
-  },
-  {
-    id: "polaroid-london",
-    location: [51.51, -0.13],
-    image:
-      "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=120&h=120&fit=crop",
-    caption: "London",
-    rotate: 3,
-  },
-];
+// Rendered size (px) of each polaroid's photo; the frame and caption scale with it.
+const PHOTO_SIZE = 96;
 
 export function GlobePolaroids({
-  markers = defaultMarkers,
+  markers,
   className = "",
   speed = 0.003,
-  linkHref,
 }: GlobePolaoridsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointerInteracting = useRef<{ x: number; y: number } | null>(null);
@@ -201,63 +154,57 @@ export function GlobePolaroids({
           touchAction: "none",
         }}
       />
-      {markers.map((m) => {
-        const Tag = linkHref ? "a" : "div";
-        return (
-          <Tag
-            key={m.id}
-            {...(linkHref
-              ? { href: linkHref, target: "_blank", rel: "noopener noreferrer" }
-              : {})}
+      {markers.map((m) => (
+        <Link
+          key={m.id}
+          href={m.href}
+          aria-label={`See photos from ${m.caption}`}
+          style={{
+            position: "absolute",
+            positionAnchor: `--cobe-${m.id}`,
+            bottom: "anchor(top)",
+            left: "anchor(center)",
+            translate: "-50% 0",
+            marginBottom: 8,
+            background: "#fff",
+            padding: "8px 8px 34px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1)",
+            transform: `rotate(${m.rotate}deg)`,
+            cursor: "pointer",
+            opacity: `var(--cobe-visible-${m.id}, 0)`,
+            filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
+            transition: "opacity 0.3s, filter 0.3s",
+          }}
+        >
+          <Image
+            src={m.image}
+            alt=""
+            width={PHOTO_SIZE}
+            height={PHOTO_SIZE}
+            style={{
+              display: "block",
+              width: PHOTO_SIZE,
+              height: PHOTO_SIZE,
+              objectFit: "cover",
+            }}
+          />
+          <span
             style={{
               position: "absolute",
-              positionAnchor: `--cobe-${m.id}`,
-              bottom: "anchor(top)",
-              left: "anchor(center)",
-              translate: "-50% 0",
-              marginBottom: 8,
-              background: "#fff",
-              padding: "6px 6px 24px",
-              boxShadow:
-                "0 2px 8px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1)",
-              transform: `rotate(${m.rotate}deg)`,
-              pointerEvents: linkHref ? "auto" : "none",
-              cursor: linkHref ? "pointer" : undefined,
-              opacity: `var(--cobe-visible-${m.id}, 0)`,
-              filter: `blur(calc((1 - var(--cobe-visible-${m.id}, 0)) * 8px))`,
-              transition: "opacity 0.3s, filter 0.3s",
+              bottom: 8,
+              left: 0,
+              right: 0,
+              textAlign: "center",
+              fontFamily: "system-ui, sans-serif",
+              fontSize: "0.75rem",
+              color: "#333",
+              letterSpacing: "0.02em",
             }}
           >
-            <Image
-              src={m.image}
-              alt={m.caption}
-              width={60}
-              height={60}
-              style={{
-                display: "block",
-                width: 60,
-                height: 60,
-                objectFit: "cover",
-              }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                bottom: 5,
-                left: 0,
-                right: 0,
-                textAlign: "center",
-                fontFamily: "system-ui, sans-serif",
-                fontSize: "0.5rem",
-                color: "#333",
-                letterSpacing: "0.02em",
-              }}
-            >
-              {m.caption}
-            </span>
-          </Tag>
-        );
-      })}
+            {m.caption}
+          </span>
+        </Link>
+      ))}
     </div>
   );
 }

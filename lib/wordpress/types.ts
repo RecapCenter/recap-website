@@ -107,6 +107,31 @@ export type WPLabResourceRaw = {
   };
 };
 
+export type WPCountryRaw = {
+  id: number;
+  name: string;
+  slug: string;
+  /** Number of published photos assigned to this country. */
+  count: number;
+  acf: {
+    latitude?: number | string | null;
+    longitude?: number | string | null;
+    cover_photo?: WPACFImage | null;
+  };
+};
+
+export type WPCountryPhotoRaw = {
+  id: number;
+  slug: string;
+  title: WPRendered;
+  date: string;
+  acf: {
+    photo?: WPACFImage | null;
+    caption?: string;
+    display_order?: number | string | null;
+  };
+};
+
 export type WPReviewRaw = {
   id: number;
   slug: string;
