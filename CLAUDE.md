@@ -76,6 +76,11 @@ drift back to old patterns.
 
 **Decorative accents**
 
+- `CTABanner` (`components/ui/cta-banner.tsx`), the closing banner on every
+  page, is the "Set sail" design: full width, no card, centred copy over
+  watercolour waves with the hero artwork's gold line (`--gold`) and a
+  bobbing paper boat (`animate-bob`, still under reduced motion). It sits
+  directly above the dark footer.
 - `components/ui/decorative-blob.tsx` (soft blurred radial-gradient glows)
   is Contact's hero treatment, reused on other pages' hero/intro sections
   (`components/ui/page-intro.tsx`, About hero, Recap Lab hero).

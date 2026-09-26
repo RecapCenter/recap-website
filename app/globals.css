@@ -23,6 +23,7 @@
   --color-pastel-blue: var(--pastel-blue);
   --color-pastel-lavender: var(--pastel-lavender);
   --color-pastel-mustard: var(--pastel-mustard);
+  --color-gold: var(--gold);
   --color-pastel-peach: var(--pastel-peach);
   --color-pastel-cream-tan: var(--pastel-cream-tan);
   --color-pastel-yellow-light: var(--pastel-yellow-light);
@@ -80,6 +81,18 @@
 
   --animate-marquee: marquee var(--duration, 40s) linear infinite;
   --animate-marquee-vertical: marquee-vertical var(--duration, 40s) linear infinite;
+  --animate-bob: bob 4.5s ease-in-out infinite;
+}
+
+/* Paper boat drifting on the closing banner's waves (components/ui/cta-banner.tsx). */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(2deg);
+  }
 }
 
 @keyframes marquee {
@@ -115,6 +128,8 @@
   --pastel-cream-tan: #ede0c0;
   --pastel-yellow-light: #f7de9e;
   --pastel-lavender-light: #d6c4e8;
+  /* Gold line colour from the homepage hero artwork (closing banner's sea). */
+  --gold: #b98a3e;
 
   /* Height of the fixed navbar at the top of the page (36px logo + 2×16px
      padding). It floats over every page, so each page's first section adds
