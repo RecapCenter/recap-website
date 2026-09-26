@@ -6,22 +6,25 @@ import { IconBadge } from "@/components/ui/icon-badge";
 import { formatFileSize } from "@/lib/utils";
 import type { Freebie } from "@/lib/wordpress/freebies";
 
-type FreebieCardProps = Freebie & {
-  onOpen: () => void;
-};
-
+/** Clicking a freebie opens its PDF in a new browser tab. */
 export function FreebieCard({
   title,
   description,
   thumbnailUrl,
   fileSizeBytes,
-  onOpen,
-}: FreebieCardProps) {
+  pdfUrl,
+}: Freebie) {
   const fileSizeLabel = formatFileSize(fileSizeBytes);
 
   return (
     <HoverLift className="h-full">
-      <button type="button" onClick={onOpen} className="block h-full w-full text-left">
+      <a
+        href={pdfUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${title} (opens PDF in a new tab)`}
+        className="block h-full w-full text-left"
+      >
         <Card className="flex h-full flex-col">
           <div className="relative aspect-[3/4] w-full">
             {thumbnailUrl && (
@@ -50,7 +53,7 @@ export function FreebieCard({
             )}
           </div>
         </Card>
-      </button>
+      </a>
     </HoverLift>
   );
 }

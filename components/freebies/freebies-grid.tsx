@@ -8,11 +8,9 @@ import {
   type SearchSuggestion,
 } from "@/components/ui/expandable-search";
 import { FreebieCard } from "./freebie-card";
-import { FreebiePdfModal } from "./freebie-pdf-modal";
 import type { Freebie } from "@/lib/wordpress/freebies";
 
 export function FreebiesGrid({ freebies }: { freebies: Freebie[] }) {
-  const [openId, setOpenId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
 
   if (freebies.length === 0) {
@@ -34,8 +32,6 @@ export function FreebiesGrid({ freebies }: { freebies: Freebie[] }) {
         .map((freebie) => ({ id: freebie.id, label: freebie.title }))
     : [];
 
-  const openFreebie = freebies.find((freebie) => freebie.id === openId) ?? null;
-
   return (
     <section className="px-6 pb-20 md:pb-24">
       <div className="mx-auto mb-6 flex max-w-[1200px] justify-end">
@@ -56,18 +52,10 @@ export function FreebiesGrid({ freebies }: { freebies: Freebie[] }) {
       ) : (
         <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-3">
           {filteredFreebies.map((freebie) => (
-            <FreebieCard
-              key={freebie.id}
-              {...freebie}
-              onOpen={() => setOpenId(freebie.id)}
-            />
+            <FreebieCard key={freebie.id} {...freebie} />
           ))}
         </FadeIn>
       )}
-      <FreebiePdfModal
-        freebie={openFreebie}
-        onOpenChange={(open) => !open && setOpenId(null)}
-      />
     </section>
   );
 }
