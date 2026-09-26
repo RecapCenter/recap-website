@@ -6,12 +6,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Recommendation } from "@/lib/wordpress/recommendations";
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Books: "var(--pastel-mustard)",
-  Music: "var(--pastel-lavender)",
-  "Research Papers": "var(--pastel-blue)",
-};
-
 export function RecommendationCard({
   title,
   description,
@@ -20,8 +14,6 @@ export function RecommendationCard({
   externalLink,
   category,
 }: Recommendation) {
-  const categoryColor = CATEGORY_COLORS[category] ?? "var(--pastel-cream-tan)";
-
   return (
     <HoverLift className="h-full">
       <Card className="flex h-full flex-col">
@@ -36,19 +28,16 @@ export function RecommendationCard({
               className={cn("object-cover", imageLetterboxed && "scale-[1.34]")}
             />
           )}
-          {category && (
-            <span
-              className={cn(
-                "absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-medium text-white shadow-sm",
-              )}
-              style={{ backgroundColor: categoryColor }}
-            >
-              {category}
-            </span>
-          )}
         </div>
         <div className="flex flex-1 flex-col gap-3 p-6">
-          <h3 className="text-ink font-serif text-lg">{title}</h3>
+          <div className="flex flex-col items-start gap-2">
+            {category && (
+              <span className="bg-muted text-body-gray rounded-full px-3 py-1 text-xs font-medium">
+                {category}
+              </span>
+            )}
+            <h3 className="text-ink font-serif text-lg">{title}</h3>
+          </div>
           <p className="text-body-gray line-clamp-2 flex-1 text-sm leading-relaxed">
             {description}
           </p>
