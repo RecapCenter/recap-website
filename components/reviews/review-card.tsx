@@ -17,7 +17,7 @@ export function ReviewCard({ quote, name, rating }: Review) {
           />
         ))}
       </div>
-      <p className="text-ink/90 mt-3 text-sm leading-relaxed">{quote}</p>
+      <p className="text-ink/90 mt-3 text-base leading-relaxed">{quote}</p>
       <span className="text-ink mt-4 block text-sm font-semibold">
         {name}
       </span>

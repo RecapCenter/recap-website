@@ -24,7 +24,7 @@ export function EmptyState({
       <SectionHeading as="h3" className="mt-3">
         {heading}
       </SectionHeading>
-      <p className="text-body-gray mt-4 text-sm leading-relaxed">{subtext}</p>
+      <p className="text-body-gray mt-4 text-base leading-relaxed">{subtext}</p>
       {actionLabel && actionHref && (
         <div className="mt-6 flex justify-center">
           <Button href={actionHref} variant="outline" size="md">

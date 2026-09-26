@@ -19,7 +19,7 @@ export function SocialCard() {
           <h2 className="text-contact-ink mt-2 font-serif text-2xl md:text-3xl">
             elsewhere on the internet
           </h2>
-          <p className="text-contact-body mt-2 max-w-md text-sm">
+          <p className="text-contact-body mt-2 max-w-md text-base leading-relaxed">
             Gentle reflections, journaling prompts, and behind-the-scenes from
             the studio.
           </p>
