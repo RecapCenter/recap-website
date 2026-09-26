@@ -49,7 +49,6 @@ export default async function ThinkingOutLoudPage({
       <BlogFilterBar allPosts={allPosts} />
       <BlogGrid
         posts={posts}
-        showFeatured={page === 1 && !q}
         page={page}
         totalPages={totalPages}
         nextPageHref={`/thinking-out-loud?${params.toString()}`}

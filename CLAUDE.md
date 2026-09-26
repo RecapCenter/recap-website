@@ -97,6 +97,15 @@ drift back to old patterns.
   homepage hero is the one exception: its artwork deliberately runs under the
   bar.
 
+**Thinking Out Loud thumbnails**
+
+- Every place a post's featured image appears (homepage tiles, the
+  `/thinking-out-loud` grid, related posts) uses
+  `components/thinking-out-loud/post-thumbnail.tsx` inside a **square**
+  frame: the image is shown whole with a blurred copy filling any gap. The
+  blog grid is an even grid of identical `BlogCard`s (no oversized featured
+  card). Recommended upload: square, ~1200×1200px.
+
 **Shared components to reuse rather than reinvent**
 
 `SectionHeading`, `Button`, `Card`, `IconBadge`, `EyebrowLabel`,

@@ -6,15 +6,14 @@ import type { BlogPost } from "@/lib/wordpress/posts";
 
 type BlogGridProps = {
   posts: BlogPost[];
-  showFeatured: boolean;
   page: number;
   totalPages: number;
   nextPageHref: string;
 };
 
+/** Even grid of identical cards — no oversized "featured" first card. */
 export function BlogGrid({
   posts,
-  showFeatured,
   page,
   totalPages,
   nextPageHref,
@@ -30,16 +29,10 @@ export function BlogGrid({
     );
   }
 
-  const [featured, ...rest] = posts;
-  const gridPosts = showFeatured ? rest : posts;
-
   return (
     <section className="px-6 pb-16" aria-live="polite">
-      <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-3">
-        {showFeatured && featured && (
-          <BlogCard {...featured} featured />
-        )}
-        {gridPosts.map((post) => (
+      <FadeIn className="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
           <BlogCard key={post.id} {...post} />
         ))}
       </FadeIn>
@@ -47,7 +40,7 @@ export function BlogGrid({
         <div className="mt-10 flex justify-center">
           <Link
             href={nextPageHref}
-            className="border-border hover:bg-black/[0.03] inline-flex h-11 items-center justify-center rounded-full border px-6 text-sm font-medium"
+            className="border-border inline-flex h-11 items-center justify-center rounded-full border px-6 text-sm font-medium hover:bg-black/[0.03]"
           >
             Load more
           </Link>

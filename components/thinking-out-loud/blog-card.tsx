@@ -1,14 +1,15 @@
-import Image from "next/image";
 import Link from "next/link";
 import { HoverLift } from "@/components/motion/hover-lift";
 import { Card } from "@/components/ui/card";
-import { cn, formatDate, estimateReadingTime } from "@/lib/utils";
+import { formatDate, estimateReadingTime } from "@/lib/utils";
 import type { BlogPost } from "@/lib/wordpress/posts";
+import { PostThumbnail } from "./post-thumbnail";
 
-type BlogCardProps = BlogPost & {
-  featured?: boolean;
-};
-
+/**
+ * Blog grid / related-posts card. Every card is identical — same square
+ * thumbnail frame as the homepage Thinking Out Loud tiles — so one
+ * featured-image shape works everywhere a post appears.
+ */
 export function BlogCard({
   slug,
   title,
@@ -16,38 +17,21 @@ export function BlogCard({
   featuredImage,
   publishedAt,
   contentHtml,
-  featured = false,
-}: BlogCardProps) {
+}: BlogPost) {
   return (
-    <HoverLift className={cn("h-full", featured && "md:col-span-2")}>
+    <HoverLift className="h-full">
       <Link href={`/thinking-out-loud/${slug}`} className="block h-full">
         <Card className="flex h-full flex-col">
-          <div
-            className={cn(
-              "relative w-full",
-              featured ? "aspect-[21/9]" : "aspect-[16/10]",
-            )}
-          >
-            {featuredImage && (
-              <Image
-                src={featuredImage.url}
-                alt={featuredImage.alt}
-                fill
-                sizes={
-                  featured
-                    ? "100vw"
-                    : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                }
-                className="object-cover"
-              />
-            )}
+          <div className="bg-pastel-cream-tan relative aspect-square w-full overflow-hidden">
+            <PostThumbnail
+              url={featuredImage?.url ?? null}
+              alt={featuredImage?.alt}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            />
           </div>
           <div className="flex flex-1 flex-col gap-3 p-6">
             <h3
-              className={cn(
-                "font-serif text-ink leading-tight",
-                featured ? "text-2xl" : "text-xl",
-              )}
+              className="text-ink font-serif text-xl leading-tight"
               dangerouslySetInnerHTML={{ __html: title }}
             />
             <p
