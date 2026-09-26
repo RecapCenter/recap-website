@@ -31,7 +31,7 @@ export async function generateMetadata({
   if (!country) return { title: "Page not found — Recap" };
 
   return {
-    title: `${country.name} — Recap`,
+    title: `Ideas that travel from ${country.name} — Recap`,
     description: `Photos from Recap's work in ${country.name}.`,
   };
 }
@@ -52,7 +52,7 @@ export default async function CountryPage({
     <main>
       <PageIntro
         eyebrow="around the world"
-        heading={country.name}
+        heading={`Ideas that travel from ${country.name}`}
         size="compact"
       />
       <GalleryGrid items={photos} />
