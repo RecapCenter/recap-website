@@ -11,33 +11,33 @@ import {
 const VALUES = [
   {
     icon: <SproutIcon className="size-10" />,
-    title: "Warmth first",
+    title: "People deserve to be understood…",
     description:
-      "Every session begins with safety. We believe change only takes root when people feel genuinely met.",
+      "Before they are judged, labelled, or defined by a problem.",
     bg: "var(--pastel-peach)",
     titleColor: "var(--accent-orange)",
   },
   {
     icon: <StarburstIcon className="size-10" />,
-    title: "Evidence, gently used",
+    title: "Every experience has a story…",
     description:
-      "We lean on research — CBT, ACT, play therapy, structured literacy — but always shape it to fit the person in front of us.",
+      "And understanding the story can change the way we see ourselves and each other.",
     bg: "var(--pastel-blue)",
     titleColor: "#1e3a6e",
   },
   {
     icon: <PetalClusterIcon className="size-10" />,
-    title: "Ripple outward",
+    title: "Growth does not look the same for everyone…",
     description:
-      "Children live inside families, classrooms, and cultures. Real progress usually means supporting the whole ecosystem.",
+      "There is no single path to learning, healing, connecting, or becoming.",
     bg: "var(--pastel-lavender-light)",
     titleColor: "#5b3a91",
   },
   {
     icon: <ArchIcon className="size-10" />,
-    title: "Honest, not perfect",
+    title: "Support should create possibility…",
     description:
-      "We share what we know, name what we don't, and celebrate the messy middle where growth actually happens.",
+      "Not dependence—because the goal is to help people find their own voice, choices, strengths, and way forward.",
     bg: "var(--pastel-yellow-light)",
     titleColor: "var(--pastel-mustard)",
   },
@@ -48,11 +48,9 @@ export function ValuesSection() {
     <section className="bg-cream px-6 py-20 md:py-24">
       <div className="mx-auto max-w-[1200px]">
         <FadeIn className="text-center">
-          <span className="font-script text-ink/70 text-xl">
-            what we believe
-          </span>
+          <span className="font-script text-ink/70 text-xl">our values</span>
           <SectionHeading as="h2" className="mt-3">
-            Four small ideas we protect fiercely.
+            What we believe
           </SectionHeading>
         </FadeIn>
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

@@ -2,28 +2,14 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const MILESTONES = [
+  { value: "2022", title: "Started" },
+  { value: "3", title: "Partnerships", description: "Schools" },
+  { value: "100+", title: "Happy Clients" },
+  { value: "50+", title: "Workshops & Trainings" },
   {
-    year: "2015",
-    title: "A tiny room, a big idea",
-    description:
-      "Recap opened as a single-therapist practice above a bookshop.",
-  },
-  {
-    year: "2018",
-    title: "School partnerships begin",
-    description:
-      "Launched consultation programs for two neighbourhood schools.",
-  },
-  {
-    year: "2021",
-    title: "Recap Lab",
-    description:
-      "Started training programs for parents, teachers, and early-career clinicians.",
-  },
-  {
-    year: "2024",
-    title: "Going global",
-    description: "Online sessions extended to families across six countries.",
+    value: "Ongoing",
+    title: "Research & Learning",
+    description: "Keeping our practice curious, reflective and evidence-informed",
   },
 ];
 
@@ -36,48 +22,27 @@ export function Timeline() {
             our little journey
           </span>
           <SectionHeading as="h2" className="mt-3">
-            Ten years, one steady hand.
+            5 years, one steady hand.
           </SectionHeading>
         </FadeIn>
 
-        {/* Desktop: horizontal */}
-        <div className="relative mt-16 hidden md:grid md:grid-cols-4 md:gap-6">
+        {/* Vertical stack on mobile, single row from md up */}
+        <div className="mt-14 grid grid-cols-1 gap-10 md:mt-16 md:grid-cols-5 md:gap-6">
           {MILESTONES.map((m, i) => (
             <FadeIn
-              key={m.year}
+              key={m.title}
               delay={i * 0.1}
               className="flex flex-col items-center text-center"
             >
-              <span className="border-accent-red font-serif text-ink flex size-14 items-center justify-center rounded-full border-2 bg-white text-sm font-bold">
-                {m.year}
+              <span className="border-accent-red font-serif text-ink flex size-20 items-center justify-center rounded-full border-2 bg-white text-base font-bold">
+                {m.value}
               </span>
-              <h3 className="font-serif text-ink mt-4 text-lg">
-                {m.title}
-              </h3>
-              <p className="text-body-gray mt-1 max-w-[220px] text-sm">
-                {m.description}
-              </p>
-            </FadeIn>
-          ))}
-        </div>
-
-        {/* Mobile: vertical stack, no connector */}
-        <div className="mt-14 flex flex-col gap-10 md:hidden">
-          {MILESTONES.map((m, i) => (
-            <FadeIn
-              key={m.year}
-              delay={i * 0.1}
-              className="flex flex-col items-center text-center"
-            >
-              <span className="border-accent-red font-serif text-ink flex size-14 items-center justify-center rounded-full border-2 bg-white text-sm font-bold">
-                {m.year}
-              </span>
-              <h3 className="font-serif text-ink mt-4 text-lg">
-                {m.title}
-              </h3>
-              <p className="text-body-gray mt-1 max-w-xs text-sm">
-                {m.description}
-              </p>
+              <h3 className="font-serif text-ink mt-4 text-lg">{m.title}</h3>
+              {m.description && (
+                <p className="text-body-gray mt-1 max-w-xs text-sm md:max-w-[200px]">
+                  {m.description}
+                </p>
+              )}
             </FadeIn>
           ))}
         </div>

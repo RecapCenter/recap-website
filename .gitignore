@@ -58,3 +58,7 @@ next-env.d.ts
 
 .vercel
 .env*
+
+.codex
+.agents
+.gitignore

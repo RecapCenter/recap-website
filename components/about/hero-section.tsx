@@ -3,7 +3,6 @@ import { DecorativeBlob } from "@/components/ui/decorative-blob";
 import {
   SectionHeading,
   HighlightMark,
-  CircleAnnotation,
   DashedArrow,
 } from "@/components/ui/section-heading";
 
@@ -28,15 +27,15 @@ export function AboutHeroSection() {
       />
 
       <FadeIn className="relative mx-auto max-w-3xl">
-        <span className="font-script text-ink/70 text-xl">hello, we are</span>
+        <span className="font-script text-ink/70 text-xl">about recap</span>
         <SectionHeading as="h1" className="mt-3">
-          <CircleAnnotation>Recap</CircleAnnotation> — a space for{" "}
-          <HighlightMark>honest</HighlightMark> conversations.
+          A space to understand. A space to grow. A space to{" "}
+          <HighlightMark>begin again.</HighlightMark>
         </SectionHeading>
-        <p className="text-body-gray mx-auto mt-6 max-w-xl text-base leading-relaxed">
-          A counselling &amp; learning practice built around one small, stubborn
-          idea: that children, families, and educators deserve support that
-          feels less like a waiting room and more like a warm kitchen table.
+        <p className="text-body-gray mx-auto mt-6 max-w-2xl text-base leading-relaxed">
+          Recap — Realm of Counselling and Psychological Services — was created
+          with a simple belief: people do not always need to be fixed;
+          sometimes, they need to be understood differently.
         </p>
         <div className="mt-10 flex items-center justify-center gap-2">
           <span className="font-script text-ink/70 text-base">

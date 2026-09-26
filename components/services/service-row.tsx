@@ -1,32 +1,33 @@
 import Image, { type StaticImageData } from "next/image";
-import { Check } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
 
 type ServiceRowProps = {
+  number: string;
   image: StaticImageData;
-  iconBg: string;
+  accentBg: string;
   title: string;
-  description: string;
-  points: readonly string[];
+  tagline: string;
+  paragraphs: readonly string[];
+  closingLine: string;
+  audience: readonly string[];
   reverse?: boolean;
 };
 
 export function ServiceRow({
+  number,
   image,
-  iconBg,
+  accentBg,
   title,
-  description,
-  points,
+  tagline,
+  paragraphs,
+  closingLine,
+  audience,
   reverse = false,
 }: ServiceRowProps) {
   return (
-    <FadeIn
-      className={cn(
-        "grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16",
-      )}
-    >
+    <FadeIn className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
       <div
         className={cn(
           "relative aspect-square w-full overflow-hidden rounded-t-[50%] rounded-b-none",
@@ -42,25 +43,34 @@ export function ServiceRow({
         />
       </div>
       <div className={cn(reverse && "md:order-1")}>
-        <SectionHeading as="h3">{title}</SectionHeading>
-        <p className="text-body-gray mt-4 text-base leading-relaxed">
-          {description}
-        </p>
-        <ul className="mt-6 flex flex-col gap-3">
-          {points.map((point) => (
-            <li key={point} className="flex items-start gap-3">
-              <span
-                className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full"
-                style={{ backgroundColor: iconBg }}
-              >
-                <Check className="text-ink size-3" />
-              </span>
-              <span className="text-body-gray text-sm leading-relaxed">
-                {point}
-              </span>
-            </li>
+        <SectionHeading as="h2">
+          <span className="font-script text-ink/70 mb-3 block text-xl">
+            {number} — {title}
+          </span>
+          {tagline}
+        </SectionHeading>
+        <div className="text-body-gray mt-6 flex flex-col gap-4 text-base leading-relaxed">
+          {paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
           ))}
-        </ul>
+        </div>
+        <p className="font-serif text-ink mt-6 text-xl">{closingLine}</p>
+        <div className="mt-6">
+          <span className="text-body-gray text-xs font-semibold tracking-widest uppercase">
+            For
+          </span>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {audience.map((who) => (
+              <li
+                key={who}
+                className="text-ink rounded-full px-4 py-1.5 text-sm"
+                style={{ backgroundColor: accentBg }}
+              >
+                {who}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </FadeIn>
   );
