@@ -31,7 +31,10 @@ export const nameSchema = z
   .string()
   .trim()
   .min(1, "Please enter your name.")
-  .min(NAME_MIN_LENGTH, `Name must contain at least ${NAME_MIN_LENGTH} characters.`)
+  .min(
+    NAME_MIN_LENGTH,
+    `Name must contain at least ${NAME_MIN_LENGTH} characters.`,
+  )
   .max(NAME_MAX_LENGTH, `Name must be ${NAME_MAX_LENGTH} characters or fewer.`);
 
 export const emailSchema = z
@@ -50,7 +53,9 @@ export const phoneSchema = z
   .refine(
     (v) => {
       const digits = v.replace(/\D/g, "");
-      return digits.length >= PHONE_MIN_DIGITS && digits.length <= PHONE_MAX_DIGITS;
+      return (
+        digits.length >= PHONE_MIN_DIGITS && digits.length <= PHONE_MAX_DIGITS
+      );
     },
     { message: "Please enter a valid phone number." },
   );
@@ -65,8 +70,14 @@ export const messageSchema = z
   .string()
   .trim()
   .min(1, "Please enter your message.")
-  .min(MESSAGE_MIN_LENGTH, `Message must contain at least ${MESSAGE_MIN_LENGTH} characters.`)
-  .max(MESSAGE_MAX_LENGTH, `Your message cannot exceed ${MESSAGE_MAX_LENGTH} characters.`);
+  .min(
+    MESSAGE_MIN_LENGTH,
+    `Message must contain at least ${MESSAGE_MIN_LENGTH} characters.`,
+  )
+  .max(
+    MESSAGE_MAX_LENGTH,
+    `Your message cannot exceed ${MESSAGE_MAX_LENGTH} characters.`,
+  );
 
 export const agreedSchema = z.boolean().refine((v) => v === true, {
   message: "Please tick the box above so we know it's okay to reach out.",
@@ -98,3 +109,40 @@ export const emailOnlySchema = z.object({
 });
 
 export type EmailOnlyValues = z.infer<typeof emailOnlySchema>;
+
+/* ---------- Newsletter unsubscribe (/unsubscribe) ---------- */
+
+export const UNSUBSCRIBE_REASONS = [
+  { value: "too-many", label: "I get too many emails" },
+  { value: "not-relevant", label: "The content isn't relevant to me" },
+  { value: "never-signed-up", label: "I don't remember signing up" },
+  { value: "taking-a-break", label: "I'm just taking a break" },
+  { value: "other", label: "Something else" },
+] as const;
+
+export const UNSUBSCRIBE_NOTE_MAX_LENGTH = 500;
+
+const UNSUBSCRIBE_REASON_VALUES: readonly string[] = UNSUBSCRIBE_REASONS.map(
+  (r) => r.value,
+);
+
+export const unsubscribeSchema = z.object({
+  email: emailSchema,
+  reason: z.string().refine((v) => UNSUBSCRIBE_REASON_VALUES.includes(v), {
+    message: "Please choose a reason.",
+  }),
+  note: z
+    .string()
+    .trim()
+    .max(
+      UNSUBSCRIBE_NOTE_MAX_LENGTH,
+      `Please keep this to ${UNSUBSCRIBE_NOTE_MAX_LENGTH} characters or fewer.`,
+    )
+    .optional()
+    .default(""),
+  confirmed: z.boolean().refine((v) => v === true, {
+    message: "Please tick the box to confirm you want to unsubscribe.",
+  }),
+});
+
+export type UnsubscribeValues = z.input<typeof unsubscribeSchema>;

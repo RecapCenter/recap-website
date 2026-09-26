@@ -1,6 +1,10 @@
 <?php
 /**
- * Newsletter ("the slow letter") signups → MailPoet.
+ * Newsletter ("the slow letter") signups and unsubscribes → MailPoet.
+ *
+ * Unsubscribes come from the website's /unsubscribe page via
+ * POST /wp-json/recap/v1/unsubscribe (same secret), which removes the
+ * address from the list and saves the reason under "Unsubscribe Reasons".
  *
  * The Next.js footer form posts to its own /api/newsletter route, which
  * calls this endpoint server-to-server:
@@ -31,7 +35,7 @@ const RECAP_NEWSLETTER_LIST = 'The Slow Letter';
  *
  * @return void
  */
-function recap_register_newsletter_route(): void {
+function recap_register_newsletter_routes(): void {
 	register_rest_route(
 		'recap/v1',
 		'/subscribe',
@@ -49,8 +53,126 @@ function recap_register_newsletter_route(): void {
 			),
 		)
 	);
+
+	register_rest_route(
+		'recap/v1',
+		'/unsubscribe',
+		array(
+			'methods'             => 'POST',
+			'callback'            => 'recap_newsletter_unsubscribe',
+			'permission_callback' => 'recap_newsletter_permission',
+			'args'                => array(
+				'email'  => array(
+					'required'          => true,
+					'type'              => 'string',
+					'sanitize_callback' => 'sanitize_email',
+					'validate_callback' => static fn ( $value ) => is_email( $value ) !== false,
+				),
+				'reason' => array(
+					'required'          => true,
+					'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+				),
+				'note'   => array(
+					'required'          => false,
+					'type'              => 'string',
+					'default'           => '',
+					'sanitize_callback' => 'sanitize_textarea_field',
+				),
+			),
+		)
+	);
 }
-add_action( 'rest_api_init', 'recap_register_newsletter_route' );
+add_action( 'rest_api_init', 'recap_register_newsletter_routes' );
+
+/**
+ * Private "Unsubscribe Reasons" list in wp-admin: one entry per unsubscribe
+ * from the website's /unsubscribe page, so the team can see why people
+ * leave. Never exposed over REST or on any public page.
+ *
+ * @return void
+ */
+function recap_register_unsubscribe_feedback_type(): void {
+	register_post_type(
+		'newsletter_feedback',
+		array(
+			'label'           => 'Unsubscribe Reasons',
+			'labels'          => array(
+				'name'          => 'Unsubscribe Reasons',
+				'singular_name' => 'Unsubscribe Reason',
+			),
+			'public'          => false,
+			'show_ui'         => true,
+			'show_in_menu'    => true,
+			'show_in_rest'    => false,
+			'menu_icon'       => 'dashicons-email-alt',
+			'menu_position'   => 26,
+			'supports'        => array( 'title', 'editor' ),
+			'capability_type' => 'post',
+			// Entries are only ever created by the unsubscribe endpoint.
+			'capabilities'    => array( 'create_posts' => 'do_not_allow' ),
+			'map_meta_cap'    => true,
+		)
+	);
+}
+add_action( 'init', 'recap_register_unsubscribe_feedback_type' );
+
+/** Human-readable labels for the reason codes the frontend sends. */
+function recap_unsubscribe_reason_label( string $reason ): string {
+	$labels = array(
+		'too-many'        => 'I get too many emails',
+		'not-relevant'    => "The content isn't relevant to me",
+		'never-signed-up' => "I don't remember signing up",
+		'taking-a-break'  => "I'm just taking a break",
+		'other'           => 'Something else',
+	);
+
+	return $labels[ $reason ] ?? $reason;
+}
+
+/**
+ * Removes the email from the newsletter list and records why. Answers the
+ * same way whether or not the address was subscribed, so the page can't be
+ * used to discover who is on the list.
+ *
+ * @param WP_REST_Request $request Incoming request.
+ * @return WP_REST_Response|WP_Error
+ */
+function recap_newsletter_unsubscribe( WP_REST_Request $request ) {
+	if ( ! class_exists( \MailPoet\API\API::class ) ) {
+		return new WP_Error( 'recap_mailpoet_missing', 'MailPoet is not active.', array( 'status' => 503 ) );
+	}
+
+	$email  = $request->get_param( 'email' );
+	$reason = recap_unsubscribe_reason_label( (string) $request->get_param( 'reason' ) );
+	$note   = (string) $request->get_param( 'note' );
+
+	try {
+		$mailpoet = \MailPoet\API\API::MP( 'v1' );
+		$list_id  = recap_newsletter_list_id( $mailpoet );
+
+		try {
+			$subscriber = $mailpoet->getSubscriber( $email );
+			$mailpoet->unsubscribeFromLists( $subscriber['id'], array( $list_id ) );
+		} catch ( \Exception $not_subscribed ) {
+			// Not a subscriber, or already off the list — nothing to remove.
+			unset( $not_subscribed );
+		}
+	} catch ( \Exception $e ) {
+		return new WP_Error( 'recap_unsubscribe_failed', 'Could not unsubscribe right now.', array( 'status' => 500 ) );
+	}
+
+	wp_insert_post(
+		array(
+			'post_type'    => 'newsletter_feedback',
+			'post_status'  => 'private',
+			'post_title'   => sprintf( '%s — %s', $email, $reason ),
+			'post_content' => '' !== $note ? $note : '(No extra note.)',
+		)
+	);
+
+	return new WP_REST_Response( array( 'ok' => true ), 200 );
+}
 
 /**
  * Only the Next.js server (which knows the shared secret) may call this.

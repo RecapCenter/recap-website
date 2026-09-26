@@ -133,6 +133,8 @@ The footer signup form posts to the frontend's `POST /api/newsletter`, which for
 
 Setup: install and activate the free **MailPoet** plugin, run its setup wizard (sender name/address — use a recapcenter.com address), then write and send newsletters from **MailPoet → Emails** to the "The Slow Letter" list. The endpoint answers 503 while MailPoet is inactive, and the form shows a "try again later" message.
 
+**Unsubscribing.** The site has its own page at `/unsubscribe`: the person confirms their email, picks a reason (plus an optional note) and ticks a confirmation box. The frontend's `POST /api/newsletter/unsubscribe` forwards this to `POST /wp-json/recap/v1/unsubscribe`, which removes them from The Slow Letter list and saves the reason as a private entry under **Unsubscribe Reasons** in wp-admin. To send people there, add a link in each newsletter's footer to `https://<site>/unsubscribe?email=[subscriber:email]` (MailPoet fills in the address). MailPoet also insists on its own `[link:subscription_unsubscribe_url]` link in every email — keep it as a fallback.
+
 ## REST endpoints
 
 | Endpoint | Notes |
