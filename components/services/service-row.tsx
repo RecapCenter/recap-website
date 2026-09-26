@@ -26,7 +26,8 @@ export function ServiceRow({
     <FadeIn className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
       <div
         className={cn(
-          "relative aspect-square w-full overflow-hidden rounded-t-[50%] rounded-b-none",
+          // Capped so the arch doesn't balloon to fill half the 1200px row.
+          "relative mx-auto aspect-square w-full max-w-xs overflow-hidden rounded-t-[50%] rounded-b-none md:max-w-sm",
           reverse && "md:order-2",
         )}
       >
@@ -34,7 +35,7 @@ export function ServiceRow({
           src={image}
           alt=""
           fill
-          sizes="(min-width: 768px) 50vw, 100vw"
+          sizes="(min-width: 768px) 384px, 320px"
           className="scale-125 object-cover"
         />
       </div>
