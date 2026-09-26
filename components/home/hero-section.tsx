@@ -1,52 +1,24 @@
-import { getImageProps } from "next/image";
-import { FadeIn } from "@/components/motion/fade-in";
-import heroDesktop from "@/assets/images/home/hero-desktop.webp";
-import heroTablet from "@/assets/images/home/hero-tablet.webp";
-import heroMobile from "@/assets/images/home/hero-mobile.webp";
+import { LaptopHero, PhoneHero, TabletHero } from "./hero/hero-layouts";
 
 /*
- * The hero is three separately art-directed final artworks (desktop,
- * tablet, mobile) rendered via <picture> so the browser downloads only
- * the composition for the active breakpoint. The heading text is baked
- * into the artwork; a visually hidden <h1> carries the semantics.
+ * Homepage hero, built from vector elements and live text (see
+ * components/home/hero/) instead of flat banner images, so it stays sharp
+ * at every screen size and animates in. Three art-directed layouts swap at
+ * the site's breakpoints: phone < 768px, tablet 768–1023px, laptop 1024px+.
+ * The artwork is decorative; the visually hidden heading carries the
+ * semantics for search engines and screen readers.
  */
 export function HeroSection() {
-  const shared = {
-    alt: "",
-    sizes: "100vw",
-    quality: 90,
-    priority: true,
-  } as const;
-  const { props: desktop } = getImageProps({ ...shared, src: heroDesktop });
-  const { props: tablet } = getImageProps({ ...shared, src: heroTablet });
-  const { props: mobile } = getImageProps({ ...shared, src: heroMobile });
-
   return (
-    // The artwork runs under the transparent fixed navbar on every device.
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-[#fcf6e8]">
       <h1 className="sr-only">
         Realm of Counselling &amp; Psychological Services
       </h1>
       <p className="sr-only">From managing chaos to developing perspective.</p>
 
-      <FadeIn>
-        <picture>
-          <source
-            media="(max-width: 767px)"
-            srcSet={mobile.srcSet}
-            width={mobile.width}
-            height={mobile.height}
-          />
-          <source
-            media="(max-width: 1023px)"
-            srcSet={tablet.srcSet}
-            width={tablet.width}
-            height={tablet.height}
-          />
-          {/* eslint-disable-next-line jsx-a11y/alt-text -- alt="" comes via getImageProps */}
-          <img {...desktop} aria-hidden className="block h-auto w-full" />
-        </picture>
-      </FadeIn>
+      <PhoneHero className="block h-auto w-full md:hidden" />
+      <TabletHero className="hidden h-auto w-full md:block lg:hidden" />
+      <LaptopHero className="hidden h-auto w-full lg:block" />
     </section>
   );
 }
