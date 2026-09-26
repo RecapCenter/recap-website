@@ -150,14 +150,6 @@
     transform: none;
   }
 }
-@keyframes hero-breathe {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.035) translate(0.4%, -0.4%);
-  }
-}
 @keyframes hero-bob {
   0%,
   100% {
@@ -214,7 +206,14 @@
   animation: hero-draw 2.8s cubic-bezier(0.55, 0.1, 0.3, 1) forwards
     var(--d, 0s);
 }
-.hero-bloom,
+/* The static, filtered art layer fades in as one element on its own
+   compositing layer, so the animating foreground never makes Safari
+   re-run its watercolour filters. */
+.hero-art {
+  opacity: 0;
+  transform: translateZ(0);
+  animation: hero-fade 1.6s ease-out forwards;
+}
 .hero-fade {
   opacity: 0;
   animation: hero-fade 1.8s ease-out forwards var(--d, 0s);
@@ -251,21 +250,12 @@
   transform-origin: 50% 60%;
   animation: hero-flap 0.8s ease-in-out infinite;
 }
-/* The washes' slow "breathing" re-renders their watercolour filter every
-   frame, so it only runs on tablet/laptop, not on phones. */
-@media (min-width: 768px) {
-  .hero-breathe {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: hero-breathe 11s ease-in-out 2s infinite alternate;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .hero-draw {
     animation: none;
     stroke-dashoffset: 0;
   }
-  .hero-bloom,
+  .hero-art,
   .hero-fade,
   .hero-rise,
   .hero-sail-in {
@@ -276,8 +266,7 @@
   .hero-drift,
   .hero-bob,
   .hero-glide,
-  .hero-flap,
-  .hero-breathe {
+  .hero-flap {
     animation: none;
   }
   .hero-ripple {

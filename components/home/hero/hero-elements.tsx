@@ -2,12 +2,19 @@ import { RECAP_MARK_PATH } from "./recap-mark";
 
 /*
  * Building blocks for the homepage hero artwork. Each layout (laptop,
- * tablet, phone — see hero-layouts.tsx) composes these inside its own SVG,
- * in that layout's own coordinate space. Animation is pure CSS: the
- * `hero-*` classes are defined in app/globals.css and all switch off under
- * prefers-reduced-motion. `p` is a per-layout id prefix: all three SVGs are
- * in the DOM at once (two hidden by CSS), so filter/gradient/path ids must
- * be unique or the hidden layout's definitions would be picked up.
+ * tablet, phone — see hero-layouts.tsx) composes these in its own
+ * coordinate space, split across two stacked SVGs:
+ *
+ * - The ART layer (HeroDefs, Wash, Swoop, Band, Grain) holds everything that
+ *   uses an SVG filter. It must never animate internally: Safari repaints a
+ *   whole SVG when anything inside it changes, and re-running these
+ *   turbulence/blur filters every frame made the page lag badly.
+ * - The MOTION layer (everything else) animates freely and uses no filters.
+ *
+ * Animation is pure CSS: the `hero-*` classes are defined in app/globals.css
+ * and all switch off under prefers-reduced-motion. `p` is a per-layout id
+ * prefix: all three layouts are in the DOM at once (two hidden by CSS), so
+ * filter/gradient/path ids must be unique.
  */
 
 export const GOLD = "#b8863b";
@@ -83,7 +90,7 @@ export function HeroDefs({ p, w, h }: { p: string; w: number; h: number }) {
           <feTurbulence
             type="fractalNoise"
             baseFrequency="0.009"
-            numOctaves={4}
+            numOctaves={3}
             seed={7}
             result="n"
           />
@@ -95,9 +102,6 @@ export function HeroDefs({ p, w, h }: { p: string; w: number; h: number }) {
             yChannelSelector="G"
           />
           <feGaussianBlur stdDeviation={4.5} />
-        </filter>
-        <filter id={`${p}-soft`}>
-          <feGaussianBlur stdDeviation={1.4} />
         </filter>
         <filter id={`${p}-grain`}>
           <feTurbulence
@@ -144,20 +148,18 @@ export function Wash({
   rot?: number;
 }) {
   const d = blobPath(cx, cy, rx, ry, seed, rot);
+  // Deliberately never animated: it's filtered, and animating filtered
+  // content makes Safari re-run the filter every frame (see HeroArt).
   return (
-    <g className="hero-bloom" style={delay(0.05 + (seed % 5) * 0.12)}>
-      <g className="hero-breathe">
-        <g filter={`url(#${p}-wc)`} opacity={opacity}>
-          <path d={d} fill={`url(#${p}-g-${color})`} />
-          <path
-            d={d}
-            fill="none"
-            stroke={WASH[color]}
-            strokeWidth={5}
-            opacity={0.45}
-          />
-        </g>
-      </g>
+    <g filter={`url(#${p}-wc)`} opacity={opacity}>
+      <path d={d} fill={`url(#${p}-g-${color})`} />
+      <path
+        d={d}
+        fill="none"
+        stroke={WASH[color]}
+        strokeWidth={5}
+        opacity={0.45}
+      />
     </g>
   );
 }
@@ -168,19 +170,14 @@ export function Swoop({
   d,
   color,
   opacity,
-  index,
 }: {
   p: string;
   d: string;
   color: string;
   opacity: number;
-  index: number;
 }) {
-  return (
-    <g className="hero-bloom" style={delay(0.2 + (index % 5) * 0.15)}>
-      <path d={d} fill={color} opacity={opacity} filter={`url(#${p}-wc)`} />
-    </g>
-  );
+  // Static for the same reason as Wash.
+  return <path d={d} fill={color} opacity={opacity} filter={`url(#${p}-wc)`} />;
 }
 
 /** Gold line that draws itself in on load. */
@@ -469,7 +466,6 @@ export function Perspective() {
 
 /** Tagline lines with a pink brush stroke swept under "perspective.". */
 export function Tagline({
-  p,
   x,
   y,
   size,
@@ -478,7 +474,6 @@ export function Tagline({
   brushY,
   brushW,
 }: {
-  p: string;
   x: number;
   y: number;
   size: number;
@@ -490,7 +485,9 @@ export function Tagline({
   const bx = (t: number) => brushX + brushW * t;
   return (
     <>
-      <g opacity={0.75} filter={`url(#${p}-soft)`}>
+      {/* No blur filter here: this stroke animates, and a filter would be
+          recomputed every frame in Safari. */}
+      <g opacity={0.7}>
         <path
           className="hero-draw"
           pathLength={1}
