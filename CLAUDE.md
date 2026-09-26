@@ -63,6 +63,10 @@ drift back to old patterns.
   pastel blue/lavender/mustard/peach) are untouched by this system.
 - Avoid `bg-white` for full-section backgrounds — use `bg-cream`, matching
   Contact's convention of never using pure white for a section wrapper.
+- Intentional exception: the homepage Gallery section
+  (`components/home/gallery-section.tsx`) is a dark band — scrolling photo
+  columns under a black-to-grey gradient, with white copy and the
+  `solid-accent` button — at the user's request.
 
 **Decorative accents**
 

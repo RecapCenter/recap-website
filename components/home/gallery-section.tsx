@@ -55,7 +55,7 @@ export async function GallerySection() {
   const columns = toColumns(photos);
 
   return (
-    <section className="bg-cream relative h-[640px] overflow-hidden md:h-[720px]">
+    <section className="relative h-[640px] overflow-hidden bg-neutral-950 md:h-[720px]">
       {/* Background: scrolling photo columns, faded out at top and bottom */}
       <div
         aria-hidden
@@ -71,32 +71,36 @@ export async function GallerySection() {
         ))}
       </div>
 
-      {/* Gradient behind the copy: a centred band on mobile, solid on the
-          left fading out to the right from tablet up */}
+      {/* Black-to-grey gradient behind the copy: a centred band on mobile,
+          solid black on the left fading through grey to clear from tablet up */}
       <div
         aria-hidden
-        className="from-cream/50 via-cream/90 to-cream/50 md:from-cream md:via-cream/75 md:to-cream/0 pointer-events-none absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r md:from-30% md:via-50% md:to-80%"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-black/85 to-black/60 md:bg-gradient-to-r md:from-black md:from-30% md:via-neutral-900/75 md:via-50% md:to-neutral-800/0 md:to-80%"
       />
 
       <div className="relative mx-auto flex h-full max-w-[1200px] items-center px-6">
         <FadeIn className="mx-auto max-w-md text-center md:mx-0 md:w-1/3 md:max-w-none md:text-left">
-          <span className="font-script text-ink/70 text-lg">
+          <span className="font-script text-lg text-white/70">
             a glimpse into recap
           </span>
-          <SectionHeading as="h2" className="mt-2">
+          <SectionHeading as="h2" className="mt-2 text-white">
             Our Gallery
           </SectionHeading>
-          <p className="text-ink mt-4 font-serif text-lg leading-snug">
+          <p className="mt-4 font-serif text-lg leading-snug text-white">
             A glimpse into the spaces, conversations, workshops, events and
             moments that define Recap.
           </p>
-          <p className="text-body-gray mt-4 text-base leading-relaxed">
+          <p className="mt-4 text-base leading-relaxed text-white/70">
             Explore moments from counselling sessions, workshops, awareness
             programs, community initiatives and everyday experiences that
             reflect the warmth and purpose of Recap.
           </p>
           <div className="mt-8 flex justify-center md:justify-start">
-            <Button href="/gallery" icon={<ArrowRight className="size-4" />}>
+            <Button
+              href="/gallery"
+              variant="solid-accent"
+              icon={<ArrowRight className="size-4" />}
+            >
               View Full Gallery
             </Button>
           </div>
