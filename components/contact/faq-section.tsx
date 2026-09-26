@@ -5,28 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { EyebrowLabel } from "@/components/ui/eyebrow-label";
-
-const FAQS = [
-  {
-    question: "How soon will I hear back after I write in?",
-    answer:
-      "Usually within 48 hours. If it's urgent, say so in your message and we'll try to move faster.",
-  },
-  {
-    question: "Are sessions online?",
-    answer:
-      "Yes — all our sessions are held online, so you can join from wherever feels most comfortable.",
-  },
-  {
-    question: "Is my message confidential?",
-    answer: "Yes. Whatever you share with us stays between us, always.",
-  },
-  {
-    question: "What if I'm not sure what I need yet?",
-    answer:
-      "That's completely fine — most people who write in start exactly there. We'll figure it out together.",
-  },
-];
+import { FAQS } from "@/lib/faqs";
 
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);

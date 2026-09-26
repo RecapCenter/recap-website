@@ -6,29 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { EyebrowLabel } from "@/components/ui/eyebrow-label";
 import { SectionHeading } from "@/components/ui/section-heading";
-
-const FAQS = [
-  {
-    question: "Which service is right for us?",
-    answer:
-      "Honestly, tell us what's going on and we'll point you the right way — most families start with a quick chat, not a decision.",
-  },
-  {
-    question: "Do you work directly with schools?",
-    answer:
-      "Yes — both through special education support and trainings for staff. We're used to working alongside teachers and IEP teams.",
-  },
-  {
-    question: "Are sessions covered by insurance?",
-    answer:
-      "It depends on your provider. Write in and we'll help you figure out what's possible.",
-  },
-  {
-    question: "How long does support usually last?",
-    answer:
-      "There's no fixed timeline. Some families come for a few sessions, others for longer — we go at your pace.",
-  },
-];
+import { FAQS } from "@/lib/faqs";
 
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
