@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,6 +57,16 @@ export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
 
   const note = watch("note") ?? "";
   const botTrap = useBotTrap();
+
+  // The address arrives as /unsubscribe?email=… from newsletter links. Once
+  // it's in the form, drop it from the address bar so it doesn't linger in
+  // browser history or reach analytics on later page views.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("email")) return;
+    url.searchParams.delete("email");
+    window.history.replaceState(window.history.state, "", url);
+  }, []);
 
   async function onValid(values: UnsubscribeValues) {
     setSubmitError(null);
