@@ -145,6 +145,24 @@ drift back to old patterns.
   regex, and regexes must not have overlapping quantifiers (the old email
   regex was a ReDoS).
 
+## Performance on iOS (WebKit)
+
+Every iOS browser runs on WebKit, which lags where Android doesn't. Two
+rules came out of fixing a laggy homepage on iPhones:
+
+- **WebKit repaints a whole SVG when anything inside it changes.** Never
+  mix a forever-looping animation with heavy static SVG content (filters,
+  long text, big paths) in the same `<svg>`. The homepage hero is split
+  into three stacked SVGs for this reason — static filtered art, a
+  one-shot intro layer, and a tiny `hero-loop` layer for the boat/birds
+  (`components/home/hero/hero-layouts.tsx`).
+- **No render loop may run while off screen.** Anything driven by
+  `requestAnimationFrame` (e.g. the cobe globe in
+  `components/home/globe-polaroids.tsx`) must stop when it leaves the
+  viewport (IntersectionObserver) and must not auto-animate under
+  `prefers-reduced-motion`. Infinite CSS loops should pause off screen too
+  (`HeroVisibility` sets `data-offscreen`).
+
 ---
 
 ## Git Commits
