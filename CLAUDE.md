@@ -141,6 +141,19 @@ drift back to old patterns.
   (`lib/bot-trap.ts`) before validating. Their forms render
   `<BotTrapField>` and spread `useBotTrap().values()` into the request body
   (`components/ui/bot-trap.tsx`).
+- **Share cards:** never set `title`/`description` inside the root
+  layout's `openGraph`/`twitter` — every page would share with the
+  homepage's text. Pages get og/twitter title and description from their
+  own `title`/`description`. A page that sets its own `openGraph` replaces
+  the layout's entirely, so it must repeat images/siteName (see the blog
+  post page).
+- **WordPress text in metadata:** use `titleText` / `description` from
+  `BlogPost` (plain text via `lib/wordpress/text.ts`), never the raw
+  `.rendered` HTML, or search results show codes like `&#8211;`.
+- **Structured data** goes through `components/seo/json-ld.tsx`, which
+  escapes `<` so CMS text can't break out of the script tag.
+- **Analytics events** use `trackEvent()` (`lib/analytics.ts`) and must
+  never include personal data (names, emails, phones, message text).
 - **Favicon / app icons** (`app/favicon.ico`, `app/icon.svg`,
   `app/apple-icon.png`, `public/icon-192.png`, `public/icon-512.png`,
   `app/manifest.ts`) are generated from the Recap "R" vector by

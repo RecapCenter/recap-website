@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Services — Recap",
   alternates: { canonical: "/services" },
   description:
-    "Special education, counselling and trainings that bring together psychological understanding, education and human connection — support that meets you where you are.",
+    "Special education, counselling and trainings that bring together psychological understanding and human connection — support that meets you where you are.",
 };
 
 export default function ServicesPage() {

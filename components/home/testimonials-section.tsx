@@ -3,6 +3,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Marquee } from "@/components/ui/marquee";
 import { Button } from "@/components/ui/button";
+import { MarqueePauseButton } from "@/components/ui/marquee-pause-button";
 import { TestimonialCard } from "./testimonial-card";
 import { getCombinedReviews } from "@/lib/reviews";
 
@@ -30,6 +31,7 @@ export async function TestimonialsSection() {
       </div>
 
       <FadeIn
+        id="testimonials-marquee"
         delay={0.1}
         className="relative mt-14 flex w-full flex-col gap-6"
       >
@@ -59,10 +61,14 @@ export async function TestimonialsSection() {
         />
       </FadeIn>
 
-      <FadeIn delay={0.2} className="mt-14 flex justify-center">
+      <FadeIn
+        delay={0.2}
+        className="mt-14 flex flex-wrap items-center justify-center gap-3"
+      >
         <Button href="/reviews" icon={<ArrowRight className="size-4" />}>
           Read all Reviews
         </Button>
+        <MarqueePauseButton targetId="testimonials-marquee" label="reviews" />
       </FadeIn>
     </section>
   );

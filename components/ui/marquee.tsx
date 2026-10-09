@@ -21,7 +21,7 @@ export function Marquee({
     <div
       {...props}
       className={cn(
-        "group flex overflow-hidden p-2 [--duration:40s] [--gap:1.5rem] [gap:var(--gap)]",
+        "group flex [gap:var(--gap)] overflow-hidden p-2 [--duration:40s] [--gap:1.5rem]",
         vertical ? "flex-col" : "flex-row",
         className,
       )}
@@ -31,7 +31,9 @@ export function Marquee({
           key={i}
           aria-hidden={i > 0}
           className={cn(
-            "flex shrink-0 justify-around [gap:var(--gap)]",
+            // Static under reduced motion; pausable via data-paused on an
+            // ancestor (MarqueePauseButton).
+            "flex shrink-0 justify-around [gap:var(--gap)] motion-reduce:animate-none",
             vertical
               ? "animate-marquee-vertical flex-col"
               : "animate-marquee flex-row",

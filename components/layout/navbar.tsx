@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
@@ -16,8 +17,27 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
+/** The current page (or a section's sub-page) gets aria-current for screen readers. */
+function isCurrent(pathname: string, href: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // Escape closes the mobile menu and returns focus to its toggle button.
+  useEffect(() => {
+    if (!open) return;
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
   const [scrolled, setScrolled] = useState(false);
   // The bar is fixed and floats over the top of every page, so each page's
   // first section pads itself by --nav-height (app/globals.css).
@@ -59,11 +79,12 @@ export default function Navbar() {
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav aria-label="Main" className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
+              aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
               className="text-ink hover:text-accent-orange font-serif text-base transition-colors"
             >
               {link.label}
@@ -72,8 +93,10 @@ export default function Navbar() {
         </nav>
 
         <button
+          ref={toggleRef}
           type="button"
           onClick={() => setOpen((v) => !v)}
+          aria-controls="mobile-menu"
           className="-mr-2 flex size-11 items-center justify-center md:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
@@ -87,11 +110,16 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="flex flex-col gap-1 border-t border-black/5 px-6 py-4 md:hidden">
+        <nav
+          id="mobile-menu"
+          aria-label="Main"
+          className="flex flex-col gap-1 border-t border-black/5 px-6 py-4 md:hidden"
+        >
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
+              aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
               onClick={() => setOpen(false)}
               className="text-ink py-2 font-serif text-base"
             >
