@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { readJsonBody } from "@/lib/http";
 import { unsubscribeSchema } from "@/lib/validation/contact";
 import {
   NewsletterUnavailableError,
@@ -12,8 +13,10 @@ import {
  * subscribed, so the page can't be used to check who is on the list.
  */
 export async function POST(request: Request) {
-  const body = await request.json().catch(() => null);
-  const result = unsubscribeSchema.safeParse(body);
+  const body = await readJsonBody(request);
+  if (!body.ok) return body.response;
+
+  const result = unsubscribeSchema.safeParse(body.data);
   if (!result.success) {
     return NextResponse.json(
       { error: result.error.issues[0]?.message ?? "Please check the form." },

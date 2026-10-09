@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { readJsonBody } from "@/lib/http";
 import { emailOnlySchema } from "@/lib/validation/contact";
 import {
   NewsletterUnavailableError,
@@ -11,8 +12,10 @@ import {
  * confirmation email (double opt-in).
  */
 export async function POST(request: Request) {
-  const body = await request.json().catch(() => null);
-  const result = emailOnlySchema.safeParse(body);
+  const body = await readJsonBody(request);
+  if (!body.ok) return body.response;
+
+  const result = emailOnlySchema.safeParse(body.data);
   if (!result.success) {
     return NextResponse.json(
       {

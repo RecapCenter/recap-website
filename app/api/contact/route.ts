@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 import { sendContactEmail } from "@/lib/email";
+import { readJsonBody } from "@/lib/http";
 import { contactFormSchema } from "@/lib/validation/contact";
 
 export async function POST(request: Request) {
-  const body = await request.json().catch(() => null);
-  if (!body) {
+  const body = await readJsonBody(request);
+  if (!body.ok) return body.response;
+  if (!body.data) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const result = contactFormSchema.safeParse(body);
+  const result = contactFormSchema.safeParse(body.data);
   if (!result.success) {
     const firstIssue = result.error.issues[0];
     return NextResponse.json(
