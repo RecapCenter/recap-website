@@ -27,11 +27,20 @@ import {
 type LayoutProps = { className?: string };
 
 /**
- * Two stacked SVGs sharing one viewBox. `art` (washes, waves, grain — all
- * filtered) is static and fades in as a single layer; `motion` (lines,
- * seal, text, boat, birds — no filters) carries every animation. Keeping
- * them in separate SVGs means Safari never repaints the filters while the
- * foreground animates. See the note at the top of hero-elements.tsx.
+ * Three stacked SVGs sharing one viewBox, split by how often each repaints —
+ * WebKit (every iOS browser) repaints a whole SVG whenever anything inside
+ * it changes:
+ *
+ * - `art` (washes, waves, grain — all filtered) is static and fades in as a
+ *   single layer, so its expensive filters render once.
+ * - `motion` (lines, seal, text) only animates during the ~4s intro, then
+ *   never repaints again.
+ * - `loop` (boat, birds) animates forever. It holds nothing else, so each
+ *   frame repaints a few small shapes instead of the seal's curved text, the
+ *   R mark and the tagline. It sits on top, as the boat and birds did when
+ *   they shared the motion layer; nothing in it overlaps the text.
+ *
+ * See the note at the top of hero-elements.tsx.
  */
 function HeroFrame({
   w,
@@ -39,12 +48,14 @@ function HeroFrame({
   className,
   art,
   motion,
+  loop,
 }: {
   w: number;
   h: number;
   className?: string;
   art: React.ReactNode;
   motion: React.ReactNode;
+  loop: React.ReactNode;
 }) {
   const viewBox = `0 0 ${w} ${h}`;
   return (
@@ -64,6 +75,14 @@ function HeroFrame({
         focusable="false"
       >
         {motion}
+      </svg>
+      <svg
+        viewBox={viewBox}
+        className="hero-loop absolute inset-0 h-full w-full"
+        aria-hidden
+        focusable="false"
+      >
+        {loop}
       </svg>
     </div>
   );
@@ -176,10 +195,6 @@ export function LaptopHero({ className }: LayoutProps) {
             turns={2.3}
             tail="M1672,420 C1620,380 1560,380 1530,395"
           />
-          <Boat x={380} y={708} s={1.25} />
-          <Bird index={0} x={1112} y={196} s={1.15} rot={12} />
-          <Bird index={1} x={1184} y={182} s={0.9} rot={-8} />
-          <Bird index={2} x={1178} y={250} s={0.8} rot={20} />
           <Seal p={p} cx={830} cy={360} r={225} />
           <Tagline
             x={836}
@@ -201,6 +216,14 @@ export function LaptopHero({ className }: LayoutProps) {
             size={20}
             gap={34}
           />
+        </>
+      }
+      loop={
+        <>
+          <Boat x={380} y={708} s={1.25} />
+          <Bird index={0} x={1112} y={196} s={1.15} rot={12} />
+          <Bird index={1} x={1184} y={182} s={0.9} rot={-8} />
+          <Bird index={2} x={1178} y={250} s={0.8} rot={20} />
         </>
       }
     />
@@ -310,10 +333,6 @@ export function TabletHero({ className }: LayoutProps) {
             turns={2.3}
             tail="M1317,470 C1260,440 1210,470 1195,500"
           />
-          <Boat x={306} y={882} s={1.12} />
-          <Bird index={0} x={880} y={262} s={1.15} rot={12} />
-          <Bird index={1} x={952} y={248} s={0.9} rot={-8} />
-          <Bird index={2} x={946} y={316} s={0.8} rot={20} />
           <Seal p={p} cx={660} cy={482} r={226} />
           <Tagline
             x={662}
@@ -335,6 +354,14 @@ export function TabletHero({ className }: LayoutProps) {
             size={21}
             gap={36}
           />
+        </>
+      }
+      loop={
+        <>
+          <Boat x={306} y={882} s={1.12} />
+          <Bird index={0} x={880} y={262} s={1.15} rot={12} />
+          <Bird index={1} x={952} y={248} s={0.9} rot={-8} />
+          <Bird index={2} x={946} y={316} s={0.8} rot={20} />
         </>
       }
     />
@@ -467,10 +494,6 @@ export function PhoneHero({ className }: LayoutProps) {
             index={5}
             d="M500,1536 C520,1400 640,1330 780,1300 C860,1284 940,1300 1024,1340"
           />
-          <Boat x={598} y={1077} s={1.35} />
-          <Bird index={0} x={772} y={430} s={1.35} rot={12} />
-          <Bird index={1} x={860} y={414} s={1.05} rot={-8} />
-          <Bird index={2} x={850} y={498} s={0.95} rot={20} />
           <Seal
             p={p}
             cx={520}
@@ -500,6 +523,14 @@ export function PhoneHero({ className }: LayoutProps) {
             size={32}
             gap={48}
           />
+        </>
+      }
+      loop={
+        <>
+          <Boat x={598} y={1077} s={1.35} />
+          <Bird index={0} x={772} y={430} s={1.35} rot={12} />
+          <Bird index={1} x={860} y={414} s={1.05} rot={-8} />
+          <Bird index={2} x={850} y={498} s={0.95} rot={20} />
         </>
       }
     />
