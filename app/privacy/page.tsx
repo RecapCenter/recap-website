@@ -58,9 +58,9 @@ const SECTIONS = [
   {
     title: "How long we keep it",
     body: [
-      "Contact messages: while we're in touch, and for up to 12 months after our last conversation. If you become a client, your information is then kept as part of your client record, as we'll explain when we begin working together.",
+      "Contact messages and unsubscribe notes: we keep these in our records so we can follow up and look back on our conversations, and we don't delete them on a fixed schedule. You can ask us to delete yours at any time, and we will. If you become a client, your information is kept as part of your client record, as we'll explain when we begin working together.",
       "The slow letter: until you unsubscribe. After that we keep just your email address on a do-not-send list, so you're never emailed again by mistake.",
-      "Unsubscribe notes: up to 12 months. Analytics data: deleted automatically after the period set in Google Analytics. Technical logs: kept briefly by our hosting providers for security.",
+      "Analytics data: deleted automatically after the period set in Google Analytics. Technical logs: kept briefly by our hosting providers for security.",
     ],
   },
   {
