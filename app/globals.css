@@ -214,6 +214,17 @@
   transform: translateZ(0);
   animation: hero-fade 1.6s ease-out forwards;
 }
+/* The boat and birds loop forever, so their layer gets its own compositing
+   layer too: each frame repaints only these few shapes, never the seal,
+   text or watercolours beneath. Loops pause while the hero is scrolled out
+   of view (data-offscreen is set by HeroVisibility). */
+.hero-loop {
+  transform: translateZ(0);
+}
+[data-offscreen] .hero-loop,
+[data-offscreen] .hero-loop * {
+  animation-play-state: paused;
+}
 .hero-fade {
   opacity: 0;
   animation: hero-fade 1.8s ease-out forwards var(--d, 0s);

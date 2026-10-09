@@ -1,4 +1,5 @@
 import { LaptopHero, PhoneHero, TabletHero } from "./hero/hero-layouts";
+import { HeroVisibility } from "./hero/hero-visibility";
 
 /*
  * Homepage hero, built from vector elements and live text (see
@@ -10,7 +11,7 @@ import { LaptopHero, PhoneHero, TabletHero } from "./hero/hero-layouts";
  */
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-[#fcf6e8]">
+    <HeroVisibility className="relative overflow-hidden bg-[#fcf6e8]">
       <h1 className="sr-only">
         Realm of Counselling &amp; Psychological Services
       </h1>
@@ -19,6 +20,6 @@ export function HeroSection() {
       <PhoneHero className="block h-auto w-full md:hidden" />
       <TabletHero className="hidden h-auto w-full md:block lg:hidden" />
       <LaptopHero className="hidden h-auto w-full lg:block" />
-    </section>
+    </HeroVisibility>
   );
 }
