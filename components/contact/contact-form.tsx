@@ -251,7 +251,8 @@ export function ContactForm() {
             }}
           />
           I&rsquo;d like Recap to reach out to me about my message. My details
-          stay private and are never shared.
+          are used only to reply to me and are never sold or shared for
+          marketing.
         </label>
 
         <AnimatePresence>
