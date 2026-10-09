@@ -14,6 +14,7 @@ import {
   type EmailOnlyValues,
 } from "@/lib/validation/contact";
 import { scrollAndFocus } from "@/lib/validation/scroll-to-error";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Recap Lab "early access" signup. There's no separate list: it subscribes
@@ -58,6 +59,7 @@ export function NotifyForm() {
       }
       reset();
       setSubmitted(true);
+      trackEvent("sign_up", { method: "newsletter", location: "recap_lab" });
     } catch (error) {
       setServerError(
         error instanceof Error

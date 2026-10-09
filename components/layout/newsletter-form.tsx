@@ -12,6 +12,7 @@ import {
   type EmailOnlyValues,
 } from "@/lib/validation/contact";
 import { scrollAndFocus } from "@/lib/validation/scroll-to-error";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Footer signup for "the slow letter". Posts to /api/newsletter, which adds
@@ -55,6 +56,7 @@ export function NewsletterForm() {
       }
       reset();
       setStatus("done");
+      trackEvent("sign_up", { method: "newsletter", location: "footer" });
     } catch (error) {
       setServerError(
         error instanceof Error
@@ -98,6 +100,8 @@ export function NewsletterForm() {
           <input
             id="newsletter-email"
             type="email"
+            aria-label="Email address"
+            autoComplete="email"
             placeholder="you@somewhere.com"
             aria-invalid={!!errors.email}
             aria-describedby={
