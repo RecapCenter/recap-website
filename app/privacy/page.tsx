@@ -21,7 +21,7 @@ const SECTIONS = [
     title: "What we collect",
     body: [
       "Contact form: your name, email address, phone number, what you're reaching out about, your message, and your confirmation that we may reply to you.",
-      "The slow letter: your email address, when you signed up and confirmed, and whether you're subscribed. Our newsletter tool may also record whether a letter was opened and which links were clicked, so we know what's useful.",
+      "The slow letter: your email address, when you signed up, and whether you're subscribed. Our newsletter tool may also record whether a letter was opened and which links were clicked, so we know what's useful.",
       "Unsubscribing: if you use our unsubscribe page, your email address, the reason you chose and any note you add.",
       "Visiting the site: like every website, our hosting and security providers automatically process technical information such as your IP address, browser type and the pages requested, to deliver the site and protect it from abuse. If Google Analytics is switched on, it also records which pages are visited, your approximate location (country or city) and the type of device you use.",
       "We don't ask for, and you don't need to share, medical details, a diagnosis or information about anyone else to contact us. If you choose to include something sensitive, we treat it with the same care as everything shared in a session.",

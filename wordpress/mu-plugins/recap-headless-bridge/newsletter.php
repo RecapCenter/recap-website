@@ -16,7 +16,9 @@
  * wordpress/README.md) keeps the endpoint private to the frontend, so
  * nobody can post signups straight at WordPress. Subscribers are added to
  * the MailPoet list named by RECAP_NEWSLETTER_LIST (created on first use)
- * with MailPoet's double opt-in confirmation email.
+ * as subscribed straight away (single opt-in: no confirmation email). For
+ * that, MailPoet → Settings → Sign-up Confirmation must also be disabled;
+ * otherwise MailPoet leaves new addresses "Unconfirmed" and never mails them.
  *
  * Requires the free MailPoet plugin to be installed and active; responds
  * 503 otherwise.
@@ -232,7 +234,7 @@ function recap_newsletter_subscribe( WP_REST_Request $request ) {
 		$mailpoet = \MailPoet\API\API::MP( 'v1' );
 		$list_id  = recap_newsletter_list_id( $mailpoet );
 		$options  = array(
-			'send_confirmation_email' => true,
+			'send_confirmation_email' => false,
 			'schedule_welcome_email'  => true,
 		);
 

@@ -9,8 +9,8 @@ import {
 
 /**
  * Footer newsletter ("the slow letter") signup. Validates the email and
- * hands it to MailPoet via the WordPress bridge, which sends MailPoet's
- * confirmation email (double opt-in).
+ * hands it to MailPoet via the WordPress bridge, which subscribes it straight
+ * away (single opt-in — no confirmation email).
  */
 export async function POST(request: Request) {
   const body = await readJsonBody(request);
