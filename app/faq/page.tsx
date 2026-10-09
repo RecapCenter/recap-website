@@ -8,6 +8,7 @@ import { FAQS } from "@/lib/faqs";
 
 export const metadata: Metadata = {
   title: "FAQ — Recap",
+  alternates: { canonical: "/faq" },
   description:
     "Answers to the questions we hear most often about Recap's services, who we work with, and what happens when you first get in touch.",
 };

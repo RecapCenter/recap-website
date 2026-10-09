@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { EMAIL_FORM_MIN_FILL_MS, isLikelyBot } from "@/lib/bot-trap";
+import { readJsonBody } from "@/lib/http";
 import { unsubscribeSchema } from "@/lib/validation/contact";
 import {
   NewsletterUnavailableError,
@@ -12,8 +14,15 @@ import {
  * subscribed, so the page can't be used to check who is on the list.
  */
 export async function POST(request: Request) {
-  const body = await request.json().catch(() => null);
-  const result = unsubscribeSchema.safeParse(body);
+  const body = await readJsonBody(request);
+  if (!body.ok) return body.response;
+  if (isLikelyBot(body.data, EMAIL_FORM_MIN_FILL_MS)) {
+    // Same answer as a real success, so bots learn nothing; no email or PII logged.
+    console.warn("Dropped likely bot submission to /api/newsletter/unsubscribe");
+    return NextResponse.json({ ok: true });
+  }
+
+  const result = unsubscribeSchema.safeParse(body.data);
   if (!result.success) {
     return NextResponse.json(
       { error: result.error.issues[0]?.message ?? "Please check the form." },

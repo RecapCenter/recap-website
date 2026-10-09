@@ -5,6 +5,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 
 export const metadata: Metadata = {
   title: "Terms of Service — Recap",
+  alternates: { canonical: "/terms" },
   description:
     "The terms that govern using the Recap website and working with us.",
 };

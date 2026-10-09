@@ -2,6 +2,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { EyebrowLabel } from "@/components/ui/eyebrow-label";
 import { DecorativeBlob } from "@/components/ui/decorative-blob";
 import { ContactForm } from "./contact-form";
+import { CrisisNotice } from "./crisis-notice";
 
 export function NoteAndFormSection() {
   return (
@@ -31,6 +32,7 @@ export function NoteAndFormSection() {
               every note gets read
             </span>
           </div>
+          <CrisisNotice />
         </FadeIn>
 
         <FadeIn delay={0.1}>

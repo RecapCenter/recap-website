@@ -7,21 +7,42 @@ import { BlogGrid } from "@/components/thinking-out-loud/blog-grid";
 import { getPosts } from "@/lib/wordpress/posts";
 import thinkingOutLoudIcon from "@/assets/icons/thinking-out-loud-logo.svg";
 
-export const metadata: Metadata = {
-  title: "Thinking Out Loud — Recap",
-  description:
-    "Stories and reflections from everyday work with children, families, and schools — thinking out loud, one post at a time.",
-};
-
 const PER_PAGE = 9;
+
+type SearchParams = Promise<{ q?: string; page?: string }>;
+
+function pageNumber(pageParam: string | undefined): number {
+  return Math.max(1, Number(pageParam) || 1);
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}): Promise<Metadata> {
+  const { page: pageParam } = await searchParams;
+  const page = pageNumber(pageParam);
+
+  return {
+    title: "Thinking Out Loud — Recap",
+    description:
+      "Stories and reflections from everyday work with children, families, and schools — thinking out loud, one post at a time.",
+    // Each results page is its own canonical; search (?q=) variants
+    // collapse onto the unfiltered listing.
+    alternates: {
+      canonical:
+        page > 1 ? `/thinking-out-loud?page=${page}` : "/thinking-out-loud",
+    },
+  };
+}
 
 export default async function ThinkingOutLoudPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: SearchParams;
 }) {
   const { q, page: pageParam } = await searchParams;
-  const page = Math.max(1, Number(pageParam) || 1);
+  const page = pageNumber(pageParam);
 
   const [{ data: posts, totalPages }, { data: allPosts }] = await Promise.all([
     getPosts({ search: q, page, perPage: PER_PAGE }),

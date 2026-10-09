@@ -126,6 +126,27 @@ drift back to old patterns.
 
 ---
 
+## Security & SEO Conventions
+
+- **Site URL:** `lib/site-url.ts` (`SITE_URL`) is the only source of the
+  public origin — never read `NEXT_PUBLIC_SITE_URL` directly or add a
+  localhost fallback elsewhere. Production builds fail unless it's the real
+  https domain.
+- **Canonical URLs:** every indexable page sets
+  `alternates: { canonical: "/route" }` in its own metadata (dynamic routes
+  in `generateMetadata`). Never put a canonical — or `openGraph.url` — in
+  the root layout: every page would inherit it and claim the homepage.
+- **Public POST routes** (forms) read bodies with `readJsonBody()`
+  (`lib/http.ts`: JSON only, 8 KB cap) and check `isLikelyBot()`
+  (`lib/bot-trap.ts`) before validating. Their forms render
+  `<BotTrapField>` and spread `useBotTrap().values()` into the request body
+  (`components/ui/bot-trap.tsx`).
+- **Validation:** every string schema has a `.max()`, applied before any
+  regex, and regexes must not have overlapping quantifiers (the old email
+  regex was a ReDoS).
+
+---
+
 ## Git Commits
 
 - Write clear, concise commit messages that explain why the change was made.

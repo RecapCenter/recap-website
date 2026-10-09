@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Send, TriangleAlert } from "lucide-react";
+import { BotTrapField, useBotTrap } from "@/components/ui/bot-trap";
 import { Card } from "@/components/ui/card";
 import { FieldError } from "@/components/ui/field-error";
 import { CharacterCounter } from "@/components/ui/character-counter";
@@ -30,6 +31,7 @@ export function ContactForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const fieldRefs = useRef<Partial<Record<keyof ContactFormValues, HTMLElement | null>>>({});
+  const botTrap = useBotTrap();
 
   const {
     register,
@@ -67,7 +69,7 @@ export function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, ...botTrap.values() }),
       });
 
       if (!response.ok) {
@@ -110,6 +112,7 @@ export function ContactForm() {
         noValidate
         className="relative flex flex-col gap-5"
       >
+        <BotTrapField inputRef={botTrap.inputRef} />
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="name" className={labelClasses}>
@@ -248,7 +251,8 @@ export function ContactForm() {
             }}
           />
           I&rsquo;d like Recap to reach out to me about my message. My details
-          stay private and are never shared.
+          are used only to reply to me and are never sold or shared for
+          marketing.
         </label>
 
         <AnimatePresence>

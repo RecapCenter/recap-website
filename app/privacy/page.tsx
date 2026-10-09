@@ -5,6 +5,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Recap",
+  alternates: { canonical: "/privacy" },
   description:
     "How Recap collects, uses, and protects your information — in plain language.",
 };

@@ -3,24 +3,8 @@ import { Inter, Caveat, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
-
-const DEFAULT_SITE_URL = "http://localhost:3000";
-
-function resolveSiteUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL;
-  if (!raw) return DEFAULT_SITE_URL;
-  try {
-    return new URL(raw).toString();
-  } catch {
-    console.warn(
-      `NEXT_PUBLIC_SITE_URL is not a valid URL — falling back to ${DEFAULT_SITE_URL}`,
-    );
-    return DEFAULT_SITE_URL;
-  }
-}
-
-const siteUrl = resolveSiteUrl();
 
 const inter = Inter({
   variable: "--font-sans",
@@ -41,7 +25,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Recap — Counselling & Psychological Services",
     template: "%s",
@@ -52,7 +36,9 @@ export const metadata: Metadata = {
     title: "Recap — Counselling & Psychological Services",
     description:
       "Recap offers counselling, special education, and training services in a calm, supportive space.",
-    url: siteUrl,
+    // No `url` here: it would be inherited by every page and claim the
+    // homepage address. Each page's canonical link (alternates.canonical)
+    // is what crawlers use for og:url when it's absent.
     siteName: "Recap",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
     locale: "en_US",

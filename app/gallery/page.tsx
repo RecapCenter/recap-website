@@ -8,6 +8,7 @@ import thinkingOutLoudIcon from "@/assets/icons/thinking-out-loud-logo.svg";
 
 export const metadata: Metadata = {
   title: "Gallery — Recap",
+  alternates: { canonical: "/gallery" },
   description:
     "Photos and videos from Recap's sessions, workshops, and everyday moments with the children, families, and schools we work with.",
 };

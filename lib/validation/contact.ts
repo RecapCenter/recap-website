@@ -16,7 +16,19 @@ export const PHONE_MIN_DIGITS = 7;
 export const PHONE_MAX_DIGITS = 15;
 export const PHONE_ALLOWED_CHARS_RE = /^[0-9+\-() ]+$/;
 
-export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** RFC 5321's limit on a full address; checked before the regex runs. */
+export const EMAIL_MAX_LENGTH = 254;
+
+/**
+ * Domain labels exclude dots, so every character has exactly one way to
+ * match and the regex runs in linear time. The previous pattern
+ * (`[^\s@]+\.[^\s@]+$` on the domain) backtracked quadratically: a 50 KB
+ * string took ~7s of CPU, enough for one request to stall a server.
+ */
+export const EMAIL_RE = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
+
+/** ASCII control characters (incl. CR/LF), never valid in a single-line field. */
+const CONTROL_CHARS_RE = /[\x00-\x1F\x7F]/;
 
 export const CONTACT_REASONS = [
   { value: "session", label: "A session for myself" },
@@ -35,12 +47,23 @@ export const nameSchema = z
     NAME_MIN_LENGTH,
     `Name must contain at least ${NAME_MIN_LENGTH} characters.`,
   )
-  .max(NAME_MAX_LENGTH, `Name must be ${NAME_MAX_LENGTH} characters or fewer.`);
+  .max(NAME_MAX_LENGTH, {
+    message: `Name must be ${NAME_MAX_LENGTH} characters or fewer.`,
+    abort: true,
+  })
+  .refine((v) => !CONTROL_CHARS_RE.test(v), {
+    message: "Please enter a valid name.",
+  });
 
 export const emailSchema = z
   .string()
   .trim()
   .min(1, "Please enter a valid email address.")
+  // abort: zod otherwise keeps running later checks after one fails.
+  .max(EMAIL_MAX_LENGTH, {
+    message: "Please enter a valid email address.",
+    abort: true,
+  })
   .regex(EMAIL_RE, "Please enter a valid email address.");
 
 export const phoneSchema = z

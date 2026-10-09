@@ -28,6 +28,7 @@ export async function generateMetadata({
   return {
     title: `${post.title} — Recap`,
     description: post.excerpt.replace(/<[^>]+>/g, "").trim(),
+    alternates: { canonical: `/thinking-out-loud/${post.slug}` },
     openGraph: post.featuredImage
       ? { images: [{ url: post.featuredImage.url }] }
       : undefined,
