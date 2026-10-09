@@ -8,6 +8,7 @@ import { CTABanner } from "@/components/ui/cta-banner";
 
 export const metadata: Metadata = {
   title: "About — Recap",
+  alternates: { canonical: "/about" },
   description:
     "Recap — Realm of Counselling and Psychological Services — was created with a simple belief: people do not always need to be fixed; sometimes, they need to be understood differently.",
 };

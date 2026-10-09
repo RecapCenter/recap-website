@@ -7,6 +7,7 @@ import freebieIcon from "@/assets/icons/freebie-logo.svg";
 
 export const metadata: Metadata = {
   title: "Freebies — Recap",
+  alternates: { canonical: "/freebies" },
   description:
     "Free, downloadable resources from Recap — worksheets, guides, and printables for parents, educators, and anyone raising or supporting a child.",
 };

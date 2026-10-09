@@ -33,6 +33,7 @@ export async function generateMetadata({
   return {
     title: `Ideas that travel from ${country.name} — Recap`,
     description: `Photos from Recap's work in ${country.name}.`,
+    alternates: { canonical: `/around-the-world/${country.slug}` },
   };
 }
 

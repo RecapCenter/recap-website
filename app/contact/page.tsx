@@ -7,6 +7,7 @@ import { FAQSection } from "@/components/contact/faq-section";
 
 export const metadata: Metadata = {
   title: "Contact — Recap",
+  alternates: { canonical: "/contact" },
   description:
     "Get in touch with Recap — whether it's a session for yourself, a workshop for your team, or a message you've been meaning to send.",
 };

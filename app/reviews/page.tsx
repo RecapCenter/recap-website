@@ -6,6 +6,7 @@ import { getCombinedReviews } from "@/lib/reviews";
 
 export const metadata: Metadata = {
   title: "Reviews — Recap",
+  alternates: { canonical: "/reviews" },
   description:
     "What clients say about working with Recap — real reviews from families, schools, and teams we've supported.",
 };

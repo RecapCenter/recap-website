@@ -8,6 +8,7 @@ import recapRecommendsIcon from "@/assets/icons/recap-recommends-logo.svg";
 
 export const metadata: Metadata = {
   title: "Recap Recommends — Recap",
+  alternates: { canonical: "/recap-recommends" },
   description:
     "Books, music, and research papers the Recap team keeps coming back to — a running list of what's shaped our thinking.",
 };
