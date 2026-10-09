@@ -18,16 +18,19 @@ const STATIC_ROUTES = [
   "/terms",
 ];
 
+/**
+ * Blog posts carry their real last-modified date from WordPress. Static
+ * pages carry none: stamping them with the build time on every deploy
+ * teaches search engines to ignore the field altogether.
+ */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const postSlugs = await getAllPostSlugs();
+  const posts = await getAllPostSlugs();
 
-  const routes = [
-    ...STATIC_ROUTES,
-    ...postSlugs.map((slug) => `/thinking-out-loud/${slug}`),
+  return [
+    ...STATIC_ROUTES.map((route) => ({ url: `${siteUrl}${route}` })),
+    ...posts.map(({ slug, modifiedAtUtc }) => ({
+      url: `${siteUrl}/thinking-out-loud/${slug}`,
+      ...(modifiedAtUtc ? { lastModified: new Date(modifiedAtUtc) } : {}),
+    })),
   ];
-
-  return routes.map((route) => ({
-    url: `${siteUrl}${route}`,
-    lastModified: new Date(),
-  }));
 }

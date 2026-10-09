@@ -45,7 +45,10 @@ export type WPPostRaw = {
   id: number;
   slug: string;
   date: string;
+  /** UTC, without a zone suffix (WordPress's own format). */
+  date_gmt: string;
   modified: string;
+  modified_gmt: string;
   title: WPRendered;
   excerpt: WPRendered;
   content: WPRendered;

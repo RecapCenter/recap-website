@@ -46,9 +46,9 @@ export function BlogSearch({ posts, className }: BlogSearchProps) {
     const query = value.trim().toLowerCase();
     if (!query) return [];
     return posts
-      .filter((post) => post.title.toLowerCase().includes(query))
+      .filter((post) => post.titleText.toLowerCase().includes(query))
       .slice(0, 6)
-      .map((post) => ({ id: post.id, label: post.title }));
+      .map((post) => ({ id: post.id, label: post.titleText }));
   }, [value, posts]);
 
   return (
