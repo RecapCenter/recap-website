@@ -77,8 +77,45 @@ export function GlobePolaroids({
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
     let globe: ReturnType<typeof createGlobe> | null = null;
-    let animationId: number;
+    let animationId = 0;
     let phi = 0;
+    // Only render while the globe is on screen. Each frame redraws the WebGL
+    // sphere and restyles every polaroid; left running off screen, that
+    // starved the rest of the page on iPhones (choppy hero, laggy scroll).
+    let onScreen = false;
+    // Reduced motion: no auto-spin, but dragging still works.
+    const autoSpin = !window.matchMedia("(prefers-reduced-motion: reduce)")
+      .matches;
+
+    function startLoop() {
+      if (!globe || animationId || !onScreen) return;
+      animationId = requestAnimationFrame(animate);
+    }
+
+    function stopLoop() {
+      if (animationId) cancelAnimationFrame(animationId);
+      animationId = 0;
+    }
+
+    function animate() {
+      if (autoSpin && !isPausedRef.current) phi += speed;
+      globe!.update({
+        phi: phi + phiOffsetRef.current + dragOffset.current.phi,
+        theta: 0.2 + thetaOffsetRef.current + dragOffset.current.theta,
+      });
+      animationId = requestAnimationFrame(animate);
+    }
+
+    const visibility = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        if (onScreen) startLoop();
+        else stopLoop();
+      },
+      // Start a little before it scrolls into view so it's already turning.
+      { rootMargin: "200px" },
+    );
+    visibility.observe(canvas);
 
     function init() {
       const width = canvas.offsetWidth;
@@ -109,15 +146,10 @@ export function GlobePolaroids({
         arcHeight: 0.25,
         opacity: 0.7,
       });
-      function animate() {
-        if (!isPausedRef.current) phi += speed;
-        globe!.update({
-          phi: phi + phiOffsetRef.current + dragOffset.current.phi,
-          theta: 0.2 + thetaOffsetRef.current + dragOffset.current.theta,
-        });
-        animationId = requestAnimationFrame(animate);
-      }
-      animate();
+      // Draw the first frame now (so the polaroids are placed even before
+      // it scrolls into view), then keep turning only while on screen.
+      globe.update({ phi, theta: 0.2 });
+      startLoop();
       setTimeout(() => canvas && (canvas.style.opacity = "1"));
     }
 
@@ -134,7 +166,8 @@ export function GlobePolaroids({
     }
 
     return () => {
-      if (animationId) cancelAnimationFrame(animationId);
+      visibility.disconnect();
+      stopLoop();
       if (globe) globe.destroy();
     };
   }, [markers, speed]);
