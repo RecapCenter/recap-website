@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { EMAIL_FORM_MIN_FILL_MS, isLikelyBot } from "@/lib/bot-trap";
 import { readJsonBody } from "@/lib/http";
 import { emailOnlySchema } from "@/lib/validation/contact";
 import {
@@ -14,6 +15,11 @@ import {
 export async function POST(request: Request) {
   const body = await readJsonBody(request);
   if (!body.ok) return body.response;
+  if (isLikelyBot(body.data, EMAIL_FORM_MIN_FILL_MS)) {
+    // Same answer as a real success, so bots learn nothing; no email or PII logged.
+    console.warn("Dropped likely bot submission to /api/newsletter");
+    return NextResponse.json({ ok: true });
+  }
 
   const result = emailOnlySchema.safeParse(body.data);
   if (!result.success) {

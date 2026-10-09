@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleCheck, TriangleAlert } from "lucide-react";
+import { BotTrapField, useBotTrap } from "@/components/ui/bot-trap";
 import { Card } from "@/components/ui/card";
 import { FieldError } from "@/components/ui/field-error";
 import { CharacterCounter } from "@/components/ui/character-counter";
@@ -55,6 +56,7 @@ export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
   });
 
   const note = watch("note") ?? "";
+  const botTrap = useBotTrap();
 
   async function onValid(values: UnsubscribeValues) {
     setSubmitError(null);
@@ -62,7 +64,7 @@ export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
       const response = await fetch("/api/newsletter/unsubscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, ...botTrap.values() }),
       });
       if (!response.ok) {
         const data = (await response.json().catch(() => null)) as {
@@ -118,8 +120,9 @@ export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
       <form
         onSubmit={handleSubmit(onValid, onInvalid)}
         noValidate
-        className="flex flex-col gap-6"
+        className="relative flex flex-col gap-6"
       >
+        <BotTrapField inputRef={botTrap.inputRef} />
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className={labelClasses}>
             your email

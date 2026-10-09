@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleCheck, Mail } from "lucide-react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { BotTrapField, useBotTrap } from "@/components/ui/bot-trap";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/ui/field-error";
 import {
@@ -36,6 +37,7 @@ export function NotifyForm() {
   });
 
   const { ref: emailRhfRef, ...emailField } = register("email");
+  const botTrap = useBotTrap();
 
   async function onValid(values: EmailOnlyValues) {
     setServerError(null);
@@ -43,7 +45,7 @@ export function NotifyForm() {
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, ...botTrap.values() }),
       });
       if (!response.ok) {
         const data = (await response.json().catch(() => null)) as {
@@ -89,8 +91,9 @@ export function NotifyForm() {
           <form
             onSubmit={handleSubmit(onValid, onInvalid)}
             noValidate
-            className="mt-6 flex flex-col gap-1.5"
+            className="relative mt-6 flex flex-col gap-1.5"
           >
+            <BotTrapField inputRef={botTrap.inputRef} />
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
               <div
                 className={`focus-within:ring-accent-orange/20 focus-within:border-accent-orange flex h-11 items-center gap-2 rounded-full border bg-white px-4 focus-within:ring-2 ${
