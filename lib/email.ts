@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
-
-const CONTACT_RECIPIENT = "riya.kapoor@recapcenter.com";
+import { EMAIL_RE } from "@/lib/validation/contact";
 
 export type ContactFormPayload = {
   name: string;
@@ -22,6 +21,23 @@ function getSmtpConfig() {
   }
 
   return { host, port: Number(port), user, password };
+}
+
+/**
+ * The inbox contact form messages go to (CONTACT_RECIPIENT), kept out of
+ * the code so it can change without a deploy. Deliberately no fallback: a
+ * missing or mistyped value fails the send loudly (the visitor sees the
+ * usual "try again" error and the log says why) rather than delivering
+ * someone's message to an address nobody reads.
+ */
+function getContactRecipient(): string {
+  const recipient = process.env.CONTACT_RECIPIENT?.trim();
+  if (!recipient || !EMAIL_RE.test(recipient)) {
+    throw new Error(
+      "CONTACT_RECIPIENT is missing or not a valid email address — set it in the environment (e.g. contact@recapcenter.com)",
+    );
+  }
+  return recipient;
 }
 
 function escapeHtml(value: string): string {
@@ -77,7 +93,7 @@ export async function sendContactEmail(
 
   await transporter.sendMail({
     from: `"${fromName}" <${config.user}>`,
-    to: CONTACT_RECIPIENT,
+    to: getContactRecipient(),
     replyTo: payload.email,
     subject: `New contact form submission from ${payload.name}`,
     text,
