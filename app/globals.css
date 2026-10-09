@@ -214,6 +214,13 @@
   transform: translateZ(0);
   animation: hero-fade 1.6s ease-out forwards;
 }
+/* Marquees inside an element with data-paused (set by MarqueePauseButton)
+   stop where they are. */
+[data-paused] .animate-marquee,
+[data-paused] .animate-marquee-vertical {
+  animation-play-state: paused;
+}
+
 /* The boat and birds loop forever, so their layer gets its own compositing
    layer too: each frame repaints only these few shapes, never the seal,
    text or watercolours beneath. Loops pause while the hero is scrolled out
