@@ -141,6 +141,12 @@ drift back to old patterns.
   (`lib/bot-trap.ts`) before validating. Their forms render
   `<BotTrapField>` and spread `useBotTrap().values()` into the request body
   (`components/ui/bot-trap.tsx`).
+- **Favicon / app icons** (`app/favicon.ico`, `app/icon.svg`,
+  `app/apple-icon.png`, `public/icon-192.png`, `public/icon-512.png`,
+  `app/manifest.ts`) are generated from the Recap "R" vector by
+  `node scripts/generate-icons.mjs`. Regenerate rather than hand-edit, and
+  don't add an `icons` field to layout metadata (the file conventions
+  already emit the tags; both would duplicate them).
 - **Validation:** every string schema has a `.max()`, applied before any
   regex, and regexes must not have overlapping quantifiers (the old email
   regex was a ReDoS).
