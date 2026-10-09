@@ -12,53 +12,80 @@ export const metadata: Metadata = {
 
 const SECTIONS = [
   {
+    title: "Who we are",
+    body: [
+      "Recap (Realm of Counselling and Psychological Services) runs this website at recapcenter.com. When this policy says \"we\" or \"us\", it means Recap. If you have any question about your information, write to us at hello@recapcenter.com.",
+    ],
+  },
+  {
     title: "What we collect",
     body: [
-      "When you write to us through the contact form, we collect what you choose to share — your name, email, phone number, and message. If you subscribe to the slow letter, we collect your email address to send it.",
-      "We use Google Analytics to understand how people use the site — which pages are visited, roughly where visitors are (country or city, never a street address), and what kind of device they're on. We use this only in aggregate, to see what's working and what to improve; we don't use it to identify you.",
+      "Contact form: your name, email address, phone number, what you're reaching out about, your message, and your confirmation that we may reply to you.",
+      "The slow letter: your email address, when you signed up and confirmed, and whether you're subscribed. Our newsletter tool may also record whether a letter was opened and which links were clicked, so we know what's useful.",
+      "Unsubscribing: if you use our unsubscribe page, your email address, the reason you chose and any note you add.",
+      "Visiting the site: like every website, our hosting and security providers automatically process technical information such as your IP address, browser type and the pages requested, to deliver the site and protect it from abuse. If Google Analytics is switched on, it also records which pages are visited, your approximate location (country or city) and the type of device you use.",
+      "We don't ask for, and you don't need to share, medical details, a diagnosis or information about anyone else to contact us. If you choose to include something sensitive, we treat it with the same care as everything shared in a session.",
     ],
   },
   {
     title: "How we use it",
     body: [
-      "We use what you share to reply to your message, schedule sessions, and send the slow letter if you've asked for it. We don't use your information for anything you haven't agreed to, and we don't run targeted advertising.",
-      "Every slow letter includes a link to unsubscribe, and you can also unsubscribe at any time from our unsubscribe page. If you tell us why you're leaving, we keep that note only to help us improve the newsletter.",
+      "We use your information only to reply to you and arrange support you've asked about, to send the slow letter if you've subscribed, to understand and improve how the site is used, and to keep the site secure and free of spam.",
+      "We don't sell or rent your information, we don't use it for advertising, and we don't make automated decisions about you.",
     ],
   },
   {
-    title: "Who we share it with",
+    title: "Who handles it on our behalf",
     body: [
-      "We don't sell or rent your information, ever. We share it only with the tools that help us run Recap, and only as much as each one needs to do its job: Google Workspace (our email, which receives contact form messages), MailPoet (which stores the slow letter's subscriber list and sends it), and Google Analytics (site traffic, as described above).",
+      "We use a small number of trusted services to run Recap. Each one handles only what it needs to do its job:",
+      "Google Workspace receives contact form messages in our email and may send the slow letter. Vercel hosts this website and processes your requests to it. GoDaddy hosts the system where we manage our content, newsletter subscribers and unsubscribe notes, and Cloudflare protects it. MailPoet manages the slow letter's subscriber list and sends it. Google Analytics, if switched on, measures site traffic.",
+      "These services may store or process information on servers outside India, under their own security and privacy commitments. We'll only share your information beyond them if the law requires it, or to protect someone's safety.",
     ],
   },
   {
     title: "Cookies",
     body: [
-      "The only cookies on this site are set by Google Analytics, to count visits and tell new visitors from returning ones. We don't use advertising or tracking cookies beyond that. You can block cookies in your browser, or install Google's opt-out add-on (tools.google.com/dlpage/gaoptout), and the site will work exactly the same.",
+      "This site doesn't use advertising cookies. If Google Analytics is switched on, it sets cookies to count visits and tell new visitors from returning ones. You can block cookies in your browser, or install Google's opt-out add-on (tools.google.com/dlpage/gaoptout), and the site will work exactly the same.",
+      "Videos in our gallery play through YouTube's privacy-enhanced mode or Vimeo with tracking turned off, and they only load once you press play.",
+    ],
+  },
+  {
+    title: "Other websites",
+    body: [
+      "We show reviews published on Google, along with the reviewer's public name. We also link to other sites, such as books and videos we recommend, and our Instagram, LinkedIn and WhatsApp pages. When you visit them, their own privacy policies apply.",
     ],
   },
   {
     title: "How long we keep it",
     body: [
-      "We keep contact form messages and session records for as long as they're useful to your care or our records, and no longer than we're required to. You can ask us to delete your information at any time — see below.",
+      "Contact messages: while we're in touch, and for up to 12 months after our last conversation. If you become a client, your information is then kept as part of your client record, as we'll explain when we begin working together.",
+      "The slow letter: until you unsubscribe. After that we keep just your email address on a do-not-send list, so you're never emailed again by mistake.",
+      "Unsubscribe notes: up to 12 months. Analytics data: deleted automatically after the period set in Google Analytics. Technical logs: kept briefly by our hosting providers for security.",
     ],
   },
   {
-    title: "Children's privacy",
+    title: "Keeping it safe",
     body: [
-      "Recap works with children as part of our counselling and special education services, always with a parent or guardian's involvement and consent. We never collect information directly from a child without that involvement.",
+      "The site and our content system are served only over encrypted (https) connections. Access to messages and subscriber information is limited to the Recap team, and the accounts that hold it are protected with strong, unique passwords and two-step verification.",
+    ],
+  },
+  {
+    title: "Children and young people",
+    body: [
+      "Recap works with children and young people as part of our counselling and special education services, always with a parent or guardian's involvement and consent. The contact form and newsletter are meant for adults; if you're under 18, please ask a parent, guardian or teacher to get in touch with us for you. If we learn that a child has sent us information without that involvement, we'll delete it or reach out to the adults responsible for them.",
     ],
   },
   {
     title: "Your rights",
     body: [
-      "You can ask us, at any time, what information we hold about you, to correct it, or to delete it. Write to us at hello@recapcenter.com and we'll take care of it personally — usually within a few days.",
+      "You can ask us, at any time, what information we hold about you, to correct it, or to delete it, and you can withdraw your consent, for example by unsubscribing from the slow letter. Write to us at hello@recapcenter.com. We'll reply personally, usually within a few days and always within 30 days.",
+      "If you're unhappy with how we've handled your information, tell us at the same address and we'll do our best to put it right.",
     ],
   },
   {
     title: "Changes to this policy",
     body: [
-      "If this policy changes in a meaningful way, we'll update this page and note the date below. We won't make quiet changes that reduce your rights.",
+      "If this policy changes in a meaningful way, we'll update this page and the date at the top. We won't make quiet changes that reduce your rights.",
     ],
   },
 ];
@@ -78,7 +105,7 @@ export default function PrivacyPage() {
       <section className="bg-cream px-6 py-20 md:py-24">
         <FadeIn className="mx-auto flex max-w-3xl flex-col gap-12">
           <p className="text-body-gray text-sm italic">
-            Last updated: September 2026
+            Last updated: October 2026
           </p>
 
           {SECTIONS.map((section) => (
