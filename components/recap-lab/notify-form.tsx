@@ -87,7 +87,8 @@ export function NotifyForm() {
             className="text-ink mt-6 flex items-start justify-center gap-2 text-base leading-relaxed"
           >
             <CircleCheck className="text-accent-orange mt-1 size-4 shrink-0" />
-            Almost there — check your inbox and click the link to confirm.
+            You&rsquo;re on the list. We&rsquo;ll let you know the moment Recap
+            Lab opens.
           </p>
         ) : (
           <form

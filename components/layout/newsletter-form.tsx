@@ -16,8 +16,8 @@ import { trackEvent } from "@/lib/analytics";
 
 /**
  * Footer signup for "the slow letter". Posts to /api/newsletter, which adds
- * the address to MailPoet in WordPress; MailPoet then emails a link to
- * confirm the subscription (double opt-in).
+ * the address to MailPoet in WordPress, subscribed straight away (single
+ * opt-in: no confirmation email).
  */
 export function NewsletterForm() {
   const [status, setStatus] = useState<"idle" | "done">("idle");
@@ -77,8 +77,8 @@ export function NewsletterForm() {
         className="text-cream flex items-start gap-2 text-base leading-relaxed"
       >
         <CircleCheck className="text-footer-accent mt-1 size-4 shrink-0" />
-        Almost there — check your inbox and click the link to confirm your
-        subscription.
+        You&rsquo;re subscribed. The next slow letter will arrive in your
+        inbox.
       </p>
     );
   }
