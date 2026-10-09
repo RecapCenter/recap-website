@@ -4,7 +4,7 @@ import { PageIntro } from "@/components/ui/page-intro";
 import { FAQAccordion } from "@/components/ui/faq-accordion";
 import { CTABanner } from "@/components/ui/cta-banner";
 import { FadeIn } from "@/components/motion/fade-in";
-import { FAQS } from "@/lib/faqs";
+import { FAQS, PRACTICAL_FAQS } from "@/lib/faqs";
 
 export const metadata: Metadata = {
   title: "FAQ — Recap",
@@ -27,7 +27,7 @@ export default function FAQPage() {
 
       <section className="bg-cream px-6 py-20 md:py-24">
         <FadeIn className="mx-auto max-w-3xl">
-          <FAQAccordion items={FAQS} />
+          <FAQAccordion items={[...FAQS, ...PRACTICAL_FAQS]} />
         </FadeIn>
       </section>
 

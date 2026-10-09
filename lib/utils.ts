@@ -37,13 +37,19 @@ function getYouTubeVideoId(url: string): string | null {
  * Converts a YouTube/Vimeo watch link into its embeddable iframe URL.
  * Returns null for anything else (e.g. a direct .mp4/.webm file URL),
  * which callers should instead play via a native <video> element.
+ *
+ * Uses YouTube's privacy-enhanced domain and Vimeo's do-not-track flag,
+ * so playing a video doesn't set tracking cookies — the privacy policy
+ * (app/privacy/page.tsx) relies on this.
  */
 export function getVideoEmbedUrl(url: string): string | null {
   const youtubeId = getYouTubeVideoId(url);
-  if (youtubeId) return `https://www.youtube.com/embed/${youtubeId}`;
+  if (youtubeId) return `https://www.youtube-nocookie.com/embed/${youtubeId}`;
 
   const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
-  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+  if (vimeoMatch) {
+    return `https://player.vimeo.com/video/${vimeoMatch[1]}?dnt=1`;
+  }
 
   return null;
 }

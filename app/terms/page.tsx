@@ -12,33 +12,53 @@ export const metadata: Metadata = {
 
 const SECTIONS = [
   {
-    title: "Accepting these terms",
+    title: "Who we are",
     body: [
-      "By using this website, you're agreeing to these terms. If something here doesn't sit right with you, write to us before you continue — we're happy to talk it through.",
+      "This website, recapcenter.com, is run by Recap (Realm of Counselling and Psychological Services). You can reach us at hello@recapcenter.com.",
     ],
   },
   {
-    title: "Using this site",
+    title: "Accepting these terms",
     body: [
-      "This website is here to help you learn about Recap and get in touch. Please don't use it in a way that could disrupt the site, misrepresent who you are, or copy our content for your own commercial use.",
+      "By using this website, you're agreeing to these terms and to our Privacy Policy, which explains how we handle your information. If something here doesn't sit right with you, write to us before you continue — we're happy to talk it through.",
+      "If you're under 18, please use the site with a parent, guardian or teacher.",
     ],
   },
   {
     title: "Not a substitute for emergency care",
     body: [
-      "Recap offers counselling, special education support, and training — not crisis intervention. If you or someone you know is in immediate danger, please contact local emergency services or a crisis helpline right away rather than writing to us.",
+      "Recap offers counselling, special education support, and training — not crisis intervention, and our inbox isn't monitored around the clock. If you or someone you know is in immediate danger, call 112 (India) or your local emergency number. For urgent emotional support in India, call Tele-MANAS on 14416, free and available 24/7.",
+    ],
+  },
+  {
+    title: "General information, not professional advice",
+    body: [
+      "Our blog posts, free resources, recommendations and other content are for general information and reflection. They aren't a diagnosis, treatment or professional advice for your particular situation, and reading them doesn't make you a client. For support that fits your circumstances, please get in touch so we can talk it through properly.",
+      "Reviews and stories on this site describe individual experiences. Everyone's path is different, so they aren't a promise of any particular outcome.",
+    ],
+  },
+  {
+    title: "Using this site",
+    body: [
+      "This website is here to help you learn about Recap and get in touch. Please don't use it in a way that could harm or disrupt the site or its visitors — for example by sending spam or automated submissions through our forms, trying to access parts of the site you aren't meant to, or pretending to be someone else.",
+    ],
+  },
+  {
+    title: "Free resources",
+    body: [
+      "You're welcome to download our free resources and use them for yourself, your family, your classroom or your own practice. Please don't sell them, or republish them as your own, without asking us first.",
     ],
   },
   {
     title: "Booking sessions",
     body: [
-      "Details about scheduling, fees, and cancellations for actual sessions are agreed directly with your therapist or coordinator once you get in touch — this website only covers the terms of browsing and contacting us.",
+      "Details about scheduling, fees, rescheduling and cancellations for sessions are agreed directly with you before any work begins — this website only covers browsing and contacting us. Getting in touch doesn't commit you to anything.",
     ],
   },
   {
     title: "Intellectual property",
     body: [
-      "The words, illustrations, and design on this site belong to Recap unless otherwise noted. You're welcome to share a link to a page, but please don't reproduce our content elsewhere without asking first.",
+      "The words, illustrations, photographs and design on this site belong to Recap unless otherwise noted. You're welcome to share a link to any page, but please don't reproduce our content elsewhere without asking first.",
     ],
   },
   {
@@ -54,9 +74,15 @@ const SECTIONS = [
     ],
   },
   {
+    title: "Governing law",
+    body: [
+      "These terms are governed by the laws of India.",
+    ],
+  },
+  {
     title: "Changes to these terms",
     body: [
-      "We may update these terms from time to time as Recap grows. If we do, we'll update the date below — continuing to use the site after that means you accept the changes.",
+      "We may update these terms from time to time as Recap grows. If we do, we'll update the date at the top — continuing to use the site after that means you accept the changes.",
     ],
   },
 ];
@@ -75,7 +101,7 @@ export default function TermsPage() {
 
       <section className="bg-cream px-6 py-20 md:py-24">
         <FadeIn className="mx-auto flex max-w-3xl flex-col gap-12">
-          <p className="text-body-gray text-sm italic">Last updated: July 2026</p>
+          <p className="text-body-gray text-sm italic">Last updated: October 2026</p>
 
           {SECTIONS.map((section) => (
             <div key={section.title}>
