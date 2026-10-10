@@ -7,9 +7,11 @@ type CTABannerProps = {
   eyebrow: string;
   heading: string;
   subtext: string;
-  buttonLabel: string;
-  buttonHref: string;
-};
+} & (
+  | { buttonLabel: string; buttonHref: string; actions?: never }
+  /** Custom actions (e.g. FollowAlong) in place of the single button. */
+  | { actions: React.ReactNode; buttonLabel?: never; buttonHref?: never }
+);
 
 /**
  * Site-wide closing banner ("Set sail"): an open, full-width close with no
@@ -23,6 +25,7 @@ export function CTABanner({
   subtext,
   buttonLabel,
   buttonHref,
+  actions,
 }: CTABannerProps) {
   return (
     <section className="from-cream relative overflow-hidden bg-gradient-to-b to-[#f3ecdf] px-6 pt-20 pb-40 text-center md:pt-24 md:pb-44">
@@ -36,13 +39,17 @@ export function CTABanner({
         <p className="text-body-gray mt-4 max-w-xl text-base leading-relaxed">
           {subtext}
         </p>
-        <Button
-          href={buttonHref}
-          icon={<ArrowRight className="size-4" />}
-          className="mt-8"
-        >
-          {buttonLabel}
-        </Button>
+        {actions ? (
+          <div className="mt-8">{actions}</div>
+        ) : (
+          <Button
+            href={buttonHref}
+            icon={<ArrowRight className="size-4" />}
+            className="mt-8"
+          >
+            {buttonLabel}
+          </Button>
+        )}
       </FadeIn>
 
       {/* Decorative sea: layered watercolour waves with the hero's gold line. */}

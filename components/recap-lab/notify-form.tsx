@@ -17,7 +17,7 @@ import { scrollAndFocus } from "@/lib/validation/scroll-to-error";
 import { trackEvent } from "@/lib/analytics";
 
 /**
- * Recap Lab "early access" signup. There's no separate list: it subscribes
+ * Recap Lab "get notified" signup. There's no separate list: it subscribes
  * the address to the slow letter (same /api/newsletter → MailPoet flow as the
  * footer form), where Recap Lab will be announced.
  */
@@ -76,7 +76,7 @@ export function NotifyForm() {
   return (
     <section className="px-6 pb-12 md:pb-16">
       <FadeIn className="mx-auto max-w-xl text-center">
-        <SectionHeading as="h3">Want early access?</SectionHeading>
+        <SectionHeading as="h3">Get notified when it opens</SectionHeading>
         <p className="text-body-gray mx-auto mt-3 max-w-md text-base leading-relaxed">
           Join the slow letter, our newsletter, and you&apos;ll be the first to
           hear the moment Recap Lab opens up.
