@@ -5,6 +5,14 @@ import { FAQAccordion } from "@/components/ui/faq-accordion";
 import { CTABanner } from "@/components/ui/cta-banner";
 import { FadeIn } from "@/components/motion/fade-in";
 import { FAQS, PRACTICAL_FAQS } from "@/lib/faqs";
+import { NEWSLETTER_ENABLED } from "@/lib/features";
+
+const practicalFaqs = PRACTICAL_FAQS.filter((faq) =>
+  !("showWhen" in faq)
+    ? true
+    : faq.showWhen ===
+      (NEWSLETTER_ENABLED ? "newsletter-on" : "newsletter-off"),
+);
 
 export const metadata: Metadata = {
   title: "FAQ — Recap",
@@ -27,7 +35,7 @@ export default function FAQPage() {
 
       <section className="bg-cream px-6 py-20 md:py-24">
         <FadeIn className="mx-auto max-w-3xl">
-          <FAQAccordion items={[...FAQS, ...PRACTICAL_FAQS]} />
+          <FAQAccordion items={[...FAQS, ...practicalFaqs]} />
         </FadeIn>
       </section>
 

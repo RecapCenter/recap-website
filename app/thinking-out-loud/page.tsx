@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/ui/page-intro";
 import { HighlightMark } from "@/components/ui/section-heading";
-import { CTABanner } from "@/components/ui/cta-banner";
+import { StayInTheLoopBanner } from "@/components/thinking-out-loud/stay-in-the-loop-banner";
 import { BlogFilterBar } from "@/components/thinking-out-loud/blog-filter-bar";
 import { BlogGrid } from "@/components/thinking-out-loud/blog-grid";
 import { getPosts } from "@/lib/wordpress/posts";
@@ -74,13 +74,7 @@ export default async function ThinkingOutLoudPage({
         totalPages={totalPages}
         nextPageHref={`/thinking-out-loud?${params.toString()}`}
       />
-      <CTABanner
-        eyebrow="stay in the loop"
-        heading="Get new posts in your inbox."
-        subtext="No spam, just the occasional thing worth reading."
-        buttonLabel="Get in touch"
-        buttonHref="/contact"
-      />
+      <StayInTheLoopBanner />
     </main>
   );
 }

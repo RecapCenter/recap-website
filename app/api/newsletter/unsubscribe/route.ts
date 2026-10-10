@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { EMAIL_FORM_MIN_FILL_MS, isLikelyBot } from "@/lib/bot-trap";
+import { NEWSLETTER_ENABLED } from "@/lib/features";
 import { readJsonBody } from "@/lib/http";
 import { unsubscribeSchema } from "@/lib/validation/contact";
 import {
@@ -20,6 +21,16 @@ const INVALID_LINK_MESSAGE =
  * page can't be used to check who is on the list.
  */
 export async function POST(request: Request) {
+  if (!NEWSLETTER_ENABLED) {
+    // Switched off (lib/features.ts): nothing reaches WordPress/MailPoet.
+    return NextResponse.json(
+      {
+        error:
+          "The newsletter isn't being sent right now, so there's nothing to unsubscribe from.",
+      },
+      { status: 404 },
+    );
+  }
   const body = await readJsonBody(request);
   if (!body.ok) return body.response;
   if (isLikelyBot(body.data, EMAIL_FORM_MIN_FILL_MS)) {

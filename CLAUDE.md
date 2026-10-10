@@ -152,6 +152,12 @@ drift back to old patterns.
   `.rendered` HTML, or search results show codes like `&#8211;`.
 - **Structured data** goes through `components/seo/json-ld.tsx`, which
   escapes `<` so CMS text can't break out of the script tag.
+- **Newsletter is switched off** (`NEWSLETTER_ENABLED` in
+  `lib/features.ts`, driven by `NEXT_PUBLIC_NEWSLETTER_ENABLED`): signup
+  spots show `FollowAlong` (WhatsApp channel first, then Instagram and
+  LinkedIn) and the newsletter API routes return 404. The code is kept,
+  not deleted — any new newsletter-related UI or copy must branch on the
+  same flag. Social URLs live in `lib/social.ts`.
 - **Newsletter unsubscribe** only works through signed links: WordPress
   signs each address (`recap_unsubscribe_token` in
   `wordpress/mu-plugins/recap-headless-bridge/newsletter.php`) and the
