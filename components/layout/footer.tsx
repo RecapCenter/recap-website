@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { InstagramIcon, LinkedinIcon } from "@/components/ui/social-icons";
+import { FollowAlong } from "@/components/ui/follow-along";
+import { NEWSLETTER_ENABLED } from "@/lib/features";
+import {
+  INSTAGRAM_URL,
+  LINKEDIN_URL,
+  WHATSAPP_CHANNEL_URL,
+} from "@/lib/social";
 import { NewsletterForm } from "./newsletter-form";
 import { Logo } from "./logo";
 
@@ -14,9 +21,13 @@ const NAV_LINKS = [
 ];
 
 const SOCIAL_LINKS = [
-  { label: "Instagram", href: "https://www.instagram.com/recap_center", icon: InstagramIcon },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/recapcenter/", icon: LinkedinIcon },
-  { label: "WhatsApp Community", href: "https://whatsapp.com/channel/0029VbD8p3gAjPXDr1Njyq3d", icon: MessageCircle },
+  { label: "Instagram", href: INSTAGRAM_URL, icon: InstagramIcon },
+  { label: "LinkedIn", href: LINKEDIN_URL, icon: LinkedinIcon },
+  {
+    label: "WhatsApp Community",
+    href: WHATSAPP_CHANNEL_URL,
+    icon: MessageCircle,
+  },
 ];
 
 export default function Footer() {
@@ -57,15 +68,27 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 md:max-w-xs">
-            <span className="font-script text-footer-accent text-2xl md:text-3xl">
-              the slow letter
-            </span>
-            <p className="text-cream/80 text-sm">
-              One reflection, once a month.
-            </p>
-            <NewsletterForm />
-          </div>
+          {NEWSLETTER_ENABLED ? (
+            <div className="flex flex-col gap-2 md:max-w-xs">
+              <span className="font-script text-footer-accent text-2xl md:text-3xl">
+                the slow letter
+              </span>
+              <p className="text-cream/80 text-sm">
+                One reflection, once a month.
+              </p>
+              <NewsletterForm />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2 md:max-w-xs">
+              <span className="font-script text-footer-accent text-2xl md:text-3xl">
+                follow along
+              </span>
+              <p className="text-cream/80 text-sm">
+                New posts, workshops and Recap Lab news, straight to your phone.
+              </p>
+              <FollowAlong variant="dark" className="mt-1" />
+            </div>
+          )}
         </div>
 
         <div className="my-6 h-px bg-white/10" />

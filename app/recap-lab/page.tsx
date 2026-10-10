@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ComingSoonHero } from "@/components/recap-lab/coming-soon-hero";
 import { PreviewTiles } from "@/components/recap-lab/preview-tiles";
 import { NotifyForm } from "@/components/recap-lab/notify-form";
+import { FollowSection } from "@/components/recap-lab/follow-section";
+import { NEWSLETTER_ENABLED } from "@/lib/features";
 import { CTABanner } from "@/components/ui/cta-banner";
 
 export const metadata: Metadata = {
@@ -16,7 +18,7 @@ export default function RecapLabPage() {
     <main>
       <ComingSoonHero />
       <PreviewTiles />
-      <NotifyForm />
+      {NEWSLETTER_ENABLED ? <NotifyForm /> : <FollowSection />}
       <CTABanner
         eyebrow="want early access?"
         heading="Want early access? Tell us."

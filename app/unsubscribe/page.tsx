@@ -3,6 +3,7 @@ import { PageIntro } from "@/components/ui/page-intro";
 import { Card } from "@/components/ui/card";
 import { UnsubscribeForm } from "@/components/newsletter/unsubscribe-form";
 import { EMAIL_RE, UNSUBSCRIBE_TOKEN_RE } from "@/lib/validation/contact";
+import { NEWSLETTER_ENABLED } from "@/lib/features";
 
 export const metadata: Metadata = {
   title: "Unsubscribe — Recap",
@@ -38,7 +39,22 @@ export default async function UnsubscribePage({
       />
       <section className="bg-cream px-6 pb-20 md:pb-24">
         <div className="mx-auto max-w-2xl">
-          {hasLink ? (
+          {!NEWSLETTER_ENABLED ? (
+            <Card className="bg-contact-card border-contact-border p-8 text-center md:p-10">
+              <p className="text-contact-body text-base leading-relaxed">
+                The slow letter isn&rsquo;t being sent at the moment, so you
+                won&rsquo;t receive any newsletters from us. If you&rsquo;d like
+                your address removed from our records, write to{" "}
+                <a
+                  href="mailto:hello@recapcenter.com"
+                  className="text-contact-accent underline underline-offset-4"
+                >
+                  hello@recapcenter.com
+                </a>{" "}
+                and we&rsquo;ll take care of it.
+              </p>
+            </Card>
+          ) : hasLink ? (
             <UnsubscribeForm email={email.trim()} token={token.trim()} />
           ) : (
             <Card className="bg-contact-card border-contact-border p-8 text-center md:p-10">

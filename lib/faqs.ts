@@ -92,6 +92,13 @@ export const PRACTICAL_FAQS = [
       "They're for general information and reflection, not a diagnosis or advice for your particular situation. For support that fits your circumstances, please get in touch.",
   },
   {
+    question: "How can I hear about new posts and workshops?",
+    answer:
+      "Follow Recap on WhatsApp — updates arrive as a notification on your phone. We're on Instagram and LinkedIn too; the links are at the bottom of every page.",
+    showWhen: "newsletter-off",
+  },
+  {
+    showWhen: "newsletter-on",
     question: "How do I unsubscribe from the slow letter?",
     answer:
       "Every letter has an unsubscribe link at the bottom, and you can also use the unsubscribe page on this website. Once you leave, we won't email you again.",

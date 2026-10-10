@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ShieldCheck } from "lucide-react";
 import { PageIntro } from "@/components/ui/page-intro";
 import { FadeIn } from "@/components/motion/fade-in";
+import { NEWSLETTER_ENABLED } from "@/lib/features";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Recap",
@@ -14,15 +15,19 @@ const SECTIONS = [
   {
     title: "Who we are",
     body: [
-      "Recap (Realm of Counselling and Psychological Services) runs this website at recapcenter.com. When this policy says \"we\" or \"us\", it means Recap. If you have any question about your information, write to us at hello@recapcenter.com.",
+      'Recap (Realm of Counselling and Psychological Services) runs this website at recapcenter.com. When this policy says "we" or "us", it means Recap. If you have any question about your information, write to us at hello@recapcenter.com.',
     ],
   },
   {
     title: "What we collect",
     body: [
       "Contact form: your name, email address, phone number, what you're reaching out about, your message, and your confirmation that we may reply to you.",
-      "The slow letter: your email address, when you signed up, and whether you're subscribed. Our newsletter tool may also record whether a letter was opened and which links were clicked, so we know what's useful.",
-      "Unsubscribing: if you use our unsubscribe page, your email address, the reason you chose and any note you add.",
+      ...(NEWSLETTER_ENABLED
+        ? [
+            "The slow letter: your email address, when you signed up, and whether you're subscribed. Our newsletter tool may also record whether a letter was opened and which links were clicked, so we know what's useful.",
+            "Unsubscribing: if you use our unsubscribe page, your email address, the reason you chose and any note you add.",
+          ]
+        : []),
       "Visiting the site: like every website, our hosting and security providers automatically process technical information such as your IP address, browser type and the pages requested, to deliver the site and protect it from abuse. If Google Analytics is switched on, it also records which pages are visited, your approximate location (country or city) and the type of device you use.",
       "We don't ask for, and you don't need to share, medical details, a diagnosis or information about anyone else to contact us. If you choose to include something sensitive, we treat it with the same care as everything shared in a session.",
     ],
@@ -30,7 +35,7 @@ const SECTIONS = [
   {
     title: "How we use it",
     body: [
-      "We use your information only to reply to you and arrange support you've asked about, to send the slow letter if you've subscribed, to understand and improve how the site is used, and to keep the site secure and free of spam.",
+      `We use your information only to reply to you and arrange support you've asked about, ${NEWSLETTER_ENABLED ? "to send the slow letter if you've subscribed, " : ""}to understand and improve how the site is used, and to keep the site secure and free of spam.`,
       "We don't sell or rent your information, we don't use it for advertising, and we don't make automated decisions about you.",
     ],
   },
@@ -38,7 +43,9 @@ const SECTIONS = [
     title: "Who handles it on our behalf",
     body: [
       "We use a small number of trusted services to run Recap. Each one handles only what it needs to do its job:",
-      "Google Workspace receives contact form messages in our email and may send the slow letter. Vercel hosts this website and processes your requests to it. GoDaddy hosts the system where we manage our content, newsletter subscribers and unsubscribe notes, and Cloudflare protects it. MailPoet manages the slow letter's subscriber list and sends it. Google Analytics, if switched on, measures site traffic.",
+      NEWSLETTER_ENABLED
+        ? "Google Workspace receives contact form messages in our email and may send the slow letter. Vercel hosts this website and processes your requests to it. GoDaddy hosts the system where we manage our content, newsletter subscribers and unsubscribe notes, and Cloudflare protects it. MailPoet manages the slow letter's subscriber list and sends it. Google Analytics, if switched on, measures site traffic."
+        : "Google Workspace receives contact form messages in our email. Vercel hosts this website and processes your requests to it. GoDaddy hosts the system where we manage our content, and Cloudflare protects it. Google Analytics, if switched on, measures site traffic.",
       "These services may store or process information on servers outside India, under their own security and privacy commitments. We'll only share your information beyond them if the law requires it, or to protect someone's safety.",
     ],
   },
@@ -58,8 +65,12 @@ const SECTIONS = [
   {
     title: "How long we keep it",
     body: [
-      "Contact messages and unsubscribe notes: we keep these in our records so we can follow up and look back on our conversations, and we don't delete them on a fixed schedule. You can ask us to delete yours at any time, and we will. If you become a client, your information is kept as part of your client record, as we'll explain when we begin working together.",
-      "The slow letter: until you unsubscribe. After that we keep just your email address on a do-not-send list, so you're never emailed again by mistake.",
+      `${NEWSLETTER_ENABLED ? "Contact messages and unsubscribe notes" : "Contact messages"}: we keep these in our records so we can follow up and look back on our conversations, and we don't delete them on a fixed schedule. You can ask us to delete yours at any time, and we will. If you become a client, your information is kept as part of your client record, as we'll explain when we begin working together.`,
+      ...(NEWSLETTER_ENABLED
+        ? [
+            "The slow letter: until you unsubscribe. After that we keep just your email address on a do-not-send list, so you're never emailed again by mistake.",
+          ]
+        : []),
       "Analytics data: deleted automatically after the period set in Google Analytics. Technical logs: kept briefly by our hosting providers for security.",
     ],
   },
@@ -72,13 +83,13 @@ const SECTIONS = [
   {
     title: "Children and young people",
     body: [
-      "Recap works with children and young people as part of our counselling and special education services, always with a parent or guardian's involvement and consent. The contact form and newsletter are meant for adults; if you're under 18, please ask a parent, guardian or teacher to get in touch with us for you. If we learn that a child has sent us information without that involvement, we'll delete it or reach out to the adults responsible for them.",
+      `Recap works with children and young people as part of our counselling and special education services, always with a parent or guardian's involvement and consent. The contact form${NEWSLETTER_ENABLED ? " and newsletter are" : " is"} meant for adults; if you're under 18, please ask a parent, guardian or teacher to get in touch with us for you. If we learn that a child has sent us information without that involvement, we'll delete it or reach out to the adults responsible for them.`,
     ],
   },
   {
     title: "Your rights",
     body: [
-      "You can ask us, at any time, what information we hold about you, to correct it, or to delete it, and you can withdraw your consent, for example by unsubscribing from the slow letter. Write to us at hello@recapcenter.com. We'll reply personally, usually within a few days and always within 30 days.",
+      `You can ask us, at any time, what information we hold about you, to correct it, or to delete it, and you can withdraw your consent${NEWSLETTER_ENABLED ? ", for example by unsubscribing from the slow letter" : ""}. Write to us at hello@recapcenter.com. We'll reply personally, usually within a few days and always within 30 days.`,
       "If you're unhappy with how we've handled your information, tell us at the same address and we'll do our best to put it right.",
     ],
   },

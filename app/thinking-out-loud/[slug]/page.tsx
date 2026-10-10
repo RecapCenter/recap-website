@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { CTABanner } from "@/components/ui/cta-banner";
+import { StayInTheLoopBanner } from "@/components/thinking-out-loud/stay-in-the-loop-banner";
 import { PostBody } from "@/components/thinking-out-loud/post-body";
 import { RelatedPosts } from "@/components/thinking-out-loud/related-posts";
 import {
@@ -126,13 +126,7 @@ export default async function BlogPostPage({
 
       <RelatedPosts posts={relatedPosts} />
 
-      <CTABanner
-        eyebrow="stay in the loop"
-        heading="Get new posts in your inbox."
-        subtext="No spam, just the occasional thing worth reading."
-        buttonLabel="Get in touch"
-        buttonHref="/contact"
-      />
+      <StayInTheLoopBanner />
     </main>
   );
 }
