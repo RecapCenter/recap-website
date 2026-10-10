@@ -33,9 +33,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   async redirects() {
     return [
-      ...Object.entries(LEGACY_PAGE_REDIRECTS).map(
-        ([source, destination]) => ({ source, destination, permanent: true }),
-      ),
+      ...Object.entries(LEGACY_PAGE_REDIRECTS).map(([source, destination]) => ({
+        source,
+        destination,
+        permanent: true,
+      })),
       ...LEGACY_POST_SLUGS.map((slug) => ({
         source: `/${slug}`,
         destination: `/thinking-out-loud/${slug}`,
@@ -72,6 +74,12 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         headers: [
+          // Every recapcenter.com subdomain serves HTTPS (www, cms, mail via
+          // Vercel/Cloudflare), so browsers may refuse plain HTTP on all of them.
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains",
+          },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

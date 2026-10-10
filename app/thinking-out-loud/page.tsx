@@ -32,6 +32,8 @@ export async function generateMetadata({
     alternates: {
       canonical:
         page > 1 ? `/thinking-out-loud?page=${page}` : "/thinking-out-loud",
+      // Feed autodiscovery for readers and crawlers (app/feed.xml).
+      types: { "application/rss+xml": "/feed.xml" },
     },
   };
 }
