@@ -10,7 +10,10 @@ import { TestimonialsSection } from "@/components/home/testimonials-section";
 // Title, description and sharing tags come from the root layout. The
 // canonical lives here, not there, so other pages never inherit "/".
 export const metadata: Metadata = {
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    types: { "application/rss+xml": "/feed.xml" },
+  },
 };
 
 export default function Home() {
