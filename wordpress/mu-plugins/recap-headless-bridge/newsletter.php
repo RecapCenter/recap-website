@@ -5,6 +5,9 @@
  * Unsubscribes come from the website's /unsubscribe page via
  * POST /wp-json/recap/v1/unsubscribe (same secret), which removes the
  * address from the list and saves the reason under "Unsubscribe Reasons".
+ * That page is reached through each letter's signed link — the MailPoet
+ * shortcode [custom:recap_unsubscribe_url], defined below — and the
+ * signature is checked here, so nobody can unsubscribe someone else.
  *
  * The Next.js footer form posts to its own /api/newsletter route, which
  * calls this endpoint server-to-server:
@@ -70,6 +73,11 @@ function recap_register_newsletter_routes(): void {
 					'sanitize_callback' => 'sanitize_email',
 					'validate_callback' => static fn ( $value ) => is_email( $value ) !== false,
 				),
+				'token'  => array(
+					'required'          => true,
+					'type'              => 'string',
+					'validate_callback' => static fn ( $value ) => is_string( $value ) && 1 === preg_match( '/^[a-f0-9]{64}$/', $value ),
+				),
 				'reason' => array(
 					'required'          => true,
 					'type'              => 'string',
@@ -133,9 +141,106 @@ function recap_unsubscribe_reason_label( string $reason ): string {
 }
 
 /**
- * Removes the email from the newsletter list and records why. Answers the
- * same way whether or not the address was subscribed, so the page can't be
- * used to discover who is on the list.
+ * Signature for an address's unsubscribe link: HMAC-SHA256 of the
+ * lower-cased address. Keyed by RECAP_UNSUBSCRIBE_SECRET if wp-config.php
+ * defines one, otherwise by a key derived from RECAP_REVALIDATE_SECRET — so
+ * no extra setup is needed, but rotating that secret invalidates the links
+ * in letters already sent. Returns '' when neither secret is configured.
+ *
+ * @param string $email Subscriber address.
+ * @return string 64-character hex signature, or ''.
+ */
+function recap_unsubscribe_token( string $email ): string {
+	if ( defined( 'RECAP_UNSUBSCRIBE_SECRET' ) ) {
+		$key = RECAP_UNSUBSCRIBE_SECRET;
+	} elseif ( defined( 'RECAP_REVALIDATE_SECRET' ) ) {
+		$key = hash_hmac( 'sha256', 'recap-unsubscribe-links', RECAP_REVALIDATE_SECRET );
+	} else {
+		return '';
+	}
+
+	return hash_hmac( 'sha256', strtolower( trim( $email ) ), $key );
+}
+
+/**
+ * The public site's origin (e.g. https://recapcenter.com), taken from
+ * RECAP_REVALIDATE_URL so it needs no separate setting.
+ *
+ * @return string
+ */
+function recap_public_site_origin(): string {
+	if ( defined( 'RECAP_REVALIDATE_URL' ) ) {
+		$parts = wp_parse_url( RECAP_REVALIDATE_URL );
+		if ( ! empty( $parts['scheme'] ) && ! empty( $parts['host'] ) ) {
+			return $parts['scheme'] . '://' . $parts['host'];
+		}
+	}
+
+	return 'https://recapcenter.com';
+}
+
+/**
+ * A subscriber's personal unsubscribe link on the public site's branded
+ * /unsubscribe page (signed, so it only works for that address).
+ *
+ * @param string $email Subscriber address.
+ * @return string
+ */
+function recap_unsubscribe_url( string $email ): string {
+	$base  = recap_public_site_origin() . '/unsubscribe';
+	$token = recap_unsubscribe_token( $email );
+
+	if ( '' === $token ) {
+		return $base;
+	}
+
+	return $base . '?' . http_build_query(
+		array(
+			'email' => strtolower( trim( $email ) ),
+			'token' => $token,
+		)
+	);
+}
+
+/**
+ * MailPoet shortcode [custom:recap_unsubscribe_url] — set it as the URL of
+ * the email footer's "Unsubscribe" link. Replaced per recipient when a
+ * letter is sent; previews use the logged-in user's address.
+ *
+ * @param string $shortcode       The shortcode being processed.
+ * @param mixed  $newsletter      Newsletter being rendered (unused).
+ * @param mixed  $subscriber      Recipient: a SubscriberEntity, an array, or null in previews.
+ * @param mixed  $queue           Sending queue (unused).
+ * @param mixed  $content         Email content (unused).
+ * @param mixed  $wp_user_preview Whether this is a preview (unused).
+ * @return string
+ */
+function recap_mailpoet_unsubscribe_shortcode( $shortcode, $newsletter = null, $subscriber = null, $queue = null, $content = '', $wp_user_preview = false ) {
+	if ( '[custom:recap_unsubscribe_url]' !== $shortcode ) {
+		return $shortcode;
+	}
+	unset( $newsletter, $queue, $content, $wp_user_preview );
+
+	$email = '';
+	if ( is_object( $subscriber ) && method_exists( $subscriber, 'getEmail' ) ) {
+		$email = (string) $subscriber->getEmail();
+	} elseif ( is_array( $subscriber ) && ! empty( $subscriber['email'] ) ) {
+		$email = (string) $subscriber['email'];
+	} elseif ( is_user_logged_in() ) {
+		$email = (string) wp_get_current_user()->user_email;
+	}
+
+	// Raw (not HTML-escaped): MailPoet's click tracking redirects to this
+	// value, and an escaped "&#038;" would break the query string.
+	return esc_url_raw( '' !== $email ? recap_unsubscribe_url( $email ) : recap_public_site_origin() . '/unsubscribe' );
+}
+add_filter( 'mailpoet_newsletter_shortcode', 'recap_mailpoet_unsubscribe_shortcode', 10, 6 );
+
+/**
+ * Removes the email from the newsletter list and records why — only with a
+ * valid signature from that address's emailed link. Answers the same way
+ * whether or not the address was subscribed, so the page can't be used to
+ * discover who is on the list.
  *
  * @param WP_REST_Request $request Incoming request.
  * @return WP_REST_Response|WP_Error
@@ -145,9 +250,17 @@ function recap_newsletter_unsubscribe( WP_REST_Request $request ) {
 		return new WP_Error( 'recap_mailpoet_missing', 'MailPoet is not active.', array( 'status' => 503 ) );
 	}
 
-	$email  = $request->get_param( 'email' );
+	$email  = (string) $request->get_param( 'email' );
+	$token  = (string) $request->get_param( 'token' );
 	$reason = recap_unsubscribe_reason_label( (string) $request->get_param( 'reason' ) );
 	$note   = (string) $request->get_param( 'note' );
+
+	$expected = recap_unsubscribe_token( $email );
+	if ( '' === $expected || ! hash_equals( $expected, $token ) ) {
+		return new WP_Error( 'recap_invalid_unsubscribe_link', 'This unsubscribe link is not valid.', array( 'status' => 403 ) );
+	}
+
+	$was_subscribed = false;
 
 	try {
 		$mailpoet = \MailPoet\API\API::MP( 'v1' );
@@ -156,6 +269,7 @@ function recap_newsletter_unsubscribe( WP_REST_Request $request ) {
 		try {
 			$subscriber = $mailpoet->getSubscriber( $email );
 			$mailpoet->unsubscribeFromLists( $subscriber['id'], array( $list_id ) );
+			$was_subscribed = true;
 		} catch ( \Exception $not_subscribed ) {
 			// Not a subscriber, or already off the list — nothing to remove.
 			unset( $not_subscribed );
@@ -164,14 +278,18 @@ function recap_newsletter_unsubscribe( WP_REST_Request $request ) {
 		return new WP_Error( 'recap_unsubscribe_failed', 'Could not unsubscribe right now.', array( 'status' => 500 ) );
 	}
 
-	wp_insert_post(
-		array(
-			'post_type'    => 'newsletter_feedback',
-			'post_status'  => 'private',
-			'post_title'   => sprintf( '%s — %s', $email, $reason ),
-			'post_content' => '' !== $note ? $note : '(No extra note.)',
-		)
-	);
+	// Only real unsubscribes leave a note, so repeat or bogus submissions
+	// can't fill wp-admin with entries.
+	if ( $was_subscribed ) {
+		wp_insert_post(
+			array(
+				'post_type'    => 'newsletter_feedback',
+				'post_status'  => 'private',
+				'post_title'   => sprintf( '%s — %s', $email, $reason ),
+				'post_content' => '' !== $note ? $note : '(No extra note.)',
+			)
+		);
+	}
 
 	return new WP_REST_Response( array( 'ok' => true ), 200 );
 }

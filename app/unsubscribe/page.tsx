@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/ui/page-intro";
+import { Card } from "@/components/ui/card";
 import { UnsubscribeForm } from "@/components/newsletter/unsubscribe-form";
+import { EMAIL_RE, UNSUBSCRIBE_TOKEN_RE } from "@/lib/validation/contact";
 
 export const metadata: Metadata = {
   title: "Unsubscribe — Recap",
@@ -10,16 +12,21 @@ export const metadata: Metadata = {
 };
 
 /**
- * Newsletter unsubscribe page. Linked from the footer of every MailPoet
- * email as /unsubscribe?email=[subscriber:email], so the address is
- * prefilled; it can also be typed in by hand.
+ * Newsletter unsubscribe page. Every slow letter links here through the
+ * MailPoet shortcode [custom:recap_unsubscribe_url] as
+ * /unsubscribe?email=…&token=…, where the token is a signature WordPress
+ * makes for that address. Without a valid-looking pair there's nothing to
+ * submit: the address can't be typed in by hand, so nobody can unsubscribe
+ * someone else.
  */
 export default async function UnsubscribePage({
   searchParams,
 }: {
-  searchParams: Promise<{ email?: string }>;
+  searchParams: Promise<{ email?: string; token?: string }>;
 }) {
-  const { email } = await searchParams;
+  const { email = "", token = "" } = await searchParams;
+  const hasLink =
+    EMAIL_RE.test(email.trim()) && UNSUBSCRIBE_TOKEN_RE.test(token.trim());
 
   return (
     <main>
@@ -31,7 +38,23 @@ export default async function UnsubscribePage({
       />
       <section className="bg-cream px-6 pb-20 md:pb-24">
         <div className="mx-auto max-w-2xl">
-          <UnsubscribeForm initialEmail={email?.trim() ?? ""} />
+          {hasLink ? (
+            <UnsubscribeForm email={email.trim()} token={token.trim()} />
+          ) : (
+            <Card className="bg-contact-card border-contact-border p-8 text-center md:p-10">
+              <p className="text-contact-body text-base leading-relaxed">
+                To unsubscribe, please use the <strong>Unsubscribe</strong> link
+                at the bottom of any slow letter. Or write to{" "}
+                <a
+                  href="mailto:hello@recapcenter.com"
+                  className="text-contact-accent underline underline-offset-4"
+                >
+                  hello@recapcenter.com
+                </a>{" "}
+                and we&rsquo;ll take you off the list ourselves.
+              </p>
+            </Card>
+          )}
         </div>
       </section>
     </main>

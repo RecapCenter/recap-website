@@ -149,8 +149,21 @@ const UNSUBSCRIBE_REASON_VALUES: readonly string[] = UNSUBSCRIBE_REASONS.map(
   (r) => r.value,
 );
 
+/**
+ * Signature on each subscriber's unsubscribe link, generated and checked by
+ * WordPress (recap_unsubscribe_token in newsletter.php) so an address can
+ * only be removed through a link that was emailed to it.
+ */
+export const UNSUBSCRIBE_TOKEN_RE = /^[a-f0-9]{64}$/;
+
 export const unsubscribeSchema = z.object({
   email: emailSchema,
+  token: z
+    .string()
+    .regex(
+      UNSUBSCRIBE_TOKEN_RE,
+      "This unsubscribe link isn't complete. Please use the link from one of our emails.",
+    ),
   reason: z.string().refine((v) => UNSUBSCRIBE_REASON_VALUES.includes(v), {
     message: "Please choose a reason.",
   }),

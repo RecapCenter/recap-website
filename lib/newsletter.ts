@@ -5,13 +5,30 @@ const FETCH_TIMEOUT_MS = 8000;
 export class NewsletterUnavailableError extends Error {}
 
 /**
+ * WordPress answered but refused the request. `code` is the WP_Error code
+ * (e.g. "recap_invalid_unsubscribe_link"), so routes can turn specific
+ * refusals into helpful messages instead of a generic failure.
+ */
+export class NewsletterRejectedError extends Error {
+  constructor(
+    message: string,
+    public readonly status: number,
+    public readonly code: string | null,
+  ) {
+    super(message);
+    this.name = "NewsletterRejectedError";
+  }
+}
+
+/**
  * Forwards a newsletter action server-to-server to the WordPress bridge
  * (wordpress/mu-plugins/recap-headless-bridge/newsletter.php), which talks
  * to MailPoet. Sends the shared secret so the bridge only accepts calls
  * from this site; the secret never reaches the browser.
  *
  * Throws NewsletterUnavailableError when WordPress isn't configured here,
- * and a plain Error when WordPress or MailPoet reject the request.
+ * NewsletterRejectedError when WordPress or MailPoet refuse the request, and
+ * a plain Error when it can't be reached at all.
  */
 export async function callNewsletterBridge(
   action: "subscribe" | "unsubscribe",
@@ -37,8 +54,17 @@ export async function callNewsletterBridge(
   });
 
   if (!response.ok) {
-    throw new Error(
-      `Newsletter ${action}: WordPress responded ${response.status} ${await response.text()}`,
+    const text = await response.text();
+    let code: string | null = null;
+    try {
+      code = (JSON.parse(text) as { code?: string }).code ?? null;
+    } catch {
+      // Not JSON (e.g. a proxy error page) — keep code null.
+    }
+    throw new NewsletterRejectedError(
+      `Newsletter ${action}: WordPress responded ${response.status} ${text.slice(0, 300)}`,
+      response.status,
+      code,
     );
   }
 }
