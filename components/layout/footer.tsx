@@ -110,18 +110,22 @@ export default function Footer() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
-            {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
-              <Link
-                key={label}
-                href={href}
-                aria-label={label}
-                className="text-cream/90 hover:border-footer-accent hover:text-footer-accent flex size-9 items-center justify-center rounded-full border border-white/20 transition-colors"
-              >
-                <Icon className="size-4" />
-              </Link>
-            ))}
-          </div>
+          {/* Only while the newsletter runs: otherwise the "follow along"
+              block above already links to these profiles. */}
+          {NEWSLETTER_ENABLED && (
+            <div className="flex items-center gap-3">
+              {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="text-cream/90 hover:border-footer-accent hover:text-footer-accent flex size-9 items-center justify-center rounded-full border border-white/20 transition-colors"
+                >
+                  <Icon className="size-4" />
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="my-6 h-px bg-white/10" />
