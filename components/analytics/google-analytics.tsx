@@ -8,8 +8,8 @@ import Script from "next/script";
  * tracked by GA4's enhanced measurement ("page changes based on browser
  * history events"), which is on by default for new data streams.
  *
- * The page_location sent to Google has any `email` query parameter
- * removed: newsletter emails link to /unsubscribe?email=…, and GA's terms
+ * The page_location sent to Google has any `email` and `token` query
+ * parameters removed: newsletter emails link to /unsubscribe?email=…, and GA's terms
  * (and our privacy policy) forbid sending personal data to it. The
  * unsubscribe form also strips it from the address bar once read.
  */
@@ -29,6 +29,7 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 var pageUrl = new URL(window.location.href);
 pageUrl.searchParams.delete('email');
+pageUrl.searchParams.delete('token');
 gtag('config', '${id}', { page_location: pageUrl.toString() });`}
       </Script>
     </>

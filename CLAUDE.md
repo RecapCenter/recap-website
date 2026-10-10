@@ -152,6 +152,14 @@ drift back to old patterns.
   `.rendered` HTML, or search results show codes like `&#8211;`.
 - **Structured data** goes through `components/seo/json-ld.tsx`, which
   escapes `<` so CMS text can't break out of the script tag.
+- **Newsletter unsubscribe** only works through signed links: WordPress
+  signs each address (`recap_unsubscribe_token` in
+  `wordpress/mu-plugins/recap-headless-bridge/newsletter.php`) and the
+  MailPoet shortcode `[custom:recap_unsubscribe_url]` puts
+  `/unsubscribe?email=…&token=…` in every letter's footer. Never add a
+  path that unsubscribes by email alone. Rotating `RECAP_REVALIDATE_SECRET`
+  invalidates links in already-sent letters unless
+  `RECAP_UNSUBSCRIBE_SECRET` is set separately.
 - **Analytics events** use `trackEvent()` (`lib/analytics.ts`) and must
   never include personal data (names, emails, phones, message text).
 - **Favicon / app icons** (`app/favicon.ico`, `app/icon.svg`,

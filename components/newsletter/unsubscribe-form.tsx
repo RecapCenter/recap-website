@@ -30,11 +30,18 @@ const labelClasses = "font-script text-xl text-contact-accent";
 const FIELD_ORDER = ["email", "reason", "note", "confirmed"] as const;
 
 /**
- * Unsubscribe from "the slow letter": email (prefilled from the email
- * link), a required reason, an optional note and an explicit confirmation.
- * Posts to /api/newsletter/unsubscribe.
+ * Unsubscribe from "the slow letter": the address and its signature come
+ * from the emailed link (shown, not editable — the signature only works for
+ * that address), plus a required reason, an optional note and an explicit
+ * confirmation. Posts to /api/newsletter/unsubscribe.
  */
-export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
+export function UnsubscribeForm({
+  email,
+  token,
+}: {
+  email: string;
+  token: string;
+}) {
   const [done, setDone] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -48,7 +55,8 @@ export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
     mode: "onBlur",
     reValidateMode: "onChange",
     defaultValues: {
-      email: initialEmail,
+      email,
+      token,
       reason: "",
       note: "",
       confirmed: false,
@@ -58,13 +66,17 @@ export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
   const note = watch("note") ?? "";
   const botTrap = useBotTrap();
 
-  // The address arrives as /unsubscribe?email=… from newsletter links. Once
-  // it's in the form, drop it from the address bar so it doesn't linger in
-  // browser history or reach analytics on later page views.
+  // The address and signature arrive as /unsubscribe?email=…&token=… from
+  // newsletter links. Once they're in the form, drop them from the address
+  // bar so they don't linger in browser history or reach analytics on later
+  // page views.
   useEffect(() => {
     const url = new URL(window.location.href);
-    if (!url.searchParams.has("email")) return;
+    if (!url.searchParams.has("email") && !url.searchParams.has("token")) {
+      return;
+    }
     url.searchParams.delete("email");
+    url.searchParams.delete("token");
     window.history.replaceState(window.history.state, "", url);
   }, []);
 
@@ -133,6 +145,7 @@ export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
         className="relative flex flex-col gap-6"
       >
         <BotTrapField inputRef={botTrap.inputRef} />
+        <input type="hidden" {...register("token")} />
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className={labelClasses}>
             your email
@@ -140,8 +153,8 @@ export function UnsubscribeForm({ initialEmail }: { initialEmail: string }) {
           <input
             id="email"
             type="email"
+            readOnly
             autoComplete="email"
-            placeholder="you@somewhere.com"
             className={`${inputClasses} ${errors.email ? invalidBorder : validBorder}`}
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "email-error" : undefined}
